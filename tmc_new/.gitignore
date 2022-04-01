@@ -1,0 +1,4 @@
+db.sqlite3
+tmc_new/migrations
+tmc_new/__pycache__
+tmc_new/_pycache_
