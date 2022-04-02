@@ -1,0 +1,235 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+html,body{
+    box-sizing: border-box;
+}
+
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+.history{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.info__table{
+	border-collapse: collapse;
+   	border: 1px solid grey;
+   	width: 480px;
+   	height: 250px;
+}
+/*begin */
+.blank{
+	min-height: 100vh;
+	background-color:#ccc;
+}
+.form__list{
+	margin-bottom: 10px;
+}
+.inner{
+   display: flex;
+}
+.form__item{
+	padding: 10px;
+	padding-bottom: 0;
+	display: flex;
+	flex-direction: column;
+}
+.item--1{
+	width: 480px;
+}
+.item--2{
+	width: 350px;
+}
+.content{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	max-width: 500px;
+}
+.box{
+	display: flex;
+	flex-direction: column;
+	margin-right: 20px;
+}
+.wrapper{
+	display: flex;
+}
+.form__title{
+	font-weight: 700;
+}
+input{
+	max-width: 300px;
+}
+.date1{
+	max-width: 60px;
+}
+
+
+.smalliin1{
+	width: 100px;
+}
+
+.time1{
+	max-width: 80px;
+}
+.short1{
+	max-width: 50px;
+}
+
+
+.phone1{
+	max-width: 130px;
+}
+
+.rezident1{
+	margin-right: 20px;
+}
+.personal{
+	background-color: rgb(243, 243, 243);
+	border: 1px solid rgb(117, 117, 117);
+	margin-bottom: 10px;
+	padding: 5px;
+}
+.form__subtitle{
+	margin-bottom: 10px;
+	border-bottom: 1px solid rgb(117, 117, 117);
+}
+
+.homenum1 , .block1 , .flat1{
+	max-width: 50px;
+}
+
+.comment1{
+	height: 200px;
+}
+
+.risk1{
+	margin-right: 10px;
+}
+.form__table{
+	border: 1px solid #000;
+	background-color: aliceblue;
+	padding: 5px;
+	width: 100%;
+}
+textarea{
+	resize: none;
+}
+
+.diagnozcomment1{
+	width: 100px;
+}
+
+.diagnoz1{
+	width: 200px;
+}
+.bigdate{
+	width: 120px;
+	margin-bottom: 5px;
+}
+.report1, .advice1{
+	height:60px;
+}
+
+
+.advice1{
+	margin-bottom: 10px;
+}
+.stacionar1{
+	margin-right: 60px;
+}
+
+#result{
+	width: 200px;
+}
+.result1{
+	width: 200px;
+}
+
+.smth1{
+	margin-bottom: 10px;
+}
+.form__btn{
+	cursor: pointer;
+	width: 170px;
+	padding: 6px 0;
+	text-align: center;
+	margin-left: auto;
+	display: block;
+}
+.result{
+	margin-right: 20px;
+}
+.byself1{
+	margin-bottom: 10px;
+}
+.result{
+	margin-bottom: 10px;
+}
+
+.hugedate{
+	width: 200px;
+}
+
+.finishing1{
+	margin-top: 20px;
+}
+.form__footer-box{
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	padding: 30px;
+	padding-bottom: 10px;
+}
+.fyle{
+	display: flex;
+}
+
+.fyle1{
+	margin-right: 20px;
+}
+.btn--close{
+	margin-right: 400px;
+}
+.otstup{
+	padding-top: 5px;
+}
