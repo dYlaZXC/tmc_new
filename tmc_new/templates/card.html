@@ -526,11 +526,11 @@
                         После стационара
                 </h6>
                 <div class="col">
-                    <input type="radio" name="sign_observation">
+                    <input style="width: 20px;" type="radio" name="sign_observation">
                     <label for="">Да</label>
                 </div>
                 <div class="col">
-                    <input type="radio" name="sign_observation">
+                    <input style="width: 20px;" type="radio" name="sign_observation">
                     <label for="">Нет</label>
                 </div>
             </div>
@@ -547,7 +547,207 @@
         </div>
     </div>
     <!-- 4 БЛОК -->
-    <div class="col">
+    <div class="col-3">
+        <div class="row mt-4">
+            <label for="">Причина сдачи ПЦР</label>
+            <select name="" id="">
+                <option value="self">Самообращение</option>
+            </select>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h3 class="mt-2" style="padding: 5px; 
+                    border-top: 1px solid #c9c9c9; 
+                    border-left: 1px solid #c9c9c9; 
+                    border-right:1px solid #c9c9c9; 
+                    border-radius:5% 5% 0 0;
+                    background-color:rgb(204, 204, 204);">
+                Результат ПЦР
+                </h3>
+                <div class="p-1" name="Результат ПЦР" style="border: 1px solid gray;">
+                    <div class="row">
+                        <div class="col">
+                            <input style="width: 20px;" type="radio">
+                            <label for="">+</label>
+                        </div>
+                        <div class="col">
+                            <input style="width: 20px;" type="radio">
+                            <label for="">-</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <label for="">Дата провед. ПЦР</label>
+                    <br>
+                    <input type="date">
+                </div>
+                <div class="row">
+                    <label for="">Дата рез. ПЦР</label>
+                    <br>
+                    <input type="date">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h3 class="mt-2" style="padding: 5px; 
+                    border-top: 1px solid #c9c9c9; 
+                    border-left: 1px solid #c9c9c9; 
+                    border-right:1px solid #c9c9c9; 
+                    border-radius:5% 5% 0 0;
+                    background-color:rgb(204, 204, 204);">
+                Результат ПЦР
+                </h3>
+                <div class="p-1" name="Результат ПЦР" style="border: 1px solid gray;">
+                    <div class="row">
+                        <div class="col">
+                            <input style="width: 20px;" type="radio">
+                            <label for="">+</label>
+                        </div>
+                        <div class="col">
+                            <input style="width: 20px;" type="radio">
+                            <label for="">-</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <label for="">Дата КТ</label>
+                <br>
+                <input type="date">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <label for="">Заключение КТ</label>
+            <input type="text">
+        </div>
+        <div class="row">
+            <div class="col">
+                <h3 class="mt-2" style="padding: 5px; 
+                    border-top: 1px solid #c9c9c9; 
+                    border-left: 1px solid #c9c9c9; 
+                    border-right:1px solid #c9c9c9; 
+                    border-radius:5% 5% 0 0;
+                    background-color:rgb(204, 204, 204);">
+                Результат ПЦР
+                </h3>
+                <div class="p-1" name="Результат ПЦР" style="border: 1px solid gray;">
+                    <div class="row">
+                        <div class="col">
+                            <input style="width: 20px;" type="radio">
+                            <label for="">+</label>
+                        </div>
+                        <div class="col">
+                            <input style="width: 20px;" type="radio">
+                            <label for="">-</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <label for="">Дата рентгена</label>
+                <br>
+                <input type="date">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <label for="">Заключение рентгена</label>
+            <input type="text">
+        </div>
+        <div class="row mt-2">
+            <label for="">Дата выезда МБ</label>
+            <input type="date">
+        </div>
+        <div class="row mt-2">
+            <label for="">Причина поздней подачи</label>
+            <select name="" id="">
+
+            </select>
+        </div>
+        <div class="row">
+            <h3 class="mt-2" style="padding: 5px; 
+                border-top: 1px solid #c9c9c9; 
+                border-left: 1px solid #c9c9c9; 
+                border-right:1px solid #c9c9c9; 
+                border-radius:5% 5% 0 0;
+                background-color:rgb(204, 204, 204);">
+            Первоначальные контакты с пациентом
+            </h3>
+            <div class="row mt-2">
+                <label for="">Дата пол. данных от ПМСП</label>
+                <input type="datetime-local">
+            </div>
+            <div class="row mt-2">
+                <label for="">Дата первого звонка</label>
+                <input type="datetime">
+            </div>
+            <div class="row mt-2">
+                <input style="width: 20px;" type="checkbox">
+                <label style="width: 350px;" for="">Информирование о функциях ТМЦ</label>            
+            </div>
+            <div class="row mt-2">
+                <input style="width: 20px;" type="checkbox">
+                <label style="width: 350px;" for="">Информирование об условиях ДН</label>            
+            </div>
+            <div class="row mt-2">
+                <input style="width: 20px;" type="checkbox">
+                <label style="width: 350px;" for="">Отказ от госпитализации</label>            
+            </div>
+            <div class="row mt-2">
+                <label for="">Завершение наблюдения со слов пациента</label> 
+                <br>
+                <select name="" id="">
+                </select>
+            </div>
+            <div class="row mt-2">
+                <label for="">Стационар</label> 
+                <br>
+                <select name="" id="">
+                </select>
+            </div>
+            <div class="row mt-2">
+                <label for="">Дата завершения наблюдения</label> 
+                <br>
+                <input type="date">
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <label for="">Вакцина</label> 
+                    <br>
+                    <select name="" id="">
+
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="">Доза</label> 
+                    <br>
+                    <input type="text">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <label for="">Дата доза 1</label> 
+                    <br>
+                    <input type="date">
+                </div>
+                <div class="col">
+                    <label for="">Дата доза 1</label> 
+                    <br>
+                    <input type="date">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-3">
+            <select style="width: 200px;" name="" id=""></select>
+        <button type="button" class="btn">Сохранить</button>
+        </div>
+        <div class="col-2">
+            <button type="button" class="btn">Закрыть</button>
+        </div>
     </div>
 </div>
 <style>
