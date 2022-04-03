@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="blank">
+    <div class="blank" style="width: 100%; padding: 0; margin: 0;">
         <div id="for_popup" name="for_popup">
-
         </div>
         <div class="form-list">
             <div class="inner">
@@ -10,20 +9,25 @@
                     <div class="content">
                         <div class="box">
                             <label class="form__label">Язык</label>
-                            <select name="language" id="yazik" name="yazik">
+                            <select name="language" id="lang" name="lang">
                                 <option value="ru">Руссский</option>
                                 <option value="kz">Казахский</option>
                             </select>
                         </div>
                         <div class="box">
                             <label class="form__label">Класс обращения</label>
-                            <select name="classes" id="classobr" name="classobr">
-                                <option value="smth">НАБЛЮДЕНИЕ</option>
+                            <select name="s_category" id="s_category">
+                                {% for s_category in s_categories %}
+                                    <option value="{{ s_category.id }}">{{ s_category.name_ru }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="box">
                             <label class="form__label">Отношение</label>
-                            <select name="relation" id="otnosh" name="otnosh">
+                            <select name="s_ratio" id="s_ratio">
+                                {% for s_ratio in s_ratios %}
+                                    <option value="{{ s_ratio.id }}">{{ s_ratio.name_ru }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -54,16 +58,20 @@
                         <div class="box">
                             <label for="location" class="form__label">Район</label>
                             <select name="location" id="raionikvartali" name="raionikvartali">
-                                <option value="medeo">Медеуский</option>
-                                <option value="auez">Ауэзовский</option>
-                                <option value="alma">Алмалинский</option>
-                                <option value="bost">Бостандыкский</option>
+                                {% for s_region in s_regions %}
+                                    <option value="{{ s_region.id }}">{{ s_region.name_ru }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
                     <div class="box">
                         <label for="street" class="form__label">Улица</label>
-                        <input type="text" id="ulica" name="ulica">
+                        <select id="s_street" name="s_street">
+                            {% for s_street in s_streets %}
+                                <option value="{{ s_street.id }}">{{ s_street.name_ru }}</option>
+                            {% endfor %}
+                        </select>
+
                     </div>
                     <div class="content">
                         <div class="box">
@@ -80,7 +88,11 @@
                         </div>
                         <div class="box">
                             <label>Село в черте города</label>
-                            <select name="selo" id="selo4erta" name="selo4erta"></select>
+                            <select name="selo" id="s_village" name="s_village">
+                            {% for s_village in s_villages %}
+                                <option value="{{ s_village.id }}">{{ s_village.name_ru }}</option>
+                            {% endfor %}
+                            </select>
                         </div>
                     </div>
                     <div class="history">
@@ -155,6 +167,9 @@
                             <div class="box">
                                 <label for="citizenship">Гражданство</label>
                                 <select name="citizenship" id="grazh" name="grazh">
+                                    {% for s_country in s_countries %}
+                                        <option value="{{ s_country.id }}">{{ s_country.name_ru }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="box">
@@ -219,8 +234,9 @@
                         <div class="content">
                             <label for="risk" class="risk1">Группа риска</label>
                             <select name="risk" id="grupakrovi" name="grupakrovi">
-                                <option value="true">ОПРЕДЕЛЕНО</option>
-                                <option value="false" selected>НЕ ОПРЕДЕЛЕНО</option>
+                                {% for s_riskgroup in s_riskgroups %}
+                                    <option value="{{ s_riskgroup.id }}">{{ s_riskgroup.name_ru }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <table class="form__table">
@@ -318,7 +334,11 @@
                     <div class="content">
                         <div class="box">
                             <label class="diagnoz1">Состояние пациента</label>
-                            <select name="state" id="state"></select>
+                            <select name="state" id="state">
+                                {% for s_condition in s_conditions %}
+                                    <option value="{{ s_condition.id }}">{{ s_condition.name_ru }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="box">
                             <label>Дата взятия ДН</label>
@@ -348,7 +368,10 @@
                     <div class="content">
                         <div class="box">
                             <label>Результат снятия</label>
-                            <select name="result" class="result1" id="ressnyt" name="ressnyt"></select>
+                            <select name="result" class="result1" id="ressnyt" name="ressnyt">
+                                <option value="no_test">У контактных не взят ПЦР</option>
+                                <option value="no_result">Не выдан результат ПЦР</option>
+                            </select>
                         </div>
                         <div class="box">
                             <label>Дата снятия с ДН</label>
@@ -363,6 +386,8 @@
                     <label>Причина сдачи ПЦР</label>
                     <select name="psr" class="byself1" id="sdach" name="sdach">
                         <option value="self">САМООБРАЩЕНИЕ</option>
+                        <option value="self">Проф. мероприятие</option>
+                        <option value="self">Контактный ПМСП</option>
                     </select>
                     <div class="content">
                         <div class="result">
@@ -454,22 +479,17 @@
             </div>
         </div>
     </div>
-
+<style>
+</style>    
 <script>
-
-var host = window.location.host;
-
     function showDialog() {    
-    $('#for_popup').load('/add_form');
-    $('#popup').modal('show');
+        $('#for_popup').load('/add_form');
+        $('#popup').modal('show');
 }
-
-
 var currentDirectory = window.location.pathname.split('/').slice(0, -1).join('/')
-document.addEventListener("DOMContentLoaded", function(event) { 
+    document.addEventListener("DOMContentLoaded", function(event) { 
         console.log(currentDirectory)
     });
-
 
 </script>
 {% endblock %}

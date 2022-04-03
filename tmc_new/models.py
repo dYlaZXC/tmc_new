@@ -327,6 +327,9 @@ class GObservation(models.Model):
     class Meta:
         db_table = 'g_observation'
 
+    def __str__(self) -> str:
+        return self.name_ru  
+
 #СПРАВОЧНИК телефоны
 class SPhones(models.Model):
     num = models.CharField(max_length=20)
@@ -341,10 +344,12 @@ class SPhones(models.Model):
     class Meta:
         db_table = 's_phones'
 
+    def __str__(self) -> str:
+        return self.name_ru  
+
 
 #СПРАВОЧНИК ТИПА ОБРАЩЕНИЙ
 class SRatio(models.Model):
-    code = models.DecimalField(max_digits=65535, decimal_places=65535)
     name_ru = models.CharField(max_length=255)
     name_kz = models.CharField(max_length=255, blank=True, null=True)
     name_en = models.CharField(max_length=255, blank=True, null=True)
@@ -352,22 +357,20 @@ class SRatio(models.Model):
     class Meta:
         db_table = 's_ratio'
 
+    def __str__(self) -> str:
+        return self.name_ru    
+
 
 #СПРАВОЧНИК РЕГИОНОВ
 class SRegion(models.Model):
     name_ru = models.CharField(max_length=500)
     name_kz = models.CharField(max_length=500)
-    city_id = models.DecimalField(max_digits=65535, decimal_places=65535)
-    status = models.DecimalField(max_digits=65535, decimal_places=65535)
-    code_op = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
-    st_city = models.DecimalField(max_digits=1, decimal_places=0, blank=True, null=True)
-    st_view = models.DecimalField(max_digits=1, decimal_places=0, blank=True, null=True)
-    checkbox = models.DecimalField(max_digits=1, decimal_places=0, blank=True, null=True)
-    postal_code = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         db_table = 's_region'
 
+    def __str__(self) -> str:
+        return self.name_ru  
 
 #СПРАВОЧНИК ГРУПП РИСКА
 class SRiskGroup(models.Model):
@@ -378,6 +381,9 @@ class SRiskGroup(models.Model):
     class Meta:
         db_table = 's_risk_group'
 
+    def __str__(self) -> str:
+        return self.name_ru      
+
 #СПРАВОЧНИК СОЦИАЛЬНЫХ СТАТУСОВ
 class SSocialStatus(models.Model):
     name_ru = models.CharField(max_length=255)
@@ -386,6 +392,10 @@ class SSocialStatus(models.Model):
 
     class Meta:
         db_table = 's_social_status'
+
+    def __str__(self) -> str:
+        return self.name_ru  
+
 
 
 #СПРАВОЧНИК СОЦИАЛЬНЫХ СТАТУСОВ
@@ -414,9 +424,6 @@ class SStatusEnd(models.Model):
 class SStreet(models.Model):
     name_ru = models.CharField(max_length=500)
     name_kz = models.CharField(max_length=500)
-    streettype_id = models.DecimalField(max_digits=65535, decimal_places=65535)
-    city_id = models.DecimalField(max_digits=65535, decimal_places=65535)
-    status = models.DecimalField(max_digits=65535, decimal_places=65535)
 
     class Meta:
         db_table = 's_street'
@@ -439,10 +446,9 @@ class SVaccines(models.Model):
 
 #СПРАВОЧНИК ДЕРЕВЕНЬ
 class SVillage(models.Model):
-    village_id = models.CharField(max_length=255, blank=True, null=True)
     name_ru = models.CharField(max_length=255, blank=True, null=True)
     name_kz = models.CharField(max_length=255, blank=True, null=True)
-    township_id = models.CharField(max_length=255, blank=True, null=True)
+
 
     class Meta:  
         db_table = 's_village'
@@ -455,50 +461,6 @@ class PMSPS(models.Model):
     class Meta:
         db_table = 'table01'
 
-# ПАЦИЕНТЫ
-class TestBiVCopy(models.Model):
-    patient_id = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    iin = models.CharField(max_length=255, blank=True, null=True)
-    fio = models.CharField(max_length=255, blank=True, null=True)
-    num_crossdoc = models.CharField(max_length=255, blank=True, null=True)
-    birthday = models.DateTimeField(blank=True, null=True)
-    phone = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    pmsp_start_date = models.DateTimeField(blank=True, null=True)
-    date_time = models.DateTimeField(blank=True, null=True)
-    loc_region = models.CharField(max_length=500, blank=True, null=True)
-    loc_street = models.CharField(max_length=255, blank=True, null=True)
-    loc_home = models.CharField(max_length=255, blank=True, null=True)
-    status_end_date = models.DateTimeField(blank=True, null=True)
-    status_end = models.CharField(max_length=255, blank=True, null=True)
-    patient_age = models.FloatField(blank=True, null=True)
-    not_dozvon_type = models.CharField(max_length=255, blank=True, null=True)
-    refusal_hospitalize_tmc = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    sign_observation_hospital = models.BooleanField(blank=True, null=True)
-    pmsp_name = models.CharField(max_length=255, blank=True, null=True)
-    diagnosis = models.CharField(max_length=255, blank=True, null=True)
-    pcr_result = models.BooleanField(blank=True, null=True)
-    pcr_date_test = models.DateTimeField(blank=True, null=True)
-    pcr_date_receipt = models.DateTimeField(blank=True, null=True)
-    result_kt = models.BooleanField(blank=True, null=True)
-    kt_date = models.DateTimeField(blank=True, null=True)
-    diagnosis_kt = models.CharField(max_length=255, blank=True, null=True)
-    condition_start = models.CharField(max_length=255, blank=True, null=True)
-    pcr_reason = models.CharField(max_length=255, blank=True, null=True)
-    other_diagnosis_pmsp = models.TextField(blank=True, null=True)
-    presc_therapy = models.CharField(max_length=255, blank=True, null=True)
-    lung_damage = models.BooleanField(blank=True, null=True)
-    sex = models.CharField(max_length=255, blank=True, null=True)
-    risk_group = models.CharField(max_length=255, blank=True, null=True)
-    pregnancy = models.CharField(max_length=255, blank=True, null=True)
-    diagnosis_date = models.DateTimeField(blank=True, null=True)
-    date_mobile_brigade = models.DateTimeField(blank=True, null=True)
-    vaccine_date1 = models.DateTimeField(blank=True, null=True)
-    vaccine_date2 = models.DateTimeField(blank=True, null=True)
-    vaccine_dose = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    vaccine_type = models.CharField(max_length=255, blank=True, null=True)
-
-    class Meta:  
-        db_table = 'test_bi_v_copy'
 
 #ВАКЦИНАЦИЯ
 class Vaccination(models.Model):
@@ -535,7 +497,7 @@ class GIncident(models.Model):
     fio = models.CharField(max_length=255, blank=True, null=True)
     fio_lat = models.CharField(max_length=255, blank=True, null=True)
     birthday = models.DateTimeField(blank=True, null=True)
-    sex = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    sex = models.CharField(max_length=255, blank=True, null=True)
     country_id = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     place_of_birth = models.CharField(max_length=255, blank=True, null=True)
     iin = models.CharField(max_length=255, blank=True, null=True)

@@ -74,7 +74,7 @@ table {
 	flex-direction: column;
 }
 .item--1{
-	width: 480px;
+	width: 650px;
 }
 .item--2{
 	width: 350px;
@@ -83,7 +83,6 @@ table {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	max-width: 500px;
 }
 .box{
 	display: flex;
@@ -100,7 +99,7 @@ input{
 	max-width: 300px;
 }
 .date1{
-	max-width: 60px;
+	max-width: 125px;
 }
 
 

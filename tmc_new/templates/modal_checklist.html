@@ -1,473 +1,478 @@
+<form id="popup" style="border: 2px solid black;" method="POST" style="padding: 0px;">
+	{% csrf_token %}
+	<div class="main">
+		<h2 class="he">Добавить запись в журнал</h2>
+		<div class="row ">
+			<div class="col-sm-6">
+				<label class="lab verhost">Информирование и контроль</label>
+				<table class="form__table" >
+					<tr >
+						<td >
+							<label > Соблюдение условий пребывания</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="infandcon"name="infandcon" value="da">
+								<label for="infandcon">Да</label>
+							</td>
+							<td class="tdforif">
+								<input type="radio" id="infandcon"name="infandcon" value="net">
+								<label for="infandcon">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Выполнение назначений</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="naznach"name="naznach" value="da">
+								<label for="naznach">Да</label>
+							</td>
+							<td class="tdforif" >
+								<input type="radio" id="naznach"name="naznach" value="da">
+								<label for="naznach">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Видео звонок оператора</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="videozv"name="videozv" value="da">
+								<label for="videozv">Да</label>
+							</td>
+							<td class="tdforif">
+								<input type="radio" id="videozv"name="videozv" value="da">
+								<label for="videozv">Нет</label>
+							</td>
+					</tr>
+				</table>
+				<label class="lab">Жалобы пациента на ПМСП</label>
+				<textarea  class="inp" name="zhaloby" id="zhaloby" cols="30" rows="10"></textarea>
+				<label class="lab">Принимаемые препараты</label>
+				<textarea  class="inpn" name="preparat" id="preparat" cols="30" rows="10"></textarea>
+				<label class="lab">Нарушения карантина</label>
+				<textarea  class="inpn" name="narush" id="narush" cols="30" rows="10"></textarea>
+				<table class="form__table" >
+				<label class="lab">Нарушения ПМСП</label>
+				<table class="form__table">
+					<tr >
+						<td >
+							<label >Повторный забор ПЦР на ДН</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="povtrozabor"name="povtrozabor" value="da">
+								<label for="povtrozabor">Да</label>
+							</td>
+							<td class="tdforif">
+								<input type="radio" id="povtrozabor"name="povtrozabor" value="net">
+								<label for="povtrozabor">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Разрешение выхода на улицу</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="razreshvih"name="razreshvih" value="da">
+								<label for="razreshvih">Да</label>
+							</td>
+							<td class="tdforif" >
+								<input type="radio" id="razreshvih"name="razreshvih" value="da">
+								<label for="razreshvih">Нет</label>
+							</td>
+					</tr>
+				
+					<tr>
+						<td >
+							<label > Самостоятельный выезд на КТ</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="samkt"name="samkt" value="da">
+								<label for="samkt">Да</label>
+							</td>
+							<td class="tdforif">
+								<input type="radio" id="samkt"name="samkt" value="da">
+								<label for="samkt">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Неправильное назначение ЛС</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="nepravls"name="nepravls" value="da">
+								<label for="nepravls">Да</label>
+							</td>
+							<td class="tdforif">
+								<input type="radio" id="nepravls"name="nepravls" value="da">
+								<label for="nepravls">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Невыдача чек-листа</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="nevidcheck"name="nevidcheck" value="da">
+								<label for="nevidcheck">Да</label>
+							</td>
+							<td class="tdforif">
+								<input type="radio" id="nevidcheck"name="nevidcheck" value="da">
+								<label for="nevidcheck">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Не взята расписка</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="nevzrasp"name="nevzrasp" value="da">
+								<label for="nevzrasp">Да</label>
+							</td>
+							<td class="tdforif">
+								<input type="radio" id="nevzrasp"name="nevzrasp" value="da">
+								<label for="nevzrasp">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Нет выезда в МБ</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="neviezdmb"name="neviezdmb" value="da">
+								<label for="neviezdmb">Да</label>
+							</td>
+							<td class="tdforif">
+								<input type="radio" id="neviezdmb"name="neviezdmb" value="da">
+								<label for="neviezdmb">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Не звонили в прош. сутки</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="nezvvprosh"name="nezvvprosh" value="da">
+								<label for="nezvvprosh">Да</label>
+							</td>
+							<td class="tdforif">
+								<input type="radio" id="nezvvprosh"name="nezvvprosh" value="da">
+								<label for="nezvvprosh">Нет</label>
+							</td>
+					</tr>
+				</table>
+				<label class="lab">Описание нарушений</label>
+				<textarea  class="inpn" name="narush" id="narush" cols="30" rows="10"></textarea>
+				<button>Видео звонок</button>
+				
 
-	<div id="popup" style="width: 100%;">
-		<div class="main">
-			<h2 class="he">Добавить запись в журнал</h2>
-			<div class="row ">
-				<div class="col-sm-6">
-					<label class="lab verhost">Информирование и контроль</label>
-					<table class="form__table" >
-						<tr >
-							<td >
-								<label > Соблюдение условий пребывания</label>
-							</td>
-							<td class="tdforif">
-                                    <input type="radio" id="infandcon"name="infandcon" value="da">
-                            		<label for="infandcon">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="infandcon"name="infandcon" value="net">
-                            		<label for="infandcon">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Выполнение назначений</label>
-							</td>
-							<td class="tdforif">
-                                    <input type="radio" id="naznach"name="naznach" value="da">
-                            		<label for="naznach">Да</label>
-                             </td>
-                             <td class="tdforif" >
-                                    <input type="radio" id="naznach"name="naznach" value="da">
-                            		<label for="naznach">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Видео звонок оператора</label>
-							</td>
-							<td class="tdforif">
-                                    <input type="radio" id="videozv"name="videozv" value="da">
-                            		<label for="videozv">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="videozv"name="videozv" value="da">
-                            		<label for="videozv">Нет</label>
-                             </td>
-						</tr>
-					</table>
-					<label class="lab">Жалобы пациента на ПМСП</label>
-					<textarea  class="inp" name="zhaloby" id="zhaloby" cols="30" rows="10"></textarea>
-                    <label class="lab">Принимаемые препараты</label>
-                    <textarea  class="inpn" name="preparat" id="preparat" cols="30" rows="10"></textarea>
-                    <label class="lab">Нарушения карантина</label>
-                    <textarea  class="inpn" name="narush" id="narush" cols="30" rows="10"></textarea>
-                    <table class="form__table" >
-                    <label class="lab">Нарушения ПМСП</label>
-                    <table class="form__table">
-						<tr >
-							<td >
-								<label >Повторный забор ПЦР на ДН</label>
-							</td>
-							<td class="tdforif">
-                                    <input type="radio" id="povtrozabor"name="povtrozabor" value="da">
-                            		<label for="povtrozabor">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="povtrozabor"name="povtrozabor" value="net">
-                            		<label for="povtrozabor">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Разрешение выхода на улицу</label>
-							</td>
-							<td class="tdforif">
-                                    <input type="radio" id="razreshvih"name="razreshvih" value="da">
-                            		<label for="razreshvih">Да</label>
-                             </td>
-                             <td class="tdforif" >
-                                    <input type="radio" id="razreshvih"name="razreshvih" value="da">
-                            		<label for="razreshvih">Нет</label>
-                             </td>
-						</tr>
-					
-						<tr>
-							<td >
-								<label > Самостоятельный выезд на КТ</label>
-							</td>
-							<td class="tdforif">
-                                    <input type="radio" id="samkt"name="samkt" value="da">
-                            		<label for="samkt">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="samkt"name="samkt" value="da">
-                            		<label for="samkt">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Неправильное назначение ЛС</label>
-							</td>
-							<td class="tdforif">
-                                    <input type="radio" id="nepravls"name="nepravls" value="da">
-                            		<label for="nepravls">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="nepravls"name="nepravls" value="da">
-                            		<label for="nepravls">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Невыдача чек-листа</label>
-							</td>
-							<td class="tdforif">
-                                    <input type="radio" id="nevidcheck"name="nevidcheck" value="da">
-                            		<label for="nevidcheck">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="nevidcheck"name="nevidcheck" value="da">
-                            		<label for="nevidcheck">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Не взята расписка</label>
-							</td>
-							<td class="tdforif">
-                                    <input type="radio" id="nevzrasp"name="nevzrasp" value="da">
-                            		<label for="nevzrasp">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="nevzrasp"name="nevzrasp" value="da">
-                            		<label for="nevzrasp">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Нет выезда в МБ</label>
-							</td>
-							<td class="tdforif">
-                                    <input type="radio" id="neviezdmb"name="neviezdmb" value="da">
-                            		<label for="neviezdmb">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="neviezdmb"name="neviezdmb" value="da">
-                            		<label for="neviezdmb">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Не звонили в прош. сутки</label>
-							</td>
-							<td class="tdforif">
-                                    <input type="radio" id="nezvvprosh"name="nezvvprosh" value="da">
-                            		<label for="nezvvprosh">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="nezvvprosh"name="nezvvprosh" value="da">
-                            		<label for="nezvvprosh">Нет</label>
-                             </td>
-						</tr>
-					</table>
-					<label class="lab">Описание нарушений</label>
-                    <textarea  class="inpn" name="narush" id="narush" cols="30" rows="10"></textarea>
-                    <button>Видео звонок</button>
-                    
 
-
+			</div>
+			<div class="col-sm-6">
+				<div class="row">
+					<div class="col-sm-5">
+						<label class="verhost"> Оценка текущего состояния</label>
+					</div>
+					<div class="col-sm-7">
+						<select class="selfull" name="spetyzh" id="spetyzh">
+						</select>
+					</div>
 				</div>
-				<div class="col-sm-6">
-					<div class="row">
-						<div class="col-sm-5">
-							<label class="verhost"> Оценка текущего состояния</label>
-						</div>
-						<div class="col-sm-7">
-                            <select class="selfull" name="spetyzh" id="spetyzh">
-                            </select>
-						</div>
+				<br>
+				<div class="row">
+					<div class="col-sm-6">
+						<label> Температура </label>
+						<input type="text" id="temperature" name="temperature">
 					</div>
-					<br>
-					<div class="row">
-						<div class="col-sm-6">
-							<label> Температура </label>
-							<input type="text" id="temperature" name="temperature">
-						</div>
-						<div class="col-sm-6">
-							<label> Сатурация </label>
-							<input type="text" id="saturac" name="saturac">
-						</div>
+					<div class="col-sm-6">
+						<label> Сатурация </label>
+						<input type="text" id="saturac" name="saturac">
 					</div>
-					<br>
-					<label >Чеклист мониторинг</label>
-					<table class="form__table">
-						<tr >
-							<td >
-								<label >Боль/першение в горле</label>
+				</div>
+				<br>
+				<label >Чеклист мониторинг</label>
+				<table class="form__table">
+					<tr >
+						<td >
+							<label >Боль/першение в горле</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="bolgorlo"name="bolgorlo" value="da">
+								<label for="bolgorlo">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="bolgorlo"name="bolgorlo" value="da">
-                            		<label for="bolgorlo">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="bolgorlo"name="bolgorlo" value="net">
-                            		<label for="bolgorlo">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Заложенность носа</label>
+								<input type="radio" id="bolgorlo"name="bolgorlo" value="net">
+								<label for="bolgorlo">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Заложенность носа</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="zalozhnos"name="zalozhnos" value="da">
+								<label for="zalozhnos">Да</label>
+							</td>
+							<td class="tdforif" >
+								<input type="radio" id="zalozhnos"name="zalozhnos" value="da">
+								<label for="zalozhnos">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Затруднённость дыхания</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="zatrdih"name="zatrdih" value="da">
+								<label for="zatrdih">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="zalozhnos"name="zalozhnos" value="da">
-                            		<label for="zalozhnos">Да</label>
-                             </td>
-                             <td class="tdforif" >
-                                    <input type="radio" id="zalozhnos"name="zalozhnos" value="da">
-                            		<label for="zalozhnos">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Затруднённость дыхания</label>
+								<input type="radio" id="zatrdih"name="zatrdih" value="da">
+								<label for="zatrdih">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Рвота</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="rvota"name="rvota" value="da">
+								<label for="rvota">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="zatrdih"name="zatrdih" value="da">
-                            		<label for="zatrdih">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="zatrdih"name="zatrdih" value="da">
-                            		<label for="zatrdih">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Рвота</label>
+								<input type="radio" id="rvota"name="rvota" value="da">
+								<label for="rvota">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Тошнота</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="toshnota"name="toshnota" value="da">
+								<label for="toshnota">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="rvota"name="rvota" value="da">
-                            		<label for="rvota">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="rvota"name="rvota" value="da">
-                            		<label for="rvota">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Тошнота</label>
+								<input type="radio" id="toshnota"name="toshnota" value="da">
+								<label for="toshnota">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Диарея</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="diareya"name="diareya" value="da">
+								<label for="diareya">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="toshnota"name="toshnota" value="da">
-                            		<label for="toshnota">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="toshnota"name="toshnota" value="da">
-                            		<label for="toshnota">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Диарея</label>
+								<input type="radio" id="diareya"name="diareya" value="da">
+								<label for="diareya">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Ощущение сердцебиения/стеснение в груди</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="serdcebie"name="serdcebie" value="da">
+								<label for="serdcebie">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="diareya"name="diareya" value="da">
-                            		<label for="diareya">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="diareya"name="diareya" value="da">
-                            		<label for="diareya">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Ощущение сердцебиения/стеснение в груди</label>
+								<input type="radio" id="serdcebie"name="serdcebie" value="da">
+								<label for="serdcebie">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Слабость</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="slabost"name="slabost" value="da">
+								<label for="slabost">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="serdcebie"name="serdcebie" value="da">
-                            		<label for="serdcebie">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="serdcebie"name="serdcebie" value="da">
-                            		<label for="serdcebie">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Слабость</label>
+								<input type="radio" id="slabost"name="slabost" value="da">
+								<label for="slabost">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Головная боль</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="golovbol"name="golovbol" value="da">
+								<label for="golovbol">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="slabost"name="slabost" value="da">
-                            		<label for="slabost">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="slabost"name="slabost" value="da">
-                            		<label for="slabost">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Головная боль</label>
+								<input type="radio" id="golovbol"name="golovbol" value="da">
+								<label for="golovbol">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Оущение заложенности в грудной клетке</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="zaloshgrud"name="zaloshgrud" value="da">
+								<label for="zaloshgrud">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="golovbol"name="golovbol" value="da">
-                            		<label for="golovbol">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="golovbol"name="golovbol" value="da">
-                            		<label for="golovbol">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Оущение заложенности в грудной клетке</label>
+								<input type="radio" id="zaloshgrud"name="zaloshgrud" value="da">
+								<label for="zaloshgrud">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Потеря обаняния</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="poteroban"name="poteroban" value="da">
+								<label for="poteroban">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="zaloshgrud"name="zaloshgrud" value="da">
-                            		<label for="zaloshgrud">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="zaloshgrud"name="zaloshgrud" value="da">
-                            		<label for="zaloshgrud">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Потеря обаняния</label>
+								<input type="radio" id="poteroban"name="poteroban" value="da">
+								<label for="poteroban">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Потеря вкуса</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="poteryvkusa"name="poteryvkusa" value="da">
+								<label for="poteryvkusa">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="poteroban"name="poteroban" value="da">
-                            		<label for="poteroban">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="poteroban"name="poteroban" value="da">
-                            		<label for="poteroban">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Потеря вкуса</label>
+								<input type="radio" id="poteryvkusa"name="poteryvkusa" value="da">
+								<label for="poteryvkusa">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Потливость</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="potlivost"name="potlivost" value="da">
+								<label for="potlivost">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="poteryvkusa"name="poteryvkusa" value="da">
-                            		<label for="poteryvkusa">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="poteryvkusa"name="poteryvkusa" value="da">
-                            		<label for="poteryvkusa">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Потливость</label>
+								<input type="radio" id="potlivost"name="potlivost" value="da">
+								<label for="potlivost">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Одышка</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="odishka"name="odishka" value="da">
+								<label for="odishka">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="potlivost"name="potlivost" value="da">
-                            		<label for="potlivost">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="potlivost"name="potlivost" value="da">
-                            		<label for="potlivost">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Одышка</label>
+								<input type="radio" id="odishka"name="odishka" value="da">
+								<label for="odishka">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label >Боль в мышцах</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="bolvmish"name="bolvmish" value="da">
+								<label for="bolvmish">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="odishka"name="odishka" value="da">
-                            		<label for="odishka">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="odishka"name="odishka" value="da">
-                            		<label for="odishka">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label >Боль в мышцах</label>
+								<input type="radio" id="bolvmish"name="bolvmish" value="da">
+								<label for="bolvmish">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Боль в суставах</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="bolvsust"name="bolvsust" value="da">
+								<label for="bolvsust">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="bolvmish"name="bolvmish" value="da">
-                            		<label for="bolvmish">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="bolvmish"name="bolvmish" value="da">
-                            		<label for="bolvmish">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Боль в суставах</label>
+								<input type="radio" id="bolvsust"name="bolvsust" value="da">
+								<label for="bolvsust">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Выделение из глаз или покраснение</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="videlizglaz"name="videlizglaz" value="da">
+								<label for="videlizglaz">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="bolvsust"name="bolvsust" value="da">
-                            		<label for="bolvsust">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="bolvsust"name="bolvsust" value="da">
-                            		<label for="bolvsust">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Выделение из глаз или покраснение</label>
+								<input type="radio" id="videlizglaz"name="videlizglaz" value="da">
+								<label for="videlizglaz">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Сыпь</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="sip"name="sip" value="da">
+								<label for="sip">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="videlizglaz"name="videlizglaz" value="da">
-                            		<label for="videlizglaz">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="videlizglaz"name="videlizglaz" value="da">
-                            		<label for="videlizglaz">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Сыпь</label>
+								<input type="radio" id="sip"name="sip" value="da">
+								<label for="sip">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label >Кашель сухой</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="kashelsuh"name="kashelsuh" value="da">
+								<label for="kashelsuh">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="sip"name="sip" value="da">
-                            		<label for="sip">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="sip"name="sip" value="da">
-                            		<label for="sip">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label >Кашель сухой</label>
+								<input type="radio" id="kashelsuh"name="kashelsuh" value="da">
+								<label for="kashelsuh">Нет</label>
+							</td>
+					</tr>
+					<tr>
+						<td >
+							<label > Кашель влажный с мокротой</label>
+						</td>
+						<td class="tdforif">
+								<input type="radio" id="kashelvlazh"name="kashelvlazh" value="da">
+								<label for="kashelvlazh">Да</label>
 							</td>
 							<td class="tdforif">
-                                    <input type="radio" id="kashelsuh"name="kashelsuh" value="da">
-                            		<label for="kashelsuh">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="kashelsuh"name="kashelsuh" value="da">
-                            		<label for="kashelsuh">Нет</label>
-                             </td>
-						</tr>
-						<tr>
-							<td >
-								<label > Кашель влажный с мокротой</label>
+								<input type="radio" id="kashelvlazh"name="kashelvlazh" value="da">
+								<label for="kashelvlazh">Нет</label>
 							</td>
-							<td class="tdforif">
-                                    <input type="radio" id="kashelvlazh"name="kashelvlazh" value="da">
-                            		<label for="kashelvlazh">Да</label>
-                             </td>
-                             <td class="tdforif">
-                                    <input type="radio" id="kashelvlazh"name="kashelvlazh" value="da">
-                            		<label for="kashelvlazh">Нет</label>
-                             </td>
-						</tr>
-					</table>
-					<label class="lab">Жалобы на состояние здоровья</label>
-                    <textarea  class="inpnn" name="zhalobynasost" id="zhalobynasost" cols="30" rows="10"></textarea>
-                    <div class="levo">
-                    	<button>ОК</button>
-                    	<button >Отменить</button>
-                    </div>
+					</tr>
+				</table>
+				<label class="lab">Жалобы на состояние здоровья</label>
+				<textarea  class="inpnn" name="zhalobynasost" id="zhalobynasost" cols="30" rows="10"></textarea>
+				<div class="levo">
+					<input type="submit">ОК</button>
+					<button id="close" name="close" type="button">Отменить</button>
 				</div>
 			</div>
 		</div>
 	</div>
+</form>
+<script>
+	document.getElementById('close').addEventListener("click", function(event){
+        $("#for_popup").empty();
+});
+</script>
 <style>
     #popup{
         position:absolute;
-        top:50%;
-        left:50%;
+		top: 50%;
+		left: 50%;
         transform:translate(-50%, -50%);
         box-shadow: 9px 9px 9px 9px gray;
     }

@@ -22,6 +22,11 @@ from rest_framework.response import Response
 from django.template.loader import render_to_string
 
 
+class Main(APIView):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'main.html')
+
+
 class Card(APIView):
     def get(self, request, *args, **kwargs):
         # CONTEXT
@@ -45,6 +50,8 @@ class Card(APIView):
             's_riskgroups': s_riskgroups,
             's_conditions': s_conditions,
         }) 
+    def post(self, request, *args, **kwargs):
+            
 
 
 @api_view(["GET"])
