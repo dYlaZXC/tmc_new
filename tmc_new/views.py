@@ -38,6 +38,9 @@ class Card(APIView):
         s_countries = SCountry.objects.all()
         s_riskgroups = SRiskGroup.objects.all()
         s_conditions = SCondition.objects.all()
+        s_countries = SCountry.objects.all()
+        pmsps = PMSPS.objects.all() 
+        s_statuses_end = SStatusEnd.objects.all()
         # END CONTEXT
         return render(request, 'card.html',
         {
@@ -49,6 +52,9 @@ class Card(APIView):
             's_countries': s_countries,
             's_riskgroups': s_riskgroups,
             's_conditions': s_conditions,
+            's_countries': s_countries,
+            'pmsps': pmsps,
+            's_statuses_end': s_statuses_end,
         }) 
     def post(self, request, *args, **kwargs):
         return 'PUSSY'

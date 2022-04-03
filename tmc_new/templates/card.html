@@ -3,7 +3,7 @@
 <h3 class="p-2" style="width: 100%; background-color: rgb(36, 36, 36); color: white;">Карточка</h3>
 <div class="row p-2" style="border: 2px solid rgb(36, 36, 36);">
     <!-- 1 БЛОК -->
-    <div class="col" style="border: 1px solid gray;">
+    <div class="col-3" style="border: 1px solid gray;">
         <div class="row">
             <div class="col-3">
                 <label for="lang">Язык</label>
@@ -156,7 +156,7 @@
                 </table>
             </div>
             <div id="modal_calls" style="display: none;">
-                <table class="table table-bordered">
+                <table class="table table-bordered table-striped" style="border-bottom:rgb(36, 36, 36)">
                     <thead>
                         <tr>
                             <th>№</th>
@@ -179,15 +179,372 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-
-    <!-- 2 БЛОК -->
-    <div class="col">
-
+            <h6 class="mt-2">Содержание приема</h6>
+            <button>Позвонить</button>
+            <button>Добавить</button>
+            <div id="modal_info">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Дата и время</th>
+                            <th>Состояние</th>
+                            <th>Темп.</th>
+                            <th>Сат.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
     </div>
+    <!-- 2 БЛОК -->
+    <div class="col-2" style="border: 1px solid gray;">
+        <div class="row">
+            <div class="col-5 mt-5">
+                <label for="checkbox">Резидент</label>
+                <input style="width: 20px;" type="checkbox" id="is_resident" name="is_resident">
+            </div>
+            <div class="col-7 mt-5">
+                <label for="iin2">ИИН</label>
+                <input style="width: 60%;" type="text" id="iin2" name="iin2">
+            </div>
+        </div>
+        <h3 class="mt-2" style="padding: 5px; 
+                    border-top: 1px solid #c9c9c9; 
+                    border-left: 1px solid #c9c9c9; 
+                    border-right:1px solid #c9c9c9; 
+                    border-radius:5% 5% 0 0;
+                    background-color:rgb(204, 204, 204);">
+            Персональные данные
+        </h3>
+        <div class="p-1" name="Персональные данные" style="border: 1px solid gray;">
+            <div class="row">
+                <div class="col">
+                    <label for="fio2">ФИО пациента</label>
+                    <br>
+                    <input type="text" name="fio2" id="fio2">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="birthday2">Дата рождения</label>
+                    <br>
+                    <input type="date" name="birthday2" id="birthday2">
+                </div>
+                <div class="col">
+                    <label for="sex2">Пол</label>
+                    <br>
+                    <select name="sex2" id="sex2">
+                        <option value="male">Мужский</option>
+                        <option value="female">Женский</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="s_country">Гражданство</label>
+                    <br>
+                    <select name="s_country" id="s_country">
+                        {% for s_country in s_countries %}
+                            <option value="{{ s_country.id }}">{{ s_country.name_ru }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="num_doc">№ Документа</label>
+                    <br>
+                    <input type="text" id="num_doc" name="num_doc">
+                </div>
+            </div>
+        </div>
+        <h3 class="mt-2" style="padding: 5px; 
+                    border-top: 1px solid #c9c9c9; 
+                    border-left: 1px solid #c9c9c9; 
+                    border-right:1px solid #c9c9c9; 
+                    border-radius:5% 5% 0 0;
+                    background-color:rgb(204, 204, 204);">
+            Текущий адрес в городе Алматы
+        </h3>
+        <div class="p-1" name="Текущий адрес в городе Алматы" style="border: 1px solid gray;">    
+            <div class="row">
+                <div class="col">
+                    <label for="s_region2">Район</label>
+                    <br>
+                    <select name="s_region2" id="s_region2">
+                        {% for s_region in s_regions %}
+                            <option value="{{ s_region.id }}">{{ s_region.name_ru }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="s_village2">Село в черте города</label>
+                    <br>
+                    <select name="s_village2" id="s_village2">
+                        {% for s_village in s_villages %}
+                            <option value="{{ s_village.id }}">{{ s_village.name_ru }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="s_street2">Улица</label>
+                    <br>
+                    <select name="s_street2" id="s_street2">
+                        {% for s_street in s_streets %}
+                            <option value="{{ s_street.id }}">{{ s_street.name_ru }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="home2">№ дома</label>   
+                    <br>
+                    <input type="text" id="home2" name="home2">
+                </div>
+                <div class="col">
+                    <label for="block2">Блок</label>   
+                    <br>
+                    <input type="text" id="block2" name="block2">
+                </div>
+                <div class="col">
+                    <label for="kv2">Квартира</label>   
+                    <br>
+                    <input type="text" id="kv2" name="kv2">
+                </div>
+            </div>
+        </div>
+        
+    <div class="p-1" name="новый блок">   
+        <div class="row">
+            <div class="col">
+                <label for="pmsp">ПМСП</label>
+                <br>
+                <select name="pmsp" id="pmsp">
+                    {% for pmsp in pmsps %}
+                        <option value="{{ pmsp.id }}">{{ pmsp.abrev_rus }}</option>
+                    {% endfor %}
+                </select> 
+            </div>    
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="phone2">Тел. моб.</label>
+                <br>
+                <input type="text" id="phone2" name="phone2">
+            </div>
+            <div class="col">
+                <label for="phone_home">Тел. стац.</label>
+                <br>
+                <input type="text" id="phone_home" name="phone_home">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="additional_contacts">Дополнительные контакты</label>
+                <br>
+                <input style="height: 50px; vertical-align: top;" type="text" id="additional_contacts" name="additional_contacts">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="info_for_tmc_agent">Информация для сотрудника ТМЦ</label>
+                <br>
+                <input id="info_for_tmc_agent" name="info_for_tmc_agent" style="height: 125px; vertical-align: top;" type="text">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label for="result_of_end">Результат снятия</label>
+            <br>
+            <select name="result_of_end" id="result_of_end">
+                    <option value="{{ s_status_end.id }}">{{ s_status_end.name_ru }}</option>
+            </select>
+        </div>
+        <div class="col">
+            <label for="date_of_end">Дата снятия с ДН</label>
+            <br>
+            <input type="datetime-local" id="date_of_end" name="date_of_end">
+        </div>
+    </div>
+</div>
     <!-- 3 БЛОК -->
-    <div class="col">
-
+    <div class="col-3">
+        <div class="row mt-5">
+            <label class="col-3" for="">Группа риска</label>
+            <select class="col-9" style="width: 40%;" name="s_riskgroup" id="s_riskgroup">
+                {% for s_riskgroup in s_riskgroups %}
+                    <option value="{{ s_riskgroup.id }}">{{ s_riskgroup.name_ru }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="p-1 mt-2" name="Текущий адрес в городе Алматы" style="border: 1px solid gray; font-size: 13px;">
+            <div class="row">
+                
+            </div>
+            <div class="row">
+                <div class="col-9">Ожирение</div>
+                <div class="col-3"><input type="checkbox"></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-9">Болезнь сердца</div>
+                <div class="col-3"><input type="checkbox"></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-9">Артер. гипертензия</div>
+                <div class="col-3"><input type="checkbox"></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-9">Бронхиальная астма</div>
+                <div class="col-3"><input type="checkbox"></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-9">Болезнь печени</div>
+                <div class="col-3"><input type="checkbox"></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-9">Гемат. расстр.</div>
+                <div class="col-3"><input type="checkbox"></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-9">Болезнь почек</div>
+                <div class="col-3"><input type="checkbox"></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-9">Онкологические</div>
+                <div class="col-3"><input type="checkbox"></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-9">Другие хронич. заболевания</div>
+                <div class="col-3"><input type="checkbox"></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-9">Пневмония</div>
+                <div class="col-3"><input type="checkbox"></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-9">Сахарный диабет</div>
+                <div class="col-3"><input type="checkbox"></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-9">Другие эндокр. заболевания</div>
+                <div class="col-3"><input type="checkbox"></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-9">ХОБЛ</div>
+                <div class="col-3"><input type="checkbox"></div>
+            </div>
+        </div>
+        <h3 class="mt-2" style="padding: 5px; 
+                border-top: 1px solid #c9c9c9; 
+                border-left: 1px solid #c9c9c9; 
+                border-right:1px solid #c9c9c9; 
+                border-radius:5% 5% 0 0;
+                background-color:rgb(204, 204, 204);">
+            Берем. (Триместр)
+        </h3>
+        <div class="p-1" name="Берем. (Триместр)" style="border: 1px solid gray;">
+            <div class="row">
+                <div class="col text-center">
+                    <input class="col" type="radio" name="pregnancy" id="no">
+                    <label for="">Нет</label>
+                </div>
+                <div class="col text-center">
+                    <input class="col" type="radio" name="pregnancy" id="type1">
+                    <label for="">1</label>
+                </div>
+                <div class="col text-center">
+                    <input class="col" type="radio" name="pregnancy" id="type2">
+                    <label for="">2</label>
+                </div>
+                <div class="col text-center">
+                    <input class="col" type="radio" name="pregnancy" id="type3">
+                    <label for="">3</label>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3 text-center">
+            <label class="col-3" for="">Подробное описание диагноза</label>
+            <input class="col-9" style="height: 75px; width: 72.5%;" type="text">
+        </div>
+        <div class="row mt-3 text-center">
+            <label class="col-3" for="">Нозология</label>
+            <input class="col-9" style="height: 75px; width: 72.5%;" type="text">
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="">Диагноз наблюдения</label>
+                <br>
+                <select name="" id=""></select>
+            </div>
+            <div class="col">
+                <label for="">Дата диагноза</label>
+                <br>
+                <input type="date">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="">Состояние пациента</label>
+                <br>
+                <select name="" id=""></select>
+            </div>
+            <div class="col">
+                <label for="">Дата взятия ДН</label>
+                <br>
+                <input type="date">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col row">
+                <h6 class="mt-2" style="padding: 5px; 
+                        border-top: 1px solid #c9c9c9; 
+                        border-left: 1px solid #c9c9c9; 
+                        border-right:1px solid #c9c9c9; 
+                        border-radius:5% 5% 0 0;
+                        background-color:rgb(204, 204, 204);">
+                        После стационара
+                </h6>
+                <div class="col">
+                    <input type="radio" name="sign_observation">
+                    <label for="">Да</label>
+                </div>
+                <div class="col">
+                    <input type="radio" name="sign_observation">
+                    <label for="">Нет</label>
+                </div>
+            </div>
+            <div class="col row">
+                <h6 class="mt-2" style="padding: 5px; 
+                border-top: 1px solid #c9c9c9; 
+                border-left: 1px solid #c9c9c9; 
+                border-right:1px solid #c9c9c9; 
+                border-radius:5% 5% 0 0;
+                background-color:rgb(204, 204, 204);">
+                Наличие пневмонии
+        </h6>
+            </div>
+        </div>
     </div>
     <!-- 4 БЛОК -->
     <div class="col">
@@ -225,6 +582,13 @@
     }
     a{
         text-decoration: none;
+    }
+    hr{
+        padding: 0;
+        margin: 0;
+    }
+    body{
+        background-color: #e9e9e9;
     }
 </style>
 <script>
