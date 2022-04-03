@@ -1,495 +1,248 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="blank" style="width: 100%; padding: 0; margin: 0;">
-        <div id="for_popup" name="for_popup">
+<h3 class="p-2" style="width: 100%; background-color: rgb(36, 36, 36); color: white;">Карточка</h3>
+<div class="row p-2" style="border: 2px solid rgb(36, 36, 36);">
+    <!-- 1 БЛОК -->
+    <div class="col" style="border: 1px solid gray;">
+        <div class="row">
+            <div class="col-3">
+                <label for="lang">Язык</label>
+                <br>
+                <select id="lang" name="lang" style="width: 90%;">
+                    <option value="ru">Русский</option>
+                    <option value="kz">Казахский</option>
+                </select>
+            </div>
+            <div class="col-4">
+                <label class="ml-2" for="s_category">Класс обращения</label>
+                <br>
+                <select class="ml-2" name="s_category" id="s_category">
+                    {% for s_category in s_categories %}
+                        <option value="{{ s_category.id }}">{{ s_category.name_ru }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-4">
+                <label for="s_ratio">Отношение</label>
+                <br>
+                <select name="s_ratio" id="s_ratio">
+                    {% for s_ratio in s_ratios %}
+                        <option value="{{ s_ratio.id }}">{{ s_ratio.name_ru }}</option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
-        <div class="form-list">
-            <div class="inner">
-                <div class="form__item item--1">
-                    <div class="content">
-                        <div class="box">
-                            <label class="form__label">Язык</label>
-                            <select name="language" id="lang" name="lang">
-                                <option value="ru">Руссский</option>
-                                <option value="kz">Казахский</option>
-                            </select>
-                        </div>
-                        <div class="box">
-                            <label class="form__label">Класс обращения</label>
-                            <select name="s_category" id="s_category">
-                                {% for s_category in s_categories %}
-                                    <option value="{{ s_category.id }}">{{ s_category.name_ru }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="box">
-                            <label class="form__label">Отношение</label>
-                            <select name="s_ratio" id="s_ratio">
-                                {% for s_ratio in s_ratios %}
-                                    <option value="{{ s_ratio.id }}">{{ s_ratio.name_ru }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    <h4 class="form__title">Содержание</h4>
-                    <div class="content">
-                        <div class="box">
-                            <label for="iin" class="form__label">ИИН</label>
-                            <input type="text" class="smalliin1" id="iin1" name="iin1">
-                        </div>
-                        <div class="box">
-                            <label for="date" class="form__label">Дата</label>
-                            <input type="date" class="date1" id="datapr" name="datapr">
-                        </div>
-                        <div class="box">
-                            <label for="time" class="form__label">Время</label>
-                            <input type="time" class="time1" id="vremya" name="vremya">
-                        </div>
-                        <div class="box">
-                            <label for="phone" class="form__label">№ телефона</label>
-                            <input type="text" class="phone1" id="nomertel" name="nomertel">
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="box">
-                            <label for="fio" class="form__label">ФИО</label>
-                            <input type="text" id="fam" name="fam">
-                        </div>
-                        <div class="box">
-                            <label for="location" class="form__label">Район</label>
-                            <select name="location" id="raionikvartali" name="raionikvartali">
-                                {% for s_region in s_regions %}
-                                    <option value="{{ s_region.id }}">{{ s_region.name_ru }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <label for="street" class="form__label">Улица</label>
-                        <select id="s_street" name="s_street">
-                            {% for s_street in s_streets %}
-                                <option value="{{ s_street.id }}">{{ s_street.name_ru }}</option>
-                            {% endfor %}
-                        </select>
+        <h6 class="mt-2">Содержание приема</h6>
+        <div class="p-2" name="Содержание приема" style="border: 1px solid gray;">
+            <div class="row">
+                <div class="col-3">
+                    <label for="iin1">ИИН</label>
+                    <br>
+                    <input type="text" id="iin1" name="iin1">
+                </div>
+                <div class="col-4">
+                    <label for="date_vz">Дата</label>
+                    <br>
+                    <input type="date" id="date_vz" name="date_vz">
+                </div>
+                <div class="col-2">
+                    <label for="time_vz">Время</label>
+                    <br>
+                    <input style="width: 70px;" type="time" id="time_vz" name="time_vz">
+                </div>
+                <div class="col-3">
+                    <label for="phone1">№ Телефона</label>
+                    <br>
+                    <input type="text" id="phone1" name="phone1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="fio1">ФИО</label>
+                    <br>
+                    <input type="text" id="fio1" name="fio1">
+                </div>
+                <div class="col">
+                    <label for="s_region">Район</label>
+                    <br>
+                    <select name="s_region" id="s_region">
+                        {% for s_region in s_regions %}
+                            <option value="{{ s_region.id }}">{{ s_region.name_ru }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="s_street1">Улица</label>
+                    <br>
+                    <select name="s_street1" id="s_street1">
+                        {% for s_street in s_streets %}
+                            <option value="{{ s_street.id }}">{{ s_street.name_ru }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    <label for="home1">Дом</label>
+                    <br>
+                    <input style="width: 45px;" type="text" name="home1" id="home1">
+                </div>
+                <div class="col-2">
+                    <label for="block1">Блок</label>
+                    <br>
+                    <input type="text" style="width: 45px;" name="block1" id="block1">
+                </div>
+                <div class="col-2">
+                    <label for="kv1">Квартира</label>
+                    <br>
+                    <input style="width: 45px;" type="text" name="kv1" id="kv1">
+                </div>
+                <div class="col-6">
+                    <label for="village1">Село в черте города</label>
+                    <br>
+                    <select name="village1" id="village1">
+                        {% for s_village in s_villages %}
+                            <option value="{{ s_village.id }}">{{ s_village.name_ru }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+            <div class="row mt-3">
+                <ul class="nav justify-content-start" style="padding: 0px; margin-left:5px;">
+                    <li class="nav-item" style="padding: 0px;">
+                        <button class="active" id="patients" onclick="choseHistory('patients')" aria-current="page" onclick="" style="padding: 5px; 
+                                                                                            border-top: 1px solid #c9c9c9; 
+                                                                                            border-left: 1px solid #c9c9c9; 
+                                                                                            border-right:1px solid #c9c9c9; 
+                                                                                            border-radius:10% 10% 0 0;">
+                            Пациенты
+                    </button>
+                    </li>
+                    <li class="nav-item" style="padding: 0px;">
+                        <button id="calls" onclick="choseHistory('calls')" style="padding: 5px; 
+                                                                border-top: 1px solid #c9c9c9; 
+                                                                border-left: 1px solid #c9c9c9; 
+                                                                border-right:1px solid #c9c9c9; 
+                                                                border-radius:10% 10% 0 0;">
+                        История звонков</button>
+                    </li>
+                </ul>
+            </div>
+            <div id="modal_patients">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>ФИО</th>
+                            <th>Телефон</th>
+                            <th>ПМСП</th>
+                            <th>Дата начала</th>
+                            <th>Дата окончания</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="modal_calls" style="display: none;">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>ЗВОНОК</th>
+                            <th>ЗВОНОК</th>
+                            <th>ЗВОНОК</th>
+                            <th>ЗВОНОК</th>
+                            <th>ЗВОНОК</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                    </div>
-                    <div class="content">
-                        <div class="box">
-                            <label>Дом</label>
-                            <input type="text" class="short1" id="domik" name="domik">
-                        </div>
-                        <div class="box">
-                            <label>Блок</label>
-                            <input type="text" class="short1" id="blockq" name="blockq">
-                        </div>
-                        <div class="box">
-                            <label>Квартира</label>
-                            <input type="text" class="short1" id="kv" name="kv">
-                        </div>
-                        <div class="box">
-                            <label>Село в черте города</label>
-                            <select name="selo" id="s_village" name="s_village">
-                            {% for s_village in s_villages %}
-                                <option value="{{ s_village.id }}">{{ s_village.name_ru }}</option>
-                            {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="history">
-                        <button class="people">Пациенты</button>
-                        <button class="history">история звонков</button>
-                        <div class="info">
-                        <table class="info__table">
-                            <tr>
-                                <td>smth</td>
-                                <td>smth</td>
-                                <td>smth</td>
-                                <td>smth</td>
-                                <td>smth</td>
-                                <td>smth</td>
-                            </tr>
-                            <tr>
-                                <td>lalaalalalalalal</td>
-                            </tr>
-                        </table>
-                        </div>
-                    </div>
-                    <div class="content">
-                    	<h3 class="form__title">Журнал</h3>
-                    </div>
-                    <div class="content">
-                    	<button class="form__btn">Позвонить</button> 
-                    	<button onclick="showDialog()" class="form__btn">Добавить</button> 
-                    	<button class="form__btn">Не дозвонился</button> 
-                    </div>
-                    <table class="info__table">
-                            <tr>
-                                <td>smth</td>
-                                <td>smth</td>
-                                <td>smth</td>
-                                <td>smth</td>
-                                <td>smth</td>
-                                <td>smth</td>
-                            </tr>
-                            <tr>
-                                <td>lalaalalalalalal</td>
-                            </tr>
-                        </table>
-                </div>
-                <div class="wrapper">
-                    <div class="form__item item--2">
-                    <div class="content">
-                        <input type="checkbox" name="rezident" value="rezident">
-                        <label for="vehicle1" class="rezident1"> Резидент</label>
-                        <label for="iin" class="rezident1" id="resid" name="resid"	>ИИН</label>
-                        <input type="text" id="iinq" name="iinq">
-                    </div>
-                    <div class="personal">
-                        <h6 class="form__subtitle">Персональные данные</h6>
-                        <div class="box">
-                            <label for="fio" class="form__label">ФИО пациента</label>
-                            <input type="text" id="aiopac" name="aiopac">
-                        </div>
-                        <div class="content">
-                            <div class="box">
-                                <label for="date">Дата рождения</label>
-                                <input type="date" class="date1" id="dateofbir" name="dateofbir">
-                            </div>
-                            <div class="box">
-                                <label for="sex">Пол</label>
-                                <select name="sex" id="sex">
-                                    <option value="male" selected>Мужской</option>
-                                    <option value="female">Женский</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <div class="box">
-                                <label for="citizenship">Гражданство</label>
-                                <select name="citizenship" id="grazh" name="grazh">
-                                    {% for s_country in s_countries %}
-                                        <option value="{{ s_country.id }}">{{ s_country.name_ru }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="box">
-                                <label for="docnum">№ документа</label>
-                                <input type="text" name="docnum" id="nomdoc" name="nomdoc">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="personal">
-                        <h6 class="form__subtitle">Текущий адрессв городе алматы</h6>
-                        <div class="content">
-                            <div class="box">
-                                <label for="location" class="form__label">Район</label>
-                                <select name="location" id="raionq" name="raionq">
-                                    <option value="medeo">Медеуский</option>
-                                    <option value="auez">Ауэзовский</option>
-                                    <option value="alma">Алмалинский</option>
-                                    <option value="bost">Бостандыкский</option>
-                                </select>
-                            </div>
-                            <div class="box">
-                                <label for="selo">Село в черте города</label>
-                                <input type="text" id="selo4ert" name="selo4ert">
-                            </div>
-                        </div>
-                        <label for="street" class="form__label">Улица</label>
-                        <select name="street" id="ulicavyzova" name="ulicavyzova">
-                        </select>
-                        <div class="content">
-                            <div class="box">
-                                <label for="homenum">№ дома</label>
-                                <input type="text" calss="homenum1" id="nomdom" name="nomdom">
-                            </div>
-                            <div class="box">
-                                <label for="block">Блок</label>
-                                <input type="text" class="block1" id="blockw" name="blockw">
-                            </div>
-                            <div class="box">
-                                <label for="flat">Квартира</label>
-                                <input type="text" class="flat1" id="kvq" name="kvq">
-                            </div>
-                        </div>
-                    </div>
-                    <label for="gmsp">ПМСП</label>
-                    <select name="gmsp" id="pmsp" name="pmsp">
-                    </select>
-                    <div class="content">
-                        <div class="box">
-                            <label for="phone" class="form__label">Тел. моб.</label>
-                            <input type="text" class="phone1" id="mobtel" name="mobtel">
-                        </div>
-                        <div class="box">
-                            <label for="homephone" class="form__label">Тел. стац.</label>
-                            <input type="text" class="homephone1" id="telstac" name="telstac">
-                        </div>
-                    </div>
-                    <label for="comment">Информация для сотрудника ТМЦ</label>
-                    <textarea name="comment" class="comment1" id="infsotr" name="infsotr"></textarea>
-                    </div>
-                    <div class="form__item">
-                    <div class="personal">
-                        <div class="content">
-                            <label for="risk" class="risk1">Группа риска</label>
-                            <select name="risk" id="grupakrovi" name="grupakrovi">
-                                {% for s_riskgroup in s_riskgroups %}
-                                    <option value="{{ s_riskgroup.id }}">{{ s_riskgroup.name_ru }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <table class="form__table">
-                            <tr>
-                                <td>
-                                    <label>Ожирение</label>
-                                </td>
-                                <td>
-                                    <input type="checkbox" id="zhir" name="zhir">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>Болезнь сердца</label>   
-                                </td>
-                                <td>
-                                    <input type="checkbox" id="serdcebol" name="serdcebol">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>Артер. Гипертензия</label>
-                                </td>
-                                <td>
-                                    <input type="checkbox" id="giper" name="giper">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>Бронхиальная астма</label>
-                                </td>
-                                <td>
-                                    <input type="checkbox" id="astm" name="astm">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>Болезнь печени</label>
-                                </td>
-                                <td>
-                                    <input type="checkbox" id="bolpe4" name="bolpe4">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>Гемат. раастр.</label>
-                                </td>
-                                <td>
-                                    <input type="checkbox" id="gemat" name="gemat">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>Болезнь почек</label>
-                                </td>
-                                <td>
-                                    <input type="checkbox" id="bolpo4" name="bolpo4">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>Онкологические</label>
-                                </td>
-                                <td>
-                                    <input type="checkbox" id="onkol" name="onkol">
-                                </td>
-                            </tr>
-                        </table>
-                        <div>
-                            <h3 class="form__title">Беден. (Триместр)</h3>
-                            <input type="radio" id="i1"name="i1" value="no">
-                            <label for="no">НЕТ</label>
-                            <input type="radio" id="i1" name="i1" value="1">
-                            <label for="1">1</label>
-                            <input type="radio" id="i1" name="i1" value="2">
-                            <label for="2">2</label>
-                            <input type="radio" id="i1"name="i1" value="3">
-                            <label for="3">3</label>
-                        </div>
-                        <div class="content">
-                            <label for="diagnoz" class="diagnozcomment1">Другие имеющиеся болезни</label>
-                            <textarea name="diagnoz" id="drbol" name="drbol"></textarea>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="box">
-                            <label class="diagnoz1">Диагноз наблюдения</label>
-                            <select name="diagnoz" id="diagnoz"></select>
-                        </div>
-                        <div class="box ">
-                            <label class="otstup">Дата диагноза</label>
-                            <input type="date" id="datadiag" name="datadiag" class="bigdate">
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="box">
-                            <label class="diagnoz1">Состояние пациента</label>
-                            <select name="state" id="state">
-                                {% for s_condition in s_conditions %}
-                                    <option value="{{ s_condition.id }}">{{ s_condition.name_ru }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="box">
-                            <label>Дата взятия ДН</label>
-                             <input type="date" id="datavz" name="datavz" class="bigdate">
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="personal" id="stacionar">
-                            <h4 class="form__subtitle">После стационара</h4>
-                            <input type="radio" id="after"name="after" value="yes">
-                            <label for="after">Да</label>
-                            <input type="radio" id="after"name="after" value="no">
-                            <label for="after">Нет</label>
-                        </div>
-                        <div class="personal">
-                            <h4 class="form__subtitle">Наличие пневмании</h4>
-                            <input type="radio" id="nal"name="nal" value="yes">
-                            <label for="yes">Да</label>
-                            <input type="radio" id="nal"name="nal" value="no">
-                            <label for="no">Нет</label>
-                        </div>
-                    </div>
-                    <label for="advice">Назначения</label>
-                    <textarea name="advice" class="advice1" id="nazna4" name="nazna4"></textarea>
-                    <label for="advice">Жалобы на СЭЗ</label>
-                    <textarea name="report" class="report1" id="zhal" name="zhal"></textarea>
-                    <div class="content">
-                        <div class="box">
-                            <label>Результат снятия</label>
-                            <select name="result" class="result1" id="ressnyt" name="ressnyt">
-                                <option value="no_test">У контактных не взят ПЦР</option>
-                                <option value="no_result">Не выдан результат ПЦР</option>
-                            </select>
-                        </div>
-                        <div class="box">
-                            <label>Дата снятия с ДН</label>
-                             <input type="date" id="datashyt" name="datashyt" class="bigdate">
-                                                    </div>
-                    </div>
-                    <label>Примечание при снятии</label>
-                    <input type="text" class="smth1" id="prim" name="prim">
-                    <button class="form__btn ">Вернуть на наблюдение</button>
-                    </div>
-                    <div class="form__item">
-                    <label>Причина сдачи ПЦР</label>
-                    <select name="psr" class="byself1" id="sdach" name="sdach">
-                        <option value="self">САМООБРАЩЕНИЕ</option>
-                        <option value="self">Проф. мероприятие</option>
-                        <option value="self">Контактный ПМСП</option>
-                    </select>
-                    <div class="content">
-                        <div class="result">
-                            <h3 class="form__title">Результат ПЦР</h3>
-                            <input type="radio"  value="yes" name="psr" id="psr">
-                            <label >+</label>
-                            <input type="radio" id="psr"  value="no" name="psr">
-                            <label >-</label>
-                        </div>
-                        <div class="box">
-                            <div class="box ">
-                                <label >Дата провед. ПЦР</label>
-                                <input  type="date" id="datapsr" name="datapsr" >
-                            </div>
-                            <div class="box ">
-                                <label>Дата рез. ПЦР</label>
-                                <input type="date" id="daatres" name="daatres" >
-                            </div> 
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="result">
-                            <h3 class="form__title">Результат КТ</h3>
-                            <input type="radio" name="kt" id="kt" value="yes">
-                            <label >+</label>
-                            <input type="radio" name="kt" id="kt" value="no">
-                            <label >-</label>
-                        </div>
-                        <div class="box">
-                            <label class="otstupsprav">Дата КТ</label>
-                            <input type="date" id="datakt" name="datakt"  >
-                        </div>
-                    </div>
-                    <label>Заключение КТ</label>
-                    <input type="text" id="zaklkt" name="zaklkt">
-                    <div class="content">
-                        <div class="result">
-                            <h3 class="form__title">Рентген</h3>
-                            <input type="radio" name="rengenq" id="rengenq"  value="yes">
-                            <label >+</label>
-                            <input type="radio" name="rengenq" id="rengenq" value="no">
-                            <label >-</label>
-                        </div>
-                        <label ></label>
-                        <div class="box">
-                            <label>Дата рентгена</label>
-                            <input type="date" id="dataren" name="dataren" >
-                        </div>
-                    </div>
-                    <label>Заключение рентгена</label>
-                    <input type="text" id="zaklren" name="zaklren">
-                    <label>Дата выезда мб</label>
-                    <select name="date" id="dataviezda" name="dataviezda"></select>
-                    <h4 class="form__subtitle">Первоначальные контакты ТМЦ с пациентом</h4>
-                    <label>Дата пол. данных с ПМСП</label>
-                    <select name="date" id="datapol" name="datapol"></select>
-                    <label>Дата первого звонка</label>
-                    <select name="date" id="dataper" name="dataper"></select>
-                    <div class="content">
-                        <label>Инфомирование о функциях ТМЦ</label>
-                        <input type="checkbox" id="infoaun" name="infoaun">
-                    </div>
-                    <div class="content">
-                        <label>Инфомирование об условиях ДН</label>
-                        <input type="checkbox" id="infusl" name="infusl">
-                    </div>
-                    <div class="content">
-                        <label>Отказ от госпитализации</label>
-                        <input type="checkbox" id="otkotgp" name="otkotgp">
-                    </div>
-                    <label id="finishing">Завершение наблюдения со слов пациента</label>
-                    <select name="ending" id="zav" name="zav"></select>
-                    <label>Стационар</label>
-                    <select name="stacionar" id="stac" name="stac"></select>
-                    <label>Дата завершения наблюдения</label>
-                    <input type="date" id="datazavna" name="datazavna" class="hugedate">
-                  
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form__footer">
-            <div class="form__footer-box">
-                <div class="fyle">
-                    <input type="fyle" class="file1">
-                    <button class="form__btn">Сохранить</button>  
-                </div>
-                <button class="form__btn btn--close">Закрыть</button>
-            </div>
-        </div>
+    <!-- 2 БЛОК -->
+    <div class="col">
+
     </div>
-<style>
-</style>    
-<script>
-    function showDialog() {    
-        $('#for_popup').load('/add_form');
-        $('#popup').modal('show');
-}
-var currentDirectory = window.location.pathname.split('/').slice(0, -1).join('/')
-    document.addEventListener("DOMContentLoaded", function(event) { 
-        console.log(currentDirectory)
-    });
+    <!-- 3 БЛОК -->
+    <div class="col">
 
+    </div>
+    <!-- 4 БЛОК -->
+    <div class="col">
+    </div>
+</div>
+<style>
+    table{
+        font-size: 13px;
+        min-height: 200px;
+    }
+    select{
+        font-size: 13px;
+    }
+    input{
+        font-size: 13px;
+    }
+    label{
+        font-size: 13px;
+    }
+    select{
+        border: 0.5px solid  rgb(118, 118, 118);
+        border-radius: 2px;
+        margin-left: 1px;
+    }
+    select, input{
+      box-sizing: border-box;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      height: 20px;
+    }
+    .active{
+        background-color:rgb(36, 36, 36);
+        color: white;
+    }
+    a{
+        text-decoration: none;
+    }
+</style>
+<script>
+    function makeActive(id) {
+        var element = document.getElementById(id);
+        element.classList.add("active");
+    }
+    function choseHistory(button) {
+        var modal_patients = document.getElementById('modal_patients');
+        var modal_calls = document.getElementById('modal_calls')
+        if (button === "patients"){
+            modal_calls.style.display = 'none'
+            modal_patients.style.display = 'block'
+        }
+        else{
+            modal_calls.style.display = 'block'
+            modal_patients.style.display = 'none'
+        }
+    }        
 </script>
 {% endblock %}

@@ -51,8 +51,7 @@ class Card(APIView):
             's_conditions': s_conditions,
         }) 
     def post(self, request, *args, **kwargs):
-            
-
+        return 'PUSSY'
 
 @api_view(["GET"])
 @permission_classes((permissions.AllowAny,))
