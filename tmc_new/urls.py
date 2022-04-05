@@ -21,6 +21,11 @@ from .views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', Main.as_view(), name='main'),
+    # АВТОРИЗАЦИЯ
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    # КОНЕЦ АВТОРИЗАЦИИ
     path('card/', Card.as_view(), name='card'),
-    path('add_form/', additional_form, name='form')
+    path('card/<int:id>', Card_id.as_view(), name='card_id'),
+    path('add_form/', additional_form, name='form'),
 ]

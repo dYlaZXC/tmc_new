@@ -1,6 +1,69 @@
 {% extends 'base.html' %}
+{% block title %} Наблюдение {% endblock %}
 {% block content %}
-    <h3>Наблюдение</h3>
-        <button type="button" class="btn">Журнал наблюдения</button>
-    
+<div class="p-3">
+    <button type="button" class="btn">Журнал наблюдения</button>
+    <table class="table bordered table-sm" style="border: 1px solid black; vertical-align: middle;"> 
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>ФИО</th>
+                <th>ИИН</th>
+                <th>№ Документа</th>
+                <th>Телефон</th>
+                <th>Дата начала</th>
+                <th>Дозвон</th>
+                <th>Организация ПМСП</th>
+                <th>Наблюдение после стационара</th>
+                <th>Состояние при регистрации</th>
+                <th>Дата ПЦР</th>
+                <th>ПЦР результат</th>
+                <th>Дата и Время регистрации</th>
+                <th>Дата последней записи в журнал</th>
+                <th>Неуспешный дозвон</th>
+                <th>На карантине (дней)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for g_patient in g_patients %}
+            <tr onclick="open_card('{% url 'card_id' g_patient.id %}')" {% if g_patient.mb %} class="table-primary" {% endif %}>
+                <td>{{ g_patient.id }}</td>
+                <td>{{ g_patient.fio }}</td>
+                <td>{{ g_patient.iin }}</td>
+                <td>{{ g_patient.num_crossdoc }}</td>
+                <td>{{ g_patient.phone }}</td>
+                <td>{{ g_patient.date_start_format }}</td>
+                <td>{{ g_patient.dozvon }}</td>
+                <td>{{ g_patient.pmsp_name }}</td>
+                <td>{{ g_patient.sign_observation_hospital }}</td>
+                <td>{{ g_patient.patient_condition_start }}</td>
+                <td>{{ g_patient.pcrdate_receipt }}</td>
+                <td style="font-weight: extrabold; font-size: 16px;">{% if g_patient.pcr_result %} + {% else %} - {% endif %}</td>
+                <td>{{ g_patient }}</td>
+                <td>{{ g_patient.close_date_post }}</td>
+                <td>{{ g_patient }}</td>
+                <td>{{ g_patient.days_count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<style>
+    th{
+        vertical-align: middle;
+        font-weight: bold;
+    }
+    table{
+        font-size: 13px;
+    }
+    td, th {
+    border: solid 1px rgb(147, 147, 147); 
+    text-align: center;
+    }
+</style> 
+<script>
+    function open_card(link) {    
+        return window.location = link
+    }   
+</script>  
 {% endblock %}
