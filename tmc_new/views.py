@@ -150,7 +150,7 @@ class Card_id(APIView):
     def get(self, request, id, *args, **kwargs):
         if request.user.is_authenticated:
             # CONTEXT
-            g_patient = GPatient.objects.filter(id=id)
+            g_incident = GIncident.objects.filter(id=GPatient.objects.get(id=id).incident_id)
             s_regions = SRegion.objects.all()
             s_villages = SVillage.objects.all()
             s_countries = SCountry.objects.all()
@@ -162,7 +162,7 @@ class Card_id(APIView):
             # END CONTEXT
             return render(request, 'card_id.html',
             {
-                'g_patient': g_patient,
+                'g_patient': g_incident,
                 's_regions': s_regions,
                 's_villages': s_villages,
                 's_countries': s_countries,
@@ -176,10 +176,9 @@ class Card_id(APIView):
             return redirect('login')
 
     def post(self, request, id, *args, **kwargs):
+
         if request.user.is_authenticated:
-            # SAVING TO MODEL (LOG)
-            g_patient = GPatient.objects.get(patientid=id)
-            # END SAVING TO MODEL
+
             # CONTEXT
             s_regions = SRegion.objects.all()
             s_villages = SVillage.objects.all()
@@ -260,7 +259,11 @@ class Card_id(APIView):
             vaccine_first_date = request.POST.get('vaccine_first_date') #ДАТА ПОЛУЧЕНИЯ ПЕРВОЙ ДОЗЫ
             vaccine_second_date = request.POST.get('vaccine_second_date') #ДАТА ПОЛУЧЕНИЯ ВТОРОЙ ДОЗЫ
             # END FORM DATA
-            
+
+            # SAVING TO MODEL (LOG)
+            g_patient = GPatient.objects.get(patientid=id)
+            # END SAVING TO MODEL
+
             return render(request, 'card_id.html',
             {
                 's_regions': s_regions,
