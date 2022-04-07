@@ -1,27 +1,31 @@
-<form id="popup" style="border: 2px solid black;" method="POST" style="padding: 0px;">
+<form id="popup" style="border: 2px solid black; height: 800px;" method="POST" style="padding: 0px;">
 	{% csrf_token %}
 	<div class="main">
-		<h2 class="he">Добавить запись в журнал</h2>
-		<div class="row ">
+		<h2 class="p-1" style="background-color: rgb(36, 36, 36); color: white;">Добавить запись в журнал</h2>
+		<div class="row p-2">
 			<div class="col-sm-6">
-				<label class="lab verhost">Информирование и контроль</label>
-				<table class="form__table" >
-					<tr >
-						<td >
-							<label > Соблюдение условий пребывания</label>
+				<label>Информирование и контроль</label>
+				<table class="form__table table-sm">
+					<tr>
+						<td>
+							<label> Соблюдение условий пребывания</label>
 						</td>
-						<td class="tdforif">
+						<td class="tdforif"> 
+							<div class="form-group">
 								<input type="radio" id="infandcon"name="infandcon" value="da">
 								<label for="infandcon">Да</label>
-							</td>
-							<td class="tdforif">
+							</div>
+						</td>
+						<td class="tdforif">
+							<div class="form-group">
 								<input type="radio" id="infandcon"name="infandcon" value="net">
 								<label for="infandcon">Нет</label>
-							</td>
+							</div>
+						</td>
 					</tr>
 					<tr>
-						<td >
-							<label > Выполнение назначений</label>
+						<td>
+							<label>Выполнение назначений</label>
 						</td>
 						<td class="tdforif">
 								<input type="radio" id="naznach"name="naznach" value="da">

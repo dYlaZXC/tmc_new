@@ -251,7 +251,7 @@
             <div class="col">
                 <label for="phone">Тел. моб.</label>
                 <br>
-                <input type="text" id="phone2" name="phone2">
+                <input type="text" id="phone" name="phone">
             </div>
             <div class="col">
                 <label for="phone_home">Тел. стац.</label>
@@ -308,62 +308,50 @@
                     <div class="col-9">Ожирение</div>
                     <div class="col-3"><input id="pmsp_ojirenie" name="pmsp_ojirenie" type="checkbox"></div>
                 </div>
-                <hr>
                 <div class="row">
                     <div class="col-9">Болезнь сердца</div>
                     <div class="col-3"><input id="pmsp_serdce" name="pmsp_serdce" type="checkbox"></div>
                 </div>
-                <hr>
                 <div class="row">
                     <div class="col-9">Артер. гипертензия</div>
                     <div class="col-3"><input type="checkbox" name="pmsp_ag" id="pmsp_ag"></div>
                 </div>
-                <hr>
                 <div class="row">
                     <div class="col-9">Бронхиальная астма</div>
                     <div class="col-3"><input type="checkbox" id="pmsp_bronh" name="pmsp_bronh"></div>
                 </div>
-                <hr>
                 <div class="row">
                     <div class="col-9">Болезнь печени</div>
                     <div class="col-3"><input type="checkbox" name="pmsp_pechen" id="pmsp_pechen"></div>
                 </div>
-                <hr>
                 <div class="row">
                     <div class="col-9">Гемат. расстр.</div>
                     <div class="col-3"><input type="checkbox" name="pmsp_gemat" id="pmsp_gemat"></div>
                 </div>
-                <hr>
                 <div class="row">
                     <div class="col-9">Болезнь почек</div>
                     <div class="col-3"><input name="pmsp_pochek" id="pmsp_pochek" type="checkbox"></div>
                 </div>
-                <hr>
                 <div class="row">
                     <div class="col-9">Онкологические</div>
                     <div class="col-3"><input type="checkbox" name="pmsp_onko" id="pmsp_onko"></div>
                 </div>
-                <hr>
                 <div class="row">
                     <div class="col-9">Другие хронич. заболевания</div>
                     <div class="col-3"><input type="checkbox" id="pmsp_other_chronic" name="pmsp_other_chronic"></div>
                 </div>
-                <hr>
                 <div class="row">
                     <div class="col-9">Пневмония</div>
                     <div class="col-3"><input id="pmsp_pneumonia" name="pmsp_pneumonia" type="checkbox"></div>
                 </div>
-                <hr>
                 <div class="row">
                     <div class="col-9">Сахарный диабет</div>
                     <div class="col-3"><input id="pmsp_diabetes" name="pmsp_diabetes" type="checkbox"></div>
                 </div>
-                <hr>
                 <div class="row">
                     <div class="col-9">Другие эндокр. заболевания</div>
                     <div class="col-3"><input type="checkbox" id="pmsp_other_endo" name="pmsp_other_endo"></div>
                 </div>
-                <hr>
                 <div class="row">
                     <div class="col-9">ХОБЛ</div>
                     <div class="col-3"><input id="pmsp_hobl" name="pmsp_hobl" type="checkbox"></div>
@@ -434,45 +422,50 @@
             </div>
             <div class="row">
                 <div class="col row">
-                    <h6 class="mt-2" style="padding: 5px;  
+                    <h6 class="mt-2 mx-auto" style="padding: 5px;  
                             border-top: 1px solid #c9c9c9; 
                             border-left: 1px solid #c9c9c9; 
                             border-right:1px solid #c9c9c9; 
                             border-radius:5% 5% 0 0;
                             border: 1px solid gray;
                             background-color:rgb(204, 204, 204);
-                            width: 80%;">
+                            width: 75%;">
                             После стационара
                     </h6>
-                    <div class="row" class="mx-auto" style="width: 80%;">
-                        <div class="col">
-                            <input style="width: 20px;" type="radio" name="sign_observation" id="sign_observation_yes">
-                            <label for="">Да</label>
-                        </div>
-                        <div class="col">
-                            <input style="width: 20px;" type="radio" name="sign_observation" id="sign_observation_no">
-                            <label for="">Нет</label>
+                    <div class="mx-auto">
+                        <div class="row" class="mx-auto" style="width: 80%;">
+                            <div class="col">
+                                <input style="width: 20px;" type="radio" name="sign_observation" id="sign_observation_yes">
+                                <label for="">Да</label>
+                            </div>
+                            <div class="col">
+                                <input style="width: 20px;" type="radio" name="sign_observation" id="sign_observation_no">
+                                <label for="">Нет</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col row">
-                    <h6 class="mt-2" style="padding: 5px; 
+                <div class="col">
+                    <h6 class="mt-2 mx-auto" style="padding: 5px; 
                         border-top: 1px solid #c9c9c9; 
                         border-left: 1px solid #c9c9c9; 
                         border-right:1px solid #c9c9c9; 
                         border-radius:5% 5% 0 0;
                         border: 1px solid gray;
-                        background-color:rgb(204, 204, 204);">
+                        background-color:rgb(204, 204, 204);
+                        width: 75%;">
                         Наличие пневмонии
                     </h6>
-                    <div class="row" style="width: 80%;">
-                        <div class="col">
-                            <input style="width: 20px;" type="radio" name="pneumonia" id="pmeumonia_yes">
-                            <label for="">Да</label>
-                        </div>
-                        <div class="col">
-                            <input style="width: 20px;" type="radio" name="pneumonia" id="pmeumonia_no">
-                            <label for="">Нет</label>
+                    <div class="mx-auto" style="width: 80%;">
+                        <div class="row">
+                            <div class="col">
+                                <input style="width: 20px;" type="radio" name="pneumonia" id="pmeumonia_yes">
+                                <label for="">Да</label>
+                            </div>
+                            <div class="col">
+                                <input style="width: 20px;" type="radio" name="pneumonia" id="pmeumonia_no">
+                                <label for="">Нет</label>
+                            </div>
                         </div>
                    </div>
                 </div>
@@ -481,11 +474,13 @@
     </div>
     <!-- 4 БЛОК -->
     <div class="col-3">
-        <div class="p-1">
-            <label for="">Причина сдачи ПЦР</label>
-            <select name="pcr_reason" id="pcr_reason" style="width: 80%;">
-                <option value="self">Самообращение</option>
-            </select>
+        <div class="p-1"></div>
+            <div class="mt-1 row">
+                <label for="" class="col-4">Причина сдачи ПЦР</label>
+                <select class="col-8" name="pcr_reason" id="pcr_reason" style="width: 60%;">
+                    <option value="self">Самообращение</option>
+                </select>
+            </div>
             <div class="row">
                 <div class="col-6">
                     <h3 class="mt-2" style="padding: 5px; 
@@ -497,7 +492,7 @@
                         background-color:rgb(204, 204, 204);">
                     Результат ПЦР
                     </h3>
-                    <div class="p-1" name="Результат ПЦР" style="border: 1px solid gray;">
+                    <div class="p-1" name="Результат ПЦР" style="height: 45px; border: 1px solid gray;">
                         <div class="row">
                             <div class="col">
                                 <input style="width: 20px;" name="pcr_result" id="pcr_result_yes" type="radio">
@@ -511,12 +506,12 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <div class="row">
+                    <div class="row mt-1">
                         <label for="">Дата провед. ПЦР</label>
                         <br>
                         <input type="date" id="pcr_test_date" name="pcr_test_date">
                     </div>
-                    <div class="row">
+                    <div class="row mt-1">
                         <label for="">Дата рез. ПЦР</label>
                         <br>
                         <input type="date" id="pcr_result_date" name="pcr_result_date">
@@ -548,7 +543,7 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <div class="row">
+                    <div class="row mt-1">
                         <label for="">Дата КТ</label>
                         <br>
                         <input type="date" id="kt_date">
@@ -562,7 +557,7 @@
                     <input type="text" id="kt_result_diagnosis">
                 </div>
             </div>
-            <div class="row">
+            <div class="row mt-1">
                 <div class="col">
                     <h3 class="mt-2" style="padding: 5px; 
                         border-top: 1px solid #c9c9c9; 
@@ -571,9 +566,9 @@
                         border-radius:5% 5% 0 0;
                         border: 1px solid gray;
                         background-color:rgb(204, 204, 204);">
-                    Результат ПЦР
+                    Рентген
                     </h3>
-                    <div class="p-1" name="Результат ПЦР" style="border: 1px solid gray;">
+                    <div class="p-1" name="Рентген" style="border: 1px solid gray;">
                         <div class="row">
                             <div class="col">
                                 <input style="width: 20px;" name="pcr_result" id="pcr_result_yes" type="radio">
@@ -594,65 +589,69 @@
             </div>
             <div class="row mt-2">
                 <label for="">Заключение рентгена</label>
-                <input name="rentgen_result_diagnosis" id="rentgen_result_diagnosis" type="text">
+                <input class="mx-auto" style="width: 95%;" name="rentgen_result_diagnosis" id="rentgen_result_diagnosis" type="text">
             </div>
             <div class="row mt-2">
                 <label for="">Дата выезда МБ</label>
-                <input name="mb_date" id="mb_date" type="date">
+                <input class="mx-auto" style="width: 95%;" name="mb_date" id="mb_date" type="date">
             </div>
             <div class="row mt-2">
                 <label for="">Причина поздней подачи</label>
-                <select name="late_reason" id="late_reason">
+                <select class="mx-auto" style="width: 95%;" name="late_reason" id="late_reason">
 
                 </select>
             </div>
             <div class="row">
-                <h3 class="mt-2" style="padding: 5px; 
+                <h3 class="mt-2 mx-auto" style="padding: 5px; 
                     border-top: 1px solid #c9c9c9; 
                     border-left: 1px solid #c9c9c9; 
                     border-right:1px solid #c9c9c9; 
                     border-radius:5% 5% 0 0;
                     border: 1px solid gray;
-                    background-color:rgb(204, 204, 204);">
+                    background-color:rgb(204, 204, 204);
+                    width: 95%;">
                 Первоначальные контакты с пациентом
                 </h3>
                 <div class="row mt-2">
                     <label for="">Дата пол. данных от ПМСП</label>
-                    <input id="pmsp_info_datetime" name="pmsp_info_datetime" type="datetime-local">
+                    <input class="mx-auto" style="width: 95%;" id="pmsp_info_datetime" name="pmsp_info_datetime" type="datetime-local">
                 </div>
                 <div class="row mt-2">
                     <label for="">Дата первого звонка</label>
-                    <input id="first_call_datetime" name="first_call_datetime" type="datetime-local">
+                    <input class="mx-auto" style="width: 95%;" id="first_call_datetime" name="first_call_datetime" type="datetime-local">
                 </div>
                 <div class="row mt-2">
-                    <input style="width: 20px;" id="tmc_function_info" name="tmc_function_info" type="checkbox">
-                    <label style="width: 350px;" for="">Информирование о функциях ТМЦ</label>            
+                    <div class="col-1"></div>
+                    <input class="col-1" style="width: 20px;" id="tmc_function_info" name="tmc_function_info" type="checkbox">
+                    <label class="col-10" for="">Информирование о функциях ТМЦ</label>            
                 </div>
                 <div class="row mt-2">
-                    <input style="width: 20px;" id="tmc_condition_info" name="tmc_condition_info" type="checkbox">
-                    <label style="width: 350px;" for="">Информирование об условиях ДН</label>            
+                    <div class="col-1"></div>
+                    <input class="col-1" style="width: 20px;" id="tmc_condition_info" name="tmc_condition_info" type="checkbox">
+                    <label class="col-10" for="">Информирование об условиях ДН</label>            
                 </div>
                 <div class="row mt-2">
-                    <input style="width: 20px;" id="refusal_hospitalize" name="refusal_hospitalize" type="checkbox">
-                    <label style="width: 350px;" for="">Отказ от госпитализации</label>            
+                    <div class="col-1"></div>
+                    <input class="col-1" style="width: 20px;" id="refusal_hospitalize" name="refusal_hospitalize" type="checkbox">
+                    <label class="col-10" for="">Отказ от госпитализации</label>            
                 </div>
                 <div class="row mt-2">
                     <label for="">Завершение наблюдения со слов пациента</label> 
                     <br>
-                    <select name="end_monitoring_patient" id="end_monitoring_patient">
+                    <select class="mx-auto" style="width: 95%;" name="end_monitoring_patient" id="end_monitoring_patient">
 
                     </select>
                 </div>
                 <div class="row mt-2">
                     <label for="">Стационар</label> 
                     <br>
-                    <select name="" id="">
+                    <select class="mx-auto" style="width: 95%;" name="" id="">
                     </select>
                 </div>
                 <div class="row mt-2">
                     <label for="">Дата завершения наблюдения</label> 
                     <br>
-                    <input id="status_end_date" name="status_end_date" type="date">
+                    <input class="mx-auto" style="width: 95%;" id="status_end_date" name="status_end_date" type="date">
                 </div>
                 <div class="row mt-2">
                     <div class="col">

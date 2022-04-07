@@ -14,17 +14,17 @@
 <body>
     <div class="row p-2" style="width: 100%; background-color: rgb(36, 36, 36); color: white;">
         <div class="col-10">
-            <h3 class="p-2">{% block title %}  {% endblock %}</h3>
+            <h2 class="p-1" style="font-weight: bold;">{% block title %}  {% endblock %}</h2>
         </div>
         <div class="col-2 row">
         {% if not request.user.is_authenticated %}
-                <button style="color: white; width: 80%;" class="btn col" type="button">Войти</button>
+                <button style="color: white; width: 80%;" class="btn col p-1" type="button">Войти</button>
         {% else %}
                 <div class="col">
-                    <button class="btn" type="button" style="color: white; border-bottom: 1px solid #fff; border-radius: 0; width: 60%;">{{ request.user.username }}</button>
+                    <button class="btn p-1" type="button" style="color: white; border-bottom: 1px solid #fff; border-radius: 0; width: 60%;">{{ request.user.username }}</button>
                 </div>
                 <div class="col">
-                    <button onclick="logout()" style="color: white; width: 80%;  border-bottom: 1px solid #fff; border-radius: 0; width: 60%;" class="btn" type="button">Выйти</button>
+                    <button onclick="logout()" style="color: white; width: 80%;  border-bottom: 1px solid #fff; border-radius: 0; width: 60%;" class="btn p-1" type="button">Выйти</button>
                 </div>
         {% endif %}
         </div>
@@ -38,4 +38,10 @@
         return window.location = link
     }   
 </script>
+<style>
+    h3{
+        font-size: 13px;
+        font-weight: bold;
+    }
+</style>
 </html>
