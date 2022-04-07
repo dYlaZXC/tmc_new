@@ -255,8 +255,21 @@ class GIncident(models.Model):
             year = str(self.birthday.year)
             month = str(self.birthday.month) if self.birthday.month > 9 else '0' + str(self.birthday.month)
             day = str(self.birthday.day) if self.birthday.day > 9 else '0' + str(self.birthday.day)
-            return day + '.' + month + '.' + year
- 
+            return year + '-' + month + '-' + day
+    
+    def date_start(self):
+        if self.date_time is not None:
+            year = str(self.date_time.year)
+            month = str(self.date_time.month) if self.date_time.month > 9 else '0' + str(self.date_time.month)
+            day = str(self.date_time.day) if self.date_time.day > 9 else '0' + str(self.date_time.day)
+            return year + '-' + month + '-' + day
+        else:
+            return self.date_time  
+
+    def time_start(self):
+        if self.date_time is not None:
+            return str(self.date_time.hour) + ':' + str(self.date_time.minute)
+
 
 class GIncidentLog(models.Model):
     id = models.DecimalField(primary_key=True, max_digits=65535, decimal_places=65535)
@@ -475,6 +488,73 @@ class GPatient(models.Model):
             return True
         else:
             return False             
+
+    def status_end_date_format(self):
+        if self.status_end_date is not None:
+            day = str(self.status_end_date.day) if self.status_end_date.day > 9 else '0' + str(self.status_end_date.day)
+            month = str(self.status_end_date.month) if self.status_end_date.month > 9 else '0' + str(self.status_end_date.month)
+            year = str(self.status_end_date.year)
+            minute = str(self.status_end_date.minute) if self.status_end_date.minute > 9 else '0' + str(self.status_end_date.minute)
+            hour = str(self.status_end_date.hour) if self.status_end_date.hour > 9 else '0' + str(self.status_end_date.hour)
+            second = str(self.status_end_date.second) if self.status_end_date.second > 9 else '0' + str(self.status_end_date.second)
+            return str(str(year) + '-' + str(month) + '-' + str(day) + 'T' + hour + ':' + minute)
+        else:
+            return self.status_end_date
+
+
+    def diagnosis_date_format(self):
+        if self.diagnosis_date is not None:
+            day = str(self.diagnosis_date.day) if self.diagnosis_date.day > 9 else '0' + str(self.diagnosis_date.day)
+            month = str(self.diagnosis_date.month) if self.diagnosis_date.month > 9 else '0' + str(self.diagnosis_date.month)
+            year = str(self.diagnosis_date.year)
+            return year + '-' + month + '-' + day
+        else:
+            return self.diagnosis_date        
+
+    def pcr_date_test_format(self):
+        if self.pcr_date_test is not None:
+            day = str(self.pcr_date_test.day) if self.pcr_date_test.day > 9 else '0' + str(self.pcr_date_test.day)
+            month = str(self.pcr_date_test.month) if self.pcr_date_test.month > 9 else '0' + str(self.pcr_date_test.month)
+            year = str(self.pcr_date_test.year)
+            return year + '-' + month + '-' + day
+        else:
+            return self.pcr_date_test          
+
+    def pcr_date_receipt_format(self):
+        if self.pcr_date_receipt is not None:
+            day = str(self.pcr_date_receipt.day) if self.pcr_date_receipt.day > 9 else '0' + str(self.pcr_date_receipt.day)
+            month = str(self.pcr_date_receipt.month) if self.pcr_date_receipt.month > 9 else '0' + str(self.pcr_date_receipt.month)
+            year = str(self.pcr_date_receipt.year)
+            return year + '-' + month + '-' + day
+        else:
+            return self.pcr_date_receipt
+
+    def kt_date_format(self):
+        if self.kt_date is not None:
+            day = str(self.kt_date.day) if self.kt_date.day > 9 else '0' + str(self.kt_date.day)
+            month = str(self.kt_date.month) if self.kt_date.month > 9 else '0' + str(self.kt_date.month)
+            year = str(self.kt_date.year)
+            return year + '-' + month + '-' + day
+        else:
+            return self.kt_date
+
+    def xray_date_format(self):
+        if self.xray_date is not None:
+            day = str(self.xray_date.day) if self.xray_date.day > 9 else '0' + str(self.xray_date.day)
+            month = str(self.xray_date.month) if self.xray_date.month > 9 else '0' + str(self.xray_date.month)
+            year = str(self.xray_date.year)
+            return year + '-' + month + '-' + day
+        else:
+            return self.xray_date
+
+    def date_mobile_brigade_format(self):
+        if self.date_mobile_brigade is not None:
+            day = str(self.date_mobile_brigade.day) if self.date_mobile_brigade.day > 9 else '0' + str(self.date_mobile_brigade.day)
+            month = str(self.date_mobile_brigade.month) if self.date_mobile_brigade.month > 9 else '0' + str(self.date_mobile_brigade.month)
+            year = str(self.date_mobile_brigade.year)
+            return year + '-' + month + '-' + day
+        else:
+            return self.date_mobile_brigade
 
     # def datetime_format(datetime):
     #     day = str(date.day) if date.day > 9 else '0' + str(date.day)
@@ -853,3 +933,16 @@ class ViolationTmc(models.Model):
     class Meta:
         managed = False
         db_table = 'violation_tmc'
+
+
+class SStreet(models.Model):
+    id = models.DecimalField(max_digits=65535, decimal_places=65535, primary_key=True)
+    name_ru = models.CharField(max_length=500)
+    name_kz = models.CharField(max_length=500)
+    streettype_id = models.DecimalField(max_digits=65535, decimal_places=65535)
+    city_id = models.DecimalField(max_digits=65535, decimal_places=65535)
+    status = models.DecimalField(max_digits=65535, decimal_places=65535)
+
+    class Meta:
+        managed = False
+        db_table = 's_street'

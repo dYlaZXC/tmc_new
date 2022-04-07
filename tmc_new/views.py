@@ -150,7 +150,10 @@ class Card_id(APIView):
     def get(self, request, id, *args, **kwargs):
         if request.user.is_authenticated:
             # CONTEXT
-            g_incident = GIncident.objects.filter(id=GPatient.objects.get(id=id).incident_id)
+            g_patient = GPatient.objects.get(id=id)
+            print(type(g_patient.patient_condition_start))
+            g_incident = GIncident.objects.get(id=g_patient.incident_id)
+            print(g_incident.date_time)
             s_regions = SRegion.objects.all()
             s_villages = SVillage.objects.all()
             s_countries = SCountry.objects.all()
@@ -158,12 +161,15 @@ class Card_id(APIView):
             s_conditions = SCondition.objects.all()
             s_countries = SCountry.objects.all()
             s_statuses_end = SStatusEnd.objects.all()
+            s_streets = SStreet.objects.all()
             s_pmsps = SPmsp.objects.all()
             # END CONTEXT
             return render(request, 'card_id.html',
             {
-                'g_patient': g_incident,
+                'g_patient': g_patient,
+                'g_incident': g_incident,
                 's_regions': s_regions,
+                's_streets': s_streets,
                 's_villages': s_villages,
                 's_countries': s_countries,
                 's_riskgroups': s_riskgroups,
@@ -189,6 +195,9 @@ class Card_id(APIView):
             s_statuses_end = SStatusEnd.objects.all()
             s_pmsps = SPmsp.objects.all()
             # END CONTEXT
+
+# ВСЁ ЧТО СВЯЗАНО СО STATUS_END - БЕРЕТСЯ И ЗАПИСЫВАЕТСЯ В G_PATIENT
+
 
             # FORM DATA
             fio = request.POST.get('fio') #ФИО

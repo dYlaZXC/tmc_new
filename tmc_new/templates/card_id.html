@@ -107,7 +107,7 @@
         <div class="row">
             <div class="col-5 mt-1">
                 <label for="checkbox">Резидент</label>
-                <input style="width: 20px;" type="checkbox" id="is_resident" name="is_resident">
+                <input {% if g_incident.resident %} checked {% endif %} style="width: 20px;" type="checkbox" id="is_resident" name="is_resident">
             </div>
             <div class="col-7 mt-1">
                 <label for="iin">ИИН</label>
@@ -150,16 +150,16 @@
                 <div class="col">
                     <label for="s_country">Гражданство</label>
                     <br>
-                    <select name="s_country" id="s_country">
+                    <select name="s_country" disabled id="s_country">
                         {% for s_country in s_countries %}
-                            <option value="{{ s_country.id }}">{{ s_country.name_ru }}</option>
+                            <option {% if s_country.id == g_incident.country_id %} selected {% endif %} value="{{ s_country.id }}">{{ s_country.name_ru }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="col">
                     <label for="num_doc">№ Документа</label>
                     <br>
-                    <input type="text" id="num_doc" name="num_doc">
+                    <input type="text" disabled value="{{ g_incident.num_crossdoc }}" id="num_doc" name="num_doc">
                 </div>
             </div>
         </div>
@@ -179,7 +179,7 @@
                     <br>
                     <select name="s_region" id="s_region">
                         {% for s_region in s_regions %}
-                            <option value="{{ s_region.id }}">{{ s_region.name_ru }}</option>
+                            <option {% if s_region.postal_code == g_incident.loc_region %} selected {% endif %} value="{{ s_region.id }}">{{ s_region.name_ru }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -188,7 +188,7 @@
                     <br>
                     <select name="s_village" id="s_village">
                         {% for s_village in s_villages %}
-                            <option value="{{ s_village.id }}">{{ s_village.name_ru }}</option>
+                            <option {% if s_village.village_id == g_incident.village %} selected {% endif %} value="{{ s_village.id }}">{{ s_village.name_ru }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -197,28 +197,24 @@
                 <div class="col">
                     <label for="s_street">Улица</label>
                     <br>
-                    <select name="s_street" id="s_street">
-                        {% for s_street in s_streets %}
-                            <option value="{{ s_street.id }}">{{ s_street.name_ru }}</option>
-                        {% endfor %}
-                    </select>
+                    <input value="{{ g_incident.loc_street }}" name="s_street" id="s_street">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="home">№ дома</label>   
                     <br>
-                    <input type="text" id="home" name="home">
+                    <input type="text" value="{{ g_incident.loc_home }}" id="home" name="home">
                 </div>
                 <div class="col">
                     <label for="block">Блок</label>   
                     <br>
-                    <input type="text" id="block" name="block">
+                    <input type="text" id="block" value="{{ g_incident.loc_block }}" name="block">
                 </div>
                 <div class="col">
                     <label for="kv">Квартира</label>   
                     <br>
-                    <input type="text" id="kv" name="kv">
+                    <input type="text" id="kv" value="{{ g_incident.loc_flat }}" name="kv">
                 </div>
             </div>
         </div>
@@ -230,19 +226,19 @@
                     <div class="col-6">
                         <label for="date_vz">Дата</label>
                         <br>
-                        <input type="date" id="date_vz" name="date_vz">
+                        <input type="date" value="{{ g_incident.date_start }}" id="date_vz" name="date_vz">
                     </div>
                     <div class="col-6">
                         <label for="time_vz">Время</label>
                         <br>
-                        <input style="width: 70px;" type="time" id="time_vz" name="time_vz">
+                        <input style="width: 70px;" value="{{ g_incident.time_start }}" type="time" id="time_vz" name="time_vz">
                     </div>
                 </div>
                 <label for="pmsp">ПМСП</label>
                 <br>
                 <select name="pmsp" id="pmsp">
-                    {% for pmsp in pmsps %}
-                        <option value="{{ pmsp.id }}">{{ pmsp.abrev_rus }}</option>
+                    {% for s_pmsp in s_pmsps %}
+                        <option {% if s_pmsp.bin == g_incident.pmsp_name %} selected {% endif %} value="{{ s_pmsp.bin }}">{{ s_pmsp.abrev_rus }}</option>
                     {% endfor %}
                 </select> 
             </div>    
@@ -251,41 +247,44 @@
             <div class="col">
                 <label for="phone">Тел. моб.</label>
                 <br>
-                <input type="text" id="phone2" name="phone2">
+                <input type="text" value="{{ g_incident.phone_contact_m }}" id="phone" name="phone">
             </div>
             <div class="col">
                 <label for="phone_home">Тел. стац.</label>
                 <br>
-                <input type="text" id="phone_home" name="phone_home">
+                <input type="text" id="phone_home" {% if g_incident.phone_contact != 0 %} value="{{ g_incident.phone_contact }}" {% else %} value="" {% endif %} name="phone_home">
             </div>
         </div>
         <div class="row">
             <div class="col">
                 <label for="additional_contacts">Дополнительные контакты</label>
                 <br>
-                <input style="height: 50px; vertical-align: top;" type="text" id="additional_contacts" name="additional_contacts">
+                <input style="height: 50px; vertical-align: top;" value="{{ g_incident.phone_other }}" type="text" id="additional_contacts" name="additional_contacts">
             </div>
         </div>
         <div class="row">
             <div class="col">
                 <label for="info_for_tmc_agent">Информация для сотрудника ТМЦ</label>
                 <br>
-                <input id="info_for_tmc_agent" name="info_for_tmc_agent" style="height: 125px; vertical-align: top;" type="text">
+                <input id="info_for_tmc_agent" value="{{ g_incident.coment }}" name="info_for_tmc_agent" style="height: 125px; vertical-align: top;" type="text">
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-6">
             <label for="result_of_end">Результат снятия</label>
             <br>
             <select name="result_of_end" id="result_of_end">
-                    <option value="{{ s_status_end.id }}">{{ s_status_end.name_ru }}</option>
+                {% for s_status_end in s_statuses_end %}
+                    <option {% if s_status_end.id == g_patient.status_end %} selected {% endif %} value="{{ s_status_end.id }}">{{ s_status_end.name_ru }}</option>
+                {% endfor %}    
             </select>
         </div>
-        <div class="col">
+        <div class="col-6">
             <label for="date_of_end">Дата снятия с ДН</label>
             <br>
-            <input type="datetime-local" id="date_of_end" name="date_of_end">
+            <!-- НА ДОРАБОТКУ -->
+            <input type="datetime-local" value="{{ g_patient.status_end_date_format }}" id="date_of_end" name="date_of_end">
         </div>
     </div>
     </div>
@@ -296,7 +295,7 @@
                 <label class="col-3" for="">Группа риска</label>
                 <select class="col-9" style="width: 40%;" name="s_riskgroup" id="s_riskgroup">
                     {% for s_riskgroup in s_riskgroups %}
-                        <option value="{{ s_riskgroup.id }}">{{ s_riskgroup.name_ru }}</option>
+                        <option {% if s_riskgroup.id == g_incident.risk_group %} selected {% endif %} value="{{ s_riskgroup.id }}">{{ s_riskgroup.name_ru }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -306,55 +305,55 @@
                 </div>
                 <div class="row">
                     <div class="col-9">Ожирение</div>
-                    <div class="col-3"><input id="pmsp_ojirenie" name="pmsp_ojirenie" type="checkbox"></div>
+                    <div class="col-3"><input {% if g_incident.ojirenie %} checked {% endif %}  id="pmsp_ojirenie" name="pmsp_ojirenie" type="checkbox"></div>
                 </div>
                 <div class="row">
                     <div class="col-9">Болезнь сердца</div>
-                    <div class="col-3"><input id="pmsp_serdce" name="pmsp_serdce" type="checkbox"></div>
+                    <div class="col-3"><input {% if g_incident.serdce %} checked {% endif %} id="pmsp_serdce" name="pmsp_serdce" type="checkbox"></div>
                 </div>
                 <div class="row">
                     <div class="col-9">Артер. гипертензия</div>
-                    <div class="col-3"><input type="checkbox" name="pmsp_ag" id="pmsp_ag"></div>
+                    <div class="col-3"><input {% if g_incident.hypertension %} checked {% endif %} type="checkbox" name="pmsp_ag" id="pmsp_ag"></div>
                 </div>
                 <div class="row">
                     <div class="col-9">Бронхиальная астма</div>
-                    <div class="col-3"><input type="checkbox" id="pmsp_bronh" name="pmsp_bronh"></div>
+                    <div class="col-3"><input {% if g_incident.astma %} checked {% endif %} type="checkbox" id="pmsp_bronh" name="pmsp_bronh"></div>
                 </div>
                 <div class="row">
                     <div class="col-9">Болезнь печени</div>
-                    <div class="col-3"><input type="checkbox" name="pmsp_pechen" id="pmsp_pechen"></div>
+                    <div class="col-3"><input type="checkbox" {% if g_incident.pechen %} checked {% endif %} name="pmsp_pechen" id="pmsp_pechen"></div>
                 </div>
                 <div class="row">
                     <div class="col-9">Гемат. расстр.</div>
-                    <div class="col-3"><input type="checkbox" name="pmsp_gemat" id="pmsp_gemat"></div>
+                    <div class="col-3"><input {% if g_incident.gema_rast %} checked {% endif %} type="checkbox" name="pmsp_gemat" id="pmsp_gemat"></div>
                 </div>
                 <div class="row">
                     <div class="col-9">Болезнь почек</div>
-                    <div class="col-3"><input name="pmsp_pochek" id="pmsp_pochek" type="checkbox"></div>
+                    <div class="col-3"><input {% if g_incident.pochki %} checked {% endif %} name="pmsp_pochek" id="pmsp_pochek" type="checkbox"></div>
                 </div>
                 <div class="row">
                     <div class="col-9">Онкологические</div>
-                    <div class="col-3"><input type="checkbox" name="pmsp_onko" id="pmsp_onko"></div>
+                    <div class="col-3"><input {% if g_incident.cancer %} checked {% endif %} type="checkbox" name="pmsp_onko" id="pmsp_onko"></div>
                 </div>
                 <div class="row">
                     <div class="col-9">Другие хронич. заболевания</div>
-                    <div class="col-3"><input type="checkbox" id="pmsp_other_chronic" name="pmsp_other_chronic"></div>
+                    <div class="col-3"><input {% if g_incident.h_oth_zabolev %} checked {% endif %} type="checkbox" id="pmsp_other_chronic" name="pmsp_other_chronic"></div>
                 </div>
                 <div class="row">
                     <div class="col-9">Пневмония</div>
-                    <div class="col-3"><input id="pmsp_pneumonia" name="pmsp_pneumonia" type="checkbox"></div>
+                    <div class="col-3"><input id="pmsp_pneumonia" {% if g_incident.h_pnevmonia %} checked {% endif %} name="pmsp_pneumonia" type="checkbox"></div>
                 </div>
                 <div class="row">
                     <div class="col-9">Сахарный диабет</div>
-                    <div class="col-3"><input id="pmsp_diabetes" name="pmsp_diabetes" type="checkbox"></div>
+                    <div class="col-3"><input id="pmsp_diabetes" {% if g_incident.h_sahar_diabet %} checked {% endif %} name="pmsp_diabetes" type="checkbox"></div>
                 </div>
                 <div class="row">
                     <div class="col-9">Другие эндокр. заболевания</div>
-                    <div class="col-3"><input type="checkbox" id="pmsp_other_endo" name="pmsp_other_endo"></div>
+                    <div class="col-3"><input type="checkbox" {% if g_incident.h_oth_endocrin %} checked {% endif %} id="pmsp_other_endo" name="pmsp_other_endo"></div>
                 </div>
                 <div class="row">
                     <div class="col-9">ХОБЛ</div>
-                    <div class="col-3"><input id="pmsp_hobl" name="pmsp_hobl" type="checkbox"></div>
+                    <div class="col-3"><input id="pmsp_hobl" {% if g_incident.hobl %} checked {% endif %} name="pmsp_hobl" type="checkbox"></div>
                 </div>
             </div>
             <h3 class="mt-2" style="padding: 5px; 
@@ -369,50 +368,55 @@
             <div class="p-1" name="Берем. (Триместр)" style="border: 1px solid gray;">
                 <div class="row">
                     <div class="col text-center">
-                        <input class="col" type="radio" name="pregnancy" id="pregnancy">
+                        <input {% if g_incident.pregnancy == 0 %} checked {% endif %} class="col" type="radio" name="pregnancy" id="pregnancy">
                         <label for="">Нет</label>
                     </div>
                     <div class="col text-center">
-                        <input class="col" type="radio" name="pregnancy" id="pregnancy">
+                        <input {% if g_incident.pregnancy == 1 %} checked {% endif %} class="col" type="radio" name="pregnancy" id="pregnancy">
                         <label for="">1</label>
                     </div>
                     <div class="col text-center">
-                        <input class="col" type="radio" name="pregnancy" id="pregnancy">
+                        <input {% if g_incident.pregnancy == 2 %} checked {% endif %} class="col" type="radio" name="pregnancy" id="pregnancy">
                         <label for="">2</label>
                     </div>
                     <div class="col text-center">
-                        <input class="col" type="radio" name="pregnancy" id="pregnancy">
+                        <input {% if g_incident.pregnancy == 3 %} checked {% endif %} class="col" type="radio" name="pregnancy" id="pregnancy">
                         <label for="">3</label>
                     </div>
                 </div>
             </div>
             <div class="row mt-3 text-center">
                 <label class="col-3" for="">Подробное описание диагноза</label>
-                <input class="col-9" style="height: 75px; width: 72.5%;" id="detailed_diagnosis_info" name="detailed_diagnosis_info" name="" type="text">
+                <input class="col-9" style="height: 55px; width: 72.5%;" value="{{ g_incident.other_diagnos }}" id="detailed_diagnosis_info" name="detailed_diagnosis_info" name="" type="text">
             </div>
             <div class="row mt-3 text-center">
                 <label class="col-3" for="">Нозология</label>
-                <input class="col-9" style="height: 75px; width: 72.5%;" id="nosologiya" name="nosologiya" type="text">
+                <input class="col-9" style="height: 55px; width: 72.5%;" value="{{ g_incident.simp }}" id="nosologiya" name="nosologiya" type="text">
             </div>
             <div class="row">
                 <div class="col">
                     <label for="">Диагноз наблюдения</label>
                     <br>
                     <select name="diagnosis_monitoring" id="diagnosis_monitoring">
-
+                        <option {% if g_patient.watch_diagnosis == U071 %} selected {% endif %} value="U071">U071</option>
+                        <option {% if g_patient.watch_diagnosis == U072 %} selected {% endif %} value="U072">U072</option>
                     </select>
                 </div>
                 <div class="col">
                     <label for="">Дата диагноза</label>
                     <br>
-                    <input id="diagnosis_date" id="diagnosis_date" type="date">
+                    <input id="diagnosis_date" value="{{ g_patient.diagnosis_date_format }}" id="diagnosis_date" type="date">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="">Состояние пациента</label>
                     <br>
-                    <select name="patient_condition" id="patient_condition"></select>
+                    <select name="patient_condition" id="patient_condition">
+                        {% for s_condition in s_conditions %}
+                            <option {% if s_condition.id == g_patient.patient_condition_start %} selected {% endif %} value="{{ s_condition.id }}">{{ s_condition.name_ru }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="col">
                     <label for="">Дата взятия ДН</label>
@@ -471,6 +475,27 @@
                 </div>
             </div>
         </div>
+        <div>
+            <label for="presc_therapy">Назначения</label>
+            <br>
+            <input id="presc_therapy" value="{{ g_patient.presc_therapy }}" style="height: 55px;" name="presc_therapy" type="text">
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="complaint">Жалобы на СЭС</label>
+                <input type="text" id="complaint" name="complaint" value="{{ g_patient.complaint_ses }}">
+                <!-- <select name="complaints" id="complaints">
+                    {% for s_complaint in s_complaints %}
+                        <option {% if s_complaint.id == g_incident.complaint %} selected {% endif %} value="{{ s_complaint.id }}">{{ s_complaint.name }}</option>
+                    {% endfor %}
+                </select> -->
+            </div>    
+            <div class="col">
+                <label for="complaint_days">Количество суток</label>
+                <br>
+                <input type="text" id="complaint_days" name="complaint_days">
+            </div>
+        </div>
     </div>
     <!-- 4 БЛОК -->
     <div class="col-3">
@@ -478,7 +503,9 @@
             <div class="mt-1 row">
                 <label for="" class="col-4">Причина сдачи ПЦР</label>
                 <select class="col-8" name="pcr_reason" id="pcr_reason" style="width: 60%;">
-                    <option value="self">Самообращение</option>
+                    <option {% if g_patient.pcr_reason == 1 %} selected {% endif %} value="1">Самообращение</option>
+                    <option {% if g_patient.pcr_reason == 2 %} selected {% endif %} value="2">Проф. мероприятия</option>
+                    <option {% if g_patient.pcr_reason == 3 %} selected {% endif %} value="3">ПМСП Контактный</option>
                 </select>
             </div>
             <div class="row">
@@ -493,28 +520,52 @@
                     Результат ПЦР
                     </h3>
                     <div class="p-1" name="Результат ПЦР" style="height: 45px; border: 1px solid gray;">
+                        {% if g_patient.pcr_result == True %}
                         <div class="row">
                             <div class="col">
-                                <input style="width: 20px;" name="pcr_result" id="pcr_result" type="radio">
-                                <label for="">+</label>
+                                <input checked style="width: 20px;" name="pcr_result" id="pcr_result" type="radio">
+                                <label for="pcr_result">+</label>
                             </div>
                             <div class="col">
                                 <input style="width: 20px;" name="pcr_result" id="pcr_result" type="radio">
                                 <label for="">-</label>
                             </div>
                         </div>
+                        {% elif g_patient.pcr_result == False %}
+                        <div class="row">
+                            <div class="col">
+                                <input style="width: 20px;" name="pcr_result" id="pcr_result" type="radio">
+                                <label checked for="pcr_result">+</label>
+                            </div>
+                            <div class="col">
+                                <input style="width: 20px;" name="pcr_result" id="pcr_result" type="radio">
+                                <label for="">-</label>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="row">
+                            <div class="col">
+                                <input style="width: 20px;" name="pcr_result" id="pcr_result" type="radio">
+                                <label for="pcr_result">+</label>
+                            </div>
+                            <div class="col">
+                                <input style="width: 20px;" name="pcr_result" id="pcr_result" type="radio">
+                                <label for="">-</label>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="row mt-1">
                         <label for="">Дата провед. ПЦР</label>
                         <br>
-                        <input type="date" id="pcr_test_date" name="pcr_test_date">
+                        <input type="date" id="pcr_test_date" value="{{ g_patient.pcr_date_test_format }}" name="pcr_test_date">
                     </div>
                     <div class="row mt-1">
                         <label for="">Дата рез. ПЦР</label>
                         <br>
-                        <input type="date" id="pcr_result_date" name="pcr_result_date">
+                        <input type="date" id="pcr_result_date" value="{{ g_patient.pcr_date_receipt_format }}" name="pcr_result_date">
                     </div>
                 </div>
             </div>
@@ -530,6 +581,29 @@
                     Результат КТ
                     </h3>
                     <div class="p-1" name="Результат КТ" style="border: 1px solid gray;">
+                        {% if g_patient.result_kt == True %}
+                        <div class="row">
+                            <div class="col">
+                                <input checked style="width: 20px;" type="radio" id="kt_result" name="kt_result">
+                                <label for="">+</label>
+                            </div>
+                            <div class="col">
+                                <input style="width: 20px;" type="radio" id="kt_result" name="kt_result">
+                                <label for="">-</label>
+                            </div>
+                        </div>
+                        {% elif g_patient.result_kt == False %}
+                        <div class="row">
+                            <div class="col">
+                                <input style="width: 20px;" type="radio" id="kt_result" name="kt_result">
+                                <label for="">+</label>
+                            </div>
+                            <div class="col">
+                                <input checked style="width: 20px;" type="radio" id="kt_result" name="kt_result">
+                                <label for="">-</label>
+                            </div>
+                        </div>
+                        {% else %}
                         <div class="row">
                             <div class="col">
                                 <input style="width: 20px;" type="radio" id="kt_result" name="kt_result">
@@ -540,13 +614,14 @@
                                 <label for="">-</label>
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="row mt-1">
                         <label for="">Дата КТ</label>
                         <br>
-                        <input type="date" id="kt_date" name="kt_date">
+                        <input type="date" value="{{ g_patient.kt_date_format }}" id="kt_date" name="kt_date">
                     </div>
                 </div>
             </div>
@@ -554,7 +629,7 @@
                 <div class="col">
                     <label for="">Заключение КТ</label>
                     <br>
-                    <input type="text" name="kt_result_diagnosis" id="kt_result_diagnosis">
+                    <input type="text" value="{{ g_patient.diagnosis_kt }}" name="kt_result_diagnosis" id="kt_result_diagnosis">
                 </div>
             </div>
             <div class="row mt-1">
@@ -569,6 +644,29 @@
                     Рентген
                     </h3>
                     <div class="p-1" name="Рентген" style="border: 1px solid gray;">
+                        {% if g_patient.xray_result == True %}
+                        <div class="row">
+                            <div class="col">
+                                <input checked style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio">
+                                <label for="">+</label>
+                            </div>
+                            <div class="col">
+                                <input style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio">
+                                <label for="">-</label>
+                            </div>
+                        </div>
+                        {% elif g_patient.xray_result == False %}
+                        <div class="row">
+                            <div class="col">
+                                <input style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio">
+                                <label for="">+</label>
+                            </div>
+                            <div class="col">
+                                <input checked style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio">
+                                <label for="">-</label>
+                            </div>
+                        </div>
+                        {% else %}
                         <div class="row">
                             <div class="col">
                                 <input style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio">
@@ -579,26 +677,29 @@
                                 <label for="">-</label>
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col">
                     <label for="">Дата рентгена</label>
                     <br>
-                    <input id="rentgen_date" name="rentgen_date" type="date">
+                    <input id="rentgen_date" value="{{ g_patient.xray_date_format }}" name="rentgen_date" type="date">
                 </div>
             </div>
             <div class="row mt-2">
                 <label for="">Заключение рентгена</label>
-                <input class="mx-auto" style="width: 95%;" name="rentgen_result_diagnosis" id="rentgen_result_diagnosis" type="text">
+                <input class="mx-auto" style="width: 95%;" value="{{ g_patient.xray }}" name="rentgen_result_diagnosis" id="rentgen_result_diagnosis" type="text">
             </div>
             <div class="row mt-2">
                 <label for="">Дата выезда МБ</label>
-                <input class="mx-auto" style="width: 95%;" name="mb_date" id="mb_date" type="date">
+                <input class="mx-auto" style="width: 95%;" value="{{ g_patient.date_mobile_brigade_format }}" name="mb_date" id="mb_date" type="date">
             </div>
             <div class="row mt-2">
                 <label for="">Причина поздней подачи</label>
                 <select class="mx-auto" style="width: 95%;" name="late_reason" id="late_reason">
-
+                    <option {% if g_patient.pcr_reason == 1 %} selected {% endif %} value="1">Самообращение</option>
+                    <option {% if g_patient.pcr_reason == 2 %} selected {% endif %} value="2">Проф. мероприятия</option>
+                    <option {% if g_patient.pcr_reason == 3 %} selected {% endif %} value="3">ПМСП Контактный</option>
                 </select>
             </div>
             <div class="row">
@@ -758,6 +859,7 @@
             modal_patients.style.display = 'none'
         }
     }
+    
 </script>
 <script>
     function showDialog() {    
@@ -767,6 +869,34 @@
     var currentDirectory = window.location.pathname.split('/').slice(0, -1).join('/')
         document.addEventListener("DOMContentLoaded", function(event) { 
         console.log(currentDirectory)
+    });
+    var is_resident = document.getElementById("is_resident");
+    var s_country = document.getElementById("s_country")
+    var num_doc = document.getElementById("num_doc")
+
+    is_resident.addEventListener('change', function() {
+    if (this.checked) {
+        s_country.disabled = true
+        num_doc.disabled = true
+        console.log('DISABLED')
+    } else {
+        s_country.disabled = false
+        num_doc.disabled = false
+        console.log('ENABLED')
+    }
+    });
+    window.addEventListener("load", function(event) { 
+        var is_resident = document.getElementById("is_resident");
+        var s_country = document.getElementById("s_country")
+        var num_doc = document.getElementById("num_doc")
+        if (this.checked) {
+        s_country.disabled = true
+        num_doc.disabled = true
+        } 
+        else{
+            s_country.disabled = false
+            num_doc.disabled = false
+        }
     });
 </script>
 {% endblock %}
