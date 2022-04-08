@@ -151,7 +151,7 @@ class Card_id(APIView):
         if request.user.is_authenticated:
             # CONTEXT
             g_patient = GPatient.objects.get(id=id)
-            print(type(g_patient.patient_condition_start))
+            print(g_patient.hospitalize_tmc)
             g_incident = GIncident.objects.get(id=g_patient.incident_id)
             print(g_incident.date_time)
             s_regions = SRegion.objects.all()
@@ -163,6 +163,12 @@ class Card_id(APIView):
             s_statuses_end = SStatusEnd.objects.all()
             s_streets = SStreet.objects.all()
             s_pmsps = SPmsp.objects.all()
+            s_late_regs = SLateReg.objects.all()
+            s_vaccines = SVaccines.objects.all()
+            try:
+                last_call = last_call = DCallingList.objects.filter(patient_id=id).first().date_time
+            except AttributeError:
+                last_call = ''    
             # END CONTEXT
             return render(request, 'card_id.html',
             {
@@ -177,6 +183,9 @@ class Card_id(APIView):
                 's_countries': s_countries,
                 's_pmsps': s_pmsps,
                 's_statuses_end': s_statuses_end,
+                's_late_regs': s_late_regs,
+                's_vaccines': s_vaccines,
+                'last_call': last_call,
             }) 
         else:
             return redirect('login')

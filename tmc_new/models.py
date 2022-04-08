@@ -474,7 +474,18 @@ class GPatient(models.Model):
             return str(day) + '.' + str(month) + '.' + str(year)
         else:
             return self.date_start
-        
+
+    def pmsp_start_date_format(self):
+        if self.pmsp_start_date is not None:
+            day = str(self.pmsp_start_date.day) if self.pmsp_start_date.day > 9 else '0' + str(self.pmsp_start_date.day)
+            month = str(self.pmsp_start_date.month) if self.pmsp_start_date.month > 9 else '0' + str(self.pmsp_start_date.month)
+            year = self.pmsp_start_date.year
+            hour = str(self.pmsp_start_date.hour) if self.pmsp_start_date.hour > 9 else '0' + str(self.pmsp_start_date.hour)
+            minute = str(self.pmsp_start_date.minute) if self.pmsp_start_date.minute > 9 else '0' + str(self.pmsp_start_date.minute)
+            return str(year) + '-' + str(month) + '-' + str(day) + 'T' + str(hour) + ':' + str(minute)
+        else:
+            return self.pmsp_start_date
+
 
     def days_count(self):
         if self.pcr_date_receipt is not None:
@@ -556,6 +567,18 @@ class GPatient(models.Model):
         else:
             return self.date_mobile_brigade
 
+    def p_close_end_date_format(self):
+        if self.p_close_end is not None:
+            try:
+                day = str(self.p_close_end_date.day) if self.p_close_end_date.day > 9 else '0' + str(self.p_close_end_date.day)
+                month = str(self.p_close_end_date.month) if self.p_close_end_date.month > 9 else '0' + str(self.p_close_end_date.month)
+                year = str(self.p_close_end_date.year)
+                return year + '-' + month + '-' + day
+            except AttributeError:
+                return self.p_close_end_date    
+        else:
+            return self.p_close_end_date
+    
     # def datetime_format(datetime):
     #     day = str(date.day) if date.day > 9 else '0' + str(date.day)
     #     month = str(date.month) if date.month > 9 else '0' + str(date.month)
@@ -828,6 +851,14 @@ class SVillage(models.Model):
         managed = False
         db_table = 's_village'
 
+class SVaccines(models.Model):
+    id = models.DecimalField(max_digits=65535, decimal_places=65535, primary_key=True)
+    name_en = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 's_vaccines'
+
 
 class TestBiVCopy(models.Model):
     patient_id = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
@@ -946,3 +977,47 @@ class SStreet(models.Model):
     class Meta:
         managed = False
         db_table = 's_street'
+
+
+class SLateReg(models.Model):
+    id = models.DecimalField(max_digits=65535, decimal_places=65535, primary_key=True)
+    name_ru = models.CharField(max_length=500)        
+    name_kz = models.CharField(max_length=500)        
+    name_en = models.CharField(max_length=500)
+
+    class Meta:
+        managed = False
+        db_table = 's_late_reg'
+
+
+class DCallingList(models.Model):
+    date_time = models.DateTimeField()        
+    patient_id = models.DecimalField(max_digits=65535, decimal_places=65535)
+    operator_id = models.DecimalField(max_digits=65535, decimal_places=65535)
+    status = models.DecimalField(max_digits=65535, decimal_places=65535)
+    id = models.DecimalField(max_digits=65535, decimal_places=65535, primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'd_calling_list'
+
+
+class SOperators(models.Model):
+    id = models.DecimalField(max_digits=65535, decimal_places=65535, primary_key=True)       
+    fio = models.CharField(max_length=255, blank=True, null=True)
+    login = models.CharField(max_length=255, blank=True, null=True)
+    password = models.CharField(max_length=255, blank=True, null=True)
+    date_in = models.DateTimeField()
+    date_out = models.DateTimeField()
+    destination = models.CharField(max_length=255, blank=True, null=True)
+    role = models.CharField(max_length=255, blank=True, null=True)
+    status = models.DecimalField(max_digits=65535, decimal_places=65535)
+    role_id = models.DecimalField(max_digits=65535, decimal_places=65535)
+    
+    class Meta:
+        managed = False
+        db_table = 's_operators'
+
+
+
+

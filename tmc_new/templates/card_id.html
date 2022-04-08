@@ -4,6 +4,8 @@
 <div id="for_popup">
     <!-- ДЛЯ ЧЕКЛИСТА -->
 </div>
+<form method="POST" name="card" id="card">
+{% csrf_token %}
 <div class="row p-2" style="border: 2px solid rgb(36, 36, 36);">
     <!-- 1 БЛОК -->
     <div class="col-3" style="border: 1px solid gray;">
@@ -141,6 +143,7 @@
                     <label for="sex">Пол</label>
                     <br>
                     <select name="sex" id="sex">
+                        <option value=""></option>
                         <option {% if g_incident.sex == 1 %} selected {% endif %} value="male">Муж</option>
                         <option {% if g_incident.sex == 2 %} selected {% endif %} value="female">Жен</option>
                     </select>
@@ -151,6 +154,7 @@
                     <label for="s_country">Гражданство</label>
                     <br>
                     <select name="s_country" disabled id="s_country">
+                        <option value=""></option>
                         {% for s_country in s_countries %}
                             <option {% if s_country.id == g_incident.country_id %} selected {% endif %} value="{{ s_country.id }}">{{ s_country.name_ru }}</option>
                         {% endfor %}
@@ -178,6 +182,7 @@
                     <label for="s_region">Район</label>
                     <br>
                     <select name="s_region" id="s_region">
+                        <option value=""></option>
                         {% for s_region in s_regions %}
                             <option {% if s_region.postal_code == g_incident.loc_region %} selected {% endif %} value="{{ s_region.id }}">{{ s_region.name_ru }}</option>
                         {% endfor %}
@@ -187,6 +192,7 @@
                     <label for="s_village">Село в черте города</label>
                     <br>
                     <select name="s_village" id="s_village">
+                        <option value=""></option>
                         {% for s_village in s_villages %}
                             <option {% if s_village.village_id == g_incident.village %} selected {% endif %} value="{{ s_village.id }}">{{ s_village.name_ru }}</option>
                         {% endfor %}
@@ -237,6 +243,7 @@
                 <label for="pmsp">ПМСП</label>
                 <br>
                 <select name="pmsp" id="pmsp">
+                    <option value=""></option>
                     {% for s_pmsp in s_pmsps %}
                         <option {% if s_pmsp.bin == g_incident.pmsp_name %} selected {% endif %} value="{{ s_pmsp.bin }}">{{ s_pmsp.abrev_rus }}</option>
                     {% endfor %}
@@ -275,6 +282,7 @@
             <label for="result_of_end">Результат снятия</label>
             <br>
             <select name="result_of_end" id="result_of_end">
+                <option value=""></option>
                 {% for s_status_end in s_statuses_end %}
                     <option {% if s_status_end.id == g_patient.status_end %} selected {% endif %} value="{{ s_status_end.id }}">{{ s_status_end.name_ru }}</option>
                 {% endfor %}    
@@ -294,6 +302,7 @@
             <div class="row mt-1">
                 <label class="col-3" for="">Группа риска</label>
                 <select class="col-9" style="width: 40%;" name="s_riskgroup" id="s_riskgroup">
+                    <option value=""></option>
                     {% for s_riskgroup in s_riskgroups %}
                         <option {% if s_riskgroup.id == g_incident.risk_group %} selected {% endif %} value="{{ s_riskgroup.id }}">{{ s_riskgroup.name_ru }}</option>
                     {% endfor %}
@@ -398,8 +407,9 @@
                     <label for="">Диагноз наблюдения</label>
                     <br>
                     <select name="diagnosis_monitoring" id="diagnosis_monitoring">
-                        <option {% if g_patient.watch_diagnosis == U071 %} selected {% endif %} value="U071">U071</option>
-                        <option {% if g_patient.watch_diagnosis == U072 %} selected {% endif %} value="U072">U072</option>
+                        <option value=""></option>
+                        <option {% if g_patient.watch_diagnosis == 'U071' %} selected {% endif %} value="U071">U071</option>
+                        <option {% if g_patient.watch_diagnosis == 'U072' %} selected {% endif %} value="U072">U072</option>
                     </select>
                 </div>
                 <div class="col">
@@ -413,6 +423,7 @@
                     <label for="">Состояние пациента</label>
                     <br>
                     <select name="patient_condition" id="patient_condition">
+                        <option value=""></option>
                         {% for s_condition in s_conditions %}
                             <option {% if s_condition.id == g_patient.patient_condition_start %} selected {% endif %} value="{{ s_condition.id }}">{{ s_condition.name_ru }}</option>
                         {% endfor %}
@@ -503,6 +514,7 @@
             <div class="mt-1 row">
                 <label for="" class="col-4">Причина сдачи ПЦР</label>
                 <select class="col-8" name="pcr_reason" id="pcr_reason" style="width: 60%;">
+                    <option value=""></option>
                     <option {% if g_patient.pcr_reason == 1 %} selected {% endif %} value="1">Самообращение</option>
                     <option {% if g_patient.pcr_reason == 2 %} selected {% endif %} value="2">Проф. мероприятия</option>
                     <option {% if g_patient.pcr_reason == 3 %} selected {% endif %} value="3">ПМСП Контактный</option>
@@ -697,9 +709,10 @@
             <div class="row mt-2">
                 <label for="">Причина поздней подачи</label>
                 <select class="mx-auto" style="width: 95%;" name="late_reason" id="late_reason">
-                    <option {% if g_patient.pcr_reason == 1 %} selected {% endif %} value="1">Самообращение</option>
-                    <option {% if g_patient.pcr_reason == 2 %} selected {% endif %} value="2">Проф. мероприятия</option>
-                    <option {% if g_patient.pcr_reason == 3 %} selected {% endif %} value="3">ПМСП Контактный</option>
+                    <option value=""></option>
+                    {% for s_late_reg in s_late_regs %}
+                        <option {% if s_late_reg.id == g_patient.late_reg_reason %} selected {% endif %} value="{{ s_late_reg.id }}">{{ s_late_reg.name_ru }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="row">
@@ -715,32 +728,35 @@
                 </h3>
                 <div class="row mt-2">
                     <label for="">Дата пол. данных от ПМСП</label>
-                    <input class="mx-auto" style="width: 95%;" id="pmsp_info_datetime" name="pmsp_info_datetime" type="datetime-local">
+                    <input class="mx-auto" style="width: 95%;" value="{{ g_patient.pmsp_start_date_format }}" id="pmsp_info_datetime" name="pmsp_info_datetime" type="datetime-local">
                 </div>
                 <div class="row mt-2">
                     <label for="">Дата первого звонка</label>
-                    <input class="mx-auto" style="width: 95%;" id="first_call_datetime" name="first_call_datetime" type="datetime-local">
+                    <input class="mx-auto" style="width: 95%;" value="{{ last_call|date:'Y-m-d'}}T{{ last_call|time:'H:i:s' }}" id="first_call_datetime" name="first_call_datetime" type="datetime-local">
                 </div>
                 <div class="row mt-2">
                     <div class="col-1"></div>
-                    <input class="col-1" style="width: 20px;" id="tmc_function_info" name="tmc_function_info" type="checkbox">
+                    <input {% if g_patient.info_function == 1 %} selected {% endif %} class="col-1" style="width: 20px;" id="tmc_function_info" name="tmc_function_info" type="checkbox">
                     <label class="col-10" for="">Информирование о функциях ТМЦ</label>            
                 </div>
                 <div class="row mt-2">
                     <div class="col-1"></div>
-                    <input class="col-1" style="width: 20px;" id="tmc_condition_info" name="tmc_condition_info" type="checkbox">
+                    <input {% if g_patient.info_condition == 1 %} selected {% endif %} class="col-1" style="width: 20px;" id="tmc_condition_info" name="tmc_condition_info" type="checkbox">
                     <label class="col-10" for="">Информирование об условиях ДН</label>            
                 </div>
                 <div class="row mt-2">
                     <div class="col-1"></div>
                     <input class="col-1" style="width: 20px;" id="refusal_hospitalize" name="refusal_hospitalize" type="checkbox">
-                    <label class="col-10" for="">Отказ от госпитализации</label>            
+                    <label class="col-10" {% if g_patient.hospitalize_tmc %} selected {% endif %} for="">Отказ от госпитализации</label>            
                 </div>
                 <div class="row mt-2">
                     <label for="">Завершение наблюдения со слов пациента</label> 
                     <br>
                     <select class="mx-auto" style="width: 95%;" name="end_monitoring_patient" id="end_monitoring_patient">
-
+                        <option value=""></option>
+                        {% for s_status_end in s_statuses_end %}
+                            <option {% if s_status_end.id == g_patient.status_end %} selected {% endif %} value="{{ s_status_end.id }}">{{ s_status_end.name_ru }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="row mt-2">
@@ -748,46 +764,55 @@
                     <br>
                     <select class="mx-auto" style="width: 95%;" name="" id="">
                         <option value=""></option>
+                        {% for s_pmsp in s_pmsps %}
+                            <option {% if s_pmsp.bin == g_patient.p_stationar %} selected {% endif %} value="{{ s_pmsp.bin }}">{{ s_pmsp.abrev_rus }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="row mt-2">
                     <label for="">Дата завершения наблюдения</label> 
                     <br>
-                    <input class="mx-auto" style="width: 95%;" id="status_end_date" name="status_end_date" type="date">
+                    <input class="mx-auto" style="width: 95%;" id="status_end_date" value="{{ g_patient.p_close_end_date_format }}" name="status_end_date" type="date">
                 </div>
                 <div class="row mt-2">
                     <div class="col">
                         <label for="">Вакцина</label> 
                         <br>
                         <select id="vaccine" name="vaccine" name="" id="">
-
+                            <option value=""></option>
+                            {% for s_vaccine in s_vaccines %}
+                                <option {% if s_vaccine.id == g_incident.vaccine_type %} selected {% endif %} value="{{ s_vaccine.id }}">{{ s_vaccine.name_en }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="col">
                         <label for="">Доза</label> 
                         <br>
-                        <input id="vaccine_doses" name="vaccine_doses" type="text">
+                        <input id="vaccine_doses" value="{{ g_incident.vaccine_dose }}" name="vaccine_doses" type="text">
                     </div>
                 </div>
                 <div class="row mt-2">
                     <div class="col">
                         <label for="">Дата доза 1</label> 
                         <br>
-                        <input id="vaccine_first_date" name="vaccine_first_date" type="date">
+                        <input id="vaccine_first_date"  value="{{ g_incident.vaccine_date1|date:'Y-m-d'}}" name="vaccine_first_date" type="date">
                     </div>
                     <div class="col">
                         <label for="">Дата доза 1</label> 
                         <br>
-                        <input id="vaccine_second_date" name="vaccine_second_date" type="date">
+                        <input id="vaccine_second_date" value="{{ g_incident.vaccine_date2|date:'Y-m-d'}}" name="vaccine_second_date" type="date">
                     </div>
                 </div>
             </div>
-        </div>    
-    </div>
+    </div>    
+</div>
+</form>
     <!-- Сохранить/Закрыть -->
     <div class="row text-center">
         <div class="col-3">
-            <select style="width: 200px;" name="" id=""></select>
+            <select style="width: 200px;" name="" id="">
+                <option value=""></option>
+            </select>
         <button type="button" class="btn btn-light">Сохранить</button>
         </div>
         <div class="col-2">
@@ -884,19 +909,6 @@
         num_doc.disabled = false
         console.log('ENABLED')
     }
-    });
-    window.addEventListener("load", function(event) { 
-        var is_resident = document.getElementById("is_resident");
-        var s_country = document.getElementById("s_country")
-        var num_doc = document.getElementById("num_doc")
-        if (this.checked) {
-        s_country.disabled = true
-        num_doc.disabled = true
-        } 
-        else{
-            s_country.disabled = false
-            num_doc.disabled = false
-        }
     });
 </script>
 {% endblock %}
