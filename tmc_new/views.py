@@ -304,6 +304,7 @@ class Card_id(APIView):
                 pcr_reason = pcr_reason,
                 pcr_result = pcr_result,
                 result_kt = kt_result,
+                
             )
             g_patient_log.save()
 
