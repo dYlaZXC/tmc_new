@@ -114,7 +114,7 @@
             </div>
             <div class="col-7 mt-1">
                 <label for="iin">ИИН</label>
-                <input style="width: 60%;" type="text" id="iin" name="iin">
+                <input style="width: 60%;" type="text" value="{{g_patient.iin}}" id="iin" name="iin">
             </div>
         </div>
         <h3 class="mt-2" style="padding: 5px; 
@@ -145,8 +145,8 @@
                     <br>
                     <select name="sex" id="sex">
                         <option value=""></option>
-                        <option {% if g_incident.sex == 1 %} selected {% endif %} value="male">Муж</option>
-                        <option {% if g_incident.sex == 2 %} selected {% endif %} value="female">Жен</option>
+                        <option {% if g_incident.sex == 1 %} selected {% endif %} value="1">Муж</option>
+                        <option {% if g_incident.sex == 2 %} selected {% endif %} value="2">Жен</option>
                     </select>
                 </div>
             </div>
@@ -378,19 +378,19 @@
             <div class="p-1" name="Берем. (Триместр)" style="border: 1px solid gray;">
                 <div class="row">
                     <div class="col text-center">
-                        <input {% if g_incident.pregnancy == 0 %} checked {% endif %} class="col" type="radio" name="pregnancy" id="pregnancy">
+                        <input {% if g_incident.pregnancy == 0 %} checked {% endif %} class="col" type="radio" name="pregnancy" id="pregnancy" value="0">
                         <label for="">Нет</label>
                     </div>
                     <div class="col text-center">
-                        <input {% if g_incident.pregnancy == 1 %} checked {% endif %} class="col" type="radio" name="pregnancy" id="pregnancy">
+                        <input {% if g_incident.pregnancy == 1 %} checked {% endif %} class="col" type="radio" name="pregnancy" id="pregnancy" value="1">
                         <label for="">1</label>
                     </div>
                     <div class="col text-center">
-                        <input {% if g_incident.pregnancy == 2 %} checked {% endif %} class="col" type="radio" name="pregnancy" id="pregnancy">
+                        <input {% if g_incident.pregnancy == 2 %} checked {% endif %} class="col" type="radio" name="pregnancy" id="pregnancy" value="2">
                         <label for="">2</label>
                     </div>
                     <div class="col text-center">
-                        <input {% if g_incident.pregnancy == 3 %} checked {% endif %} class="col" type="radio" name="pregnancy" id="pregnancy">
+                        <input {% if g_incident.pregnancy == 3 %} checked {% endif %} class="col" type="radio" name="pregnancy" id="pregnancy" value="3">
                         <label for="">3</label>
                     </div>
                 </div>
@@ -416,7 +416,7 @@
                 <div class="col">
                     <label for="">Дата диагноза</label>
                     <br>
-                    <input id="diagnosis_date" value="{{ g_patient.diagnosis_date_format }}" id="diagnosis_date" type="date">
+                    <input id="diagnosis_date" value="{{ g_patient.diagnosis_date_format }}" name="diagnosis_date" id="diagnosis_date" type="date">
                 </div>
             </div>
             <div class="row">
@@ -536,11 +536,11 @@
                         {% if g_patient.pcr_result == True %}
                         <div class="row">
                             <div class="col">
-                                <input checked style="width: 20px;" name="pcr_result" id="pcr_result" type="radio">
+                                <input checked style="width: 20px;" name="pcr_result" id="pcr_result" type="radio" value="1">
                                 <label for="pcr_result">+</label>
                             </div>
                             <div class="col">
-                                <input style="width: 20px;" name="pcr_result" id="pcr_result" type="radio">
+                                <input style="width: 20px;" name="pcr_result" id="pcr_result" type="radio" value="0">
                                 <label for="">-</label>
                             </div>
                         </div>
@@ -807,20 +807,20 @@
             </div>
     </div>    
 </div>
-</form>
     <!-- Сохранить/Закрыть -->
     <div class="row text-center">
         <div class="col-3">
             <select style="width: 200px;" name="" id="">
                 <option value=""></option>
             </select>
-        <button type="button" class="btn btn-light">Сохранить</button>
+        <button type="submit" class="btn btn-light">Сохранить</button>
         </div>
         <div class="col-2">
             <button type="button" class="btn btn-light">Закрыть</button>
         </div>
     </div>
 </div>
+</form>
 <style>
     table{
         font-size: 13px;

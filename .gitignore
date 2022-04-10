@@ -1,0 +1,5 @@
+venv/
+tmc_new/venv
+tmc_new/tmc_new/venv
+tmc_new/__pycache__/
+tmc_new/migrations/__pycache__/
