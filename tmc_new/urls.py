@@ -27,5 +27,6 @@ urlpatterns = [
     # КОНЕЦ АВТОРИЗАЦИИ
     path('card/', Card.as_view(), name='card'),
     path('card/<int:id>', Card_id.as_view(), name='card_id'),
-    path('add_form/', additional_form, name='form'),
+    path('add_form/<int:id>', additional_form, name='form'),
+    path('card/checklist/save/<int:id>', CheckListSaveView.as_view(), name='checklist-save'),
 ]

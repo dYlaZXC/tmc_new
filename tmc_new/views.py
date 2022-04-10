@@ -146,6 +146,19 @@ class Card(APIView):
             return redirect('login')
 
 
+class CheckListSaveView(APIView):
+    def get(self, request):
+        return 'pussy'
+
+    def post(self, request, id, *args, **kwargs):
+        try:
+            return {'result': 'success'}
+        except:
+            return {'result': 'fail'}
+
+
+
+
 class Card_id(APIView):
     def get(self, request, id, *args, **kwargs):
         if request.user.is_authenticated:
@@ -206,7 +219,6 @@ class Card_id(APIView):
             # END CONTEXT
 
 # ВСЁ ЧТО СВЯЗАНО СО STATUS_END - БЕРЕТСЯ И ЗАПИСЫВАЕТСЯ В G_PATIENT
-
 
             # FORM DATA
             fio = request.POST.get('fio') #ФИО
@@ -297,9 +309,13 @@ class Card_id(APIView):
         else:
             return redirect('login')
 
+
+
+
 @api_view(["GET"])
 @permission_classes((permissions.AllowAny,))
-def additional_form(request):
-    return HttpResponse(render_to_string("modal_checklist.html"))
+def additional_form(request, id):
+
+    return HttpResponse(render_to_string("modal_checklist.html"), {'id': id})
 
 
