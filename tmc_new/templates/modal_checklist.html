@@ -282,7 +282,11 @@
 	<div class="col">
 		<label for="">Оценка текущего состояния</label>
 		<select name="" id="">
-
+			<option value=""></option>
+			<option value="1">Бессимптомное</option>
+			<option value="2">Легкой степени тяжести</option>
+			<option value="3">Среднетяжелой степени тяжести</option>
+			<option value="4">Тяжелой степени тяжести</option>
 		</select>
 		<div class="row">
 			<div class="col">
@@ -833,11 +837,21 @@
 			<textarea name="" id="" cols="36" rows="6"></textarea>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col">
+			<button class="btn btn-light">Видезвонок</button>
+		</div>
+		<div class="col row">
+			<button type="submit" class="button btn-light col p-0">Ок</button>
+			<button id="close" type="button" class="button btn-light col p-0">Отмена</button>
+		</div>
+	</div>
 </form>
 <script>
 	document.getElementById('close').addEventListener("click", function(event){
         $("#for_popup").empty();
 });
+
 </script>
 <style>
     #popup{
