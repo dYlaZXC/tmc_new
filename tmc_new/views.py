@@ -209,7 +209,10 @@ class Card_id(APIView):
 
 
             # FORM DATA
+            
             fio = request.POST.get('fio') #ФИО
+            iin = request.POST.get('iin') #ИИН 
+            is_rezident = request.POST.get('is_rezident')# Резидент
             birthday = request.POST.get('birthday') #ДАТА РОЖДЕНИЯ
             sex = request.POST.get('sex') #ПОЛ
             s_country = request.POST.get('s_country') #ГРАЖДАНСТВО
@@ -276,10 +279,122 @@ class Card_id(APIView):
             vaccine_doses = request.POST.get('vaccine_doses') #КОЛИЧЕСТВО ПОЛУЧЕННЫХ ДОЗ ВАКЦИНЫ
             vaccine_first_date = request.POST.get('vaccine_first_date') #ДАТА ПОЛУЧЕНИЯ ПЕРВОЙ ДОЗЫ
             vaccine_second_date = request.POST.get('vaccine_second_date') #ДАТА ПОЛУЧЕНИЯ ВТОРОЙ ДОЗЫ
+            presc_therapy =request.POST.get('presc_therapy') # Назначения
+
+
+
+
+
+
+
             # END FORM DATA
+            d_t = str(date_vz) + ' ' + str(time_vz)
+            date_time = d_t.strftime("%Y-%m-%d %H:%M")
 
             # SAVING TO MODEL (LOG)
-            g_patient = GPatient.objects.get(patientid=id)
+
+            g_patient = GPatient.objects.get(id=id)
+            g_patient_log = GPatientLog(
+                iin = iin,
+                num_crossdoc = num_doc,
+                pmsp_name = pmsp,
+                phone = phone,
+                status_end = result_of_end,
+                status_end_date = date_of_end,
+                pcr_reason = pcr_reason,
+                pcr_result = pcr_result,
+                result_kt = kt_result,
+            )
+            g_patient_log.save()
+
+            g_incident = GIncident.objects.get(id=g_patient.incident_id)
+            g_incident_log = GIncidentLog(
+                rezident = is_rezident,
+                iin= iin,
+                birthday = birthday,
+                sex =sex,
+                citizenship_id = s_country,
+                num_crossdoc = num_doc,
+                loc_region = s_region,
+                village = s_village,
+                loc_street = s_street,
+                loc_home = home,
+                loc_block = block,
+                loc_flat = kv,
+                date_time = date_time,
+                pmsp_name = pmsp,
+                phone = phone,
+                phone_contact_m = phone, 
+                phone_contact = phone_home,
+                phone_other = additional_contacts,
+                coment = info_for_tmc_agent,
+                risk_group = s_risk_group,
+                ojirenie = pmsp_ojirenie,
+                serdce = pmsp_serdce,
+                hypertension = pmsp_ag,    
+                astma = pmsp_bronh,
+                pechen = pmsp_pechen,
+                gema_rast = pmsp_gemat,
+                pochki = pmsp_pochek,
+                cancer = pmsp_onko,
+                h_oth_zabolev = pmsp_other_chronic,
+                h_pnevmonia = pmsp_pneumonia,
+                h_sahar_diabet = pmsp_diabetes,
+                h_other_endocrin = pmsp_other_endo,
+                h_hobl = pmsp_hobl,
+                pregnancy = pregnancy,
+
+            )
+            g_incident_log.save()
+            g_patient(
+                iin = iin,
+                num_crossdoc = num_doc,
+                pmsp_name = pmsp,
+                phone = phone,
+                status_end = result_of_end,
+                status_end_date = date_of_end,
+            )
+            g_patient.save()
+            
+            g_incident(
+               rezident = is_rezident,
+                iin= iin,
+                birthday = birthday,
+                sex =sex,
+                citizenship_id = s_country,
+                num_crossdoc = num_doc,
+                loc_region = s_region,
+                village = s_village,
+                loc_street = s_street,
+                loc_home = home,
+                loc_block = block,
+                loc_flat = kv,
+                date_time = date_time,
+                pmsp_name = pmsp,
+                phone = phone,
+                phone_contact_m = phone, 
+                phone_contact = phone_home,
+                phone_other = additional_contacts,
+                coment = info_for_tmc_agent,
+                risk_group = s_risk_group,
+                ojirenie = pmsp_ojirenie,
+                serdce = pmsp_serdce,
+                hypertension = pmsp_ag,    
+                astma = pmsp_bronh,
+                pechen = pmsp_pechen,
+                gema_rast = pmsp_gemat,
+                pochki = pmsp_pochek,
+                cancer = pmsp_onko,
+                h_oth_zabolev = pmsp_other_chronic,
+                h_pnevmonia = pmsp_pneumonia,
+                h_sahar_diabet = pmsp_diabetes,
+                h_other_endocrin = pmsp_other_endo,
+                h_hobl = pmsp_hobl,
+                pregnancy = pregnancy,
+            )
+            g_incident.save()
+
+
             # END SAVING TO MODEL
 
             return render(request, 'card_id.html',
