@@ -26,6 +26,6 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     # КОНЕЦ АВТОРИЗАЦИИ
     path('card/', Card.as_view(), name='card'),
-    path('card/<int:id>', Card_id.as_view(), name='card_id'),
+    path('card/<int:id>/', Card_id.as_view(), name='card_id'),
     path('add_form/', additional_form, name='form'),
 ]

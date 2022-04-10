@@ -139,7 +139,7 @@ class DjangoSession(models.Model):
 
 
 class GIncident(models.Model):
-    id = models.DecimalField(primary_key=True, max_digits=65535, decimal_places=65535)
+    id = models.BigAutoField(primary_key=True)
     date_time = models.DateTimeField()
     type_call = models.DecimalField(max_digits=65535, decimal_places=65535)
     type_sess = models.DecimalField(max_digits=65535, decimal_places=65535)
@@ -272,7 +272,7 @@ class GIncident(models.Model):
 
 
 class GIncidentLog(models.Model):
-    id = models.DecimalField(primary_key=True, max_digits=65535, decimal_places=65535)
+    id = models.BigAutoField(primary_key=True)
     date_time = models.DateTimeField()
     type_call = models.DecimalField(max_digits=65535, decimal_places=65535)
     type_sess = models.DecimalField(max_digits=65535, decimal_places=65535)
@@ -409,16 +409,16 @@ class GMobileBrigades(models.Model):
 
 
 class GPatient(models.Model):
-    id = models.DecimalField(primary_key=True, max_digits=65535, decimal_places=65535)
-    fio = models.CharField(max_length=255, blank=True, null=True)
-    iin = models.CharField(max_length=255, blank=True, null=True)
+    id = models.BigAutoField(primary_key=True)
+    fio = models.CharField(max_length=65535, blank=True, null=True)
+    iin = models.CharField(max_length=65535, blank=True, null=True)
     phone = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     date_start = models.DateTimeField(blank=True, null=True)
     date_end = models.DateTimeField(blank=True, null=True)
     dozvon = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     status = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    pmsp_name = models.CharField(max_length=255, blank=True, null=True)
-    watch_diagnosis = models.CharField(max_length=255, blank=True, null=True)
+    pmsp_name = models.CharField(max_length=65535, blank=True, null=True)
+    watch_diagnosis = models.CharField(max_length=65535, blank=True, null=True)
     diagnosis_date = models.DateTimeField(blank=True, null=True)
     sign_observation_hospital = models.BooleanField(blank=True, null=True)
     pmsp_start_date = models.DateTimeField(blank=True, null=True)
@@ -426,7 +426,7 @@ class GPatient(models.Model):
     pcr_date_test = models.DateTimeField(blank=True, null=True)
     pcr_date_receipt = models.DateTimeField(blank=True, null=True)
     pcr_reason = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    num_crossdoc = models.CharField(max_length=255, blank=True, null=True)
+    num_crossdoc = models.CharField(max_length=65535, blank=True, null=True)
     pcr_result = models.BooleanField(blank=True, null=True)
     status_end = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     status_end_date = models.DateTimeField(blank=True, null=True)
@@ -434,16 +434,16 @@ class GPatient(models.Model):
     lung_damage = models.BooleanField(blank=True, null=True)
     kt_date = models.DateTimeField(blank=True, null=True)
     result_kt = models.BooleanField(blank=True, null=True)
-    diagnosis_kt = models.CharField(max_length=255, blank=True, null=True)
-    status_end_description = models.CharField(max_length=255, blank=True, null=True)
+    diagnosis_kt = models.CharField(max_length=65535, blank=True, null=True)
+    status_end_description = models.CharField(max_length=65535, blank=True, null=True)
     date_mobile_brigade = models.DateTimeField(blank=True, null=True)
-    presc_therapy = models.CharField(max_length=255, blank=True, null=True)
+    presc_therapy = models.CharField(max_length=65535, blank=True, null=True)
     info_function = models.IntegerField(blank=True, null=True)
     info_cond = models.IntegerField(blank=True, null=True)
     first_mb = models.IntegerField(blank=True, null=True)
     p_close_end = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     p_close_end_date = models.DateTimeField(blank=True, null=True)
-    p_stationar = models.CharField(max_length=255, blank=True, null=True)
+    p_stationar = models.CharField(max_length=65535, blank=True, null=True)
     dozvon_type = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     hospitalize_tmc = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     close_date_post = models.DateTimeField(blank=True, null=True)
@@ -586,7 +586,7 @@ class GPatient(models.Model):
 
 
 class GPatientLog(models.Model):
-    id = models.DecimalField(max_digits=65535, decimal_places=65535, primary_key=True)
+    id = models.BigAutoField(primary_key=True)
     fio = models.CharField(max_length=255, blank=True, null=True)
     iin = models.CharField(max_length=255, blank=True, null=True)
     phone = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
