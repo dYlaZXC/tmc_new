@@ -473,7 +473,26 @@ class Card_id(APIView):
             pcr_reason = pcr_reason,
             pcr_result = pcr_result,
             result_kt = kt_result,
-            
+            pcr_date_test = pcr_test_date,
+            pcr_date_receipt = pcr_result_date,
+            kt_date = kt_date ,
+            diagnosis_kt = kt_result_diagnosis,
+            xray = rentgen_result,
+            xray_date = rentgen_date ,
+            xray_result = rentgen_result_diagnosis , 
+            date_mobile_brigade = mb_date ,
+            late_reg_reason =late_reason ,
+            date_start = pmsp_info_datetime ,
+            pmsp_start_date = pmsp_info_datetime ,
+            info_function = tmc_function_info ,
+            info_cond =tmc_condition_info,
+            hospitalize_tmc = refusal_hospitalize,
+            status_end = end_monitoring_patient,
+            status_end_date = status_end_date,    
+            watch_diagnosis = diagnosis_monitoring,
+            patient_condition_start = patient_condition,
+            sign_observation_hospital =sign_observation,
+            diagnosis_date = diagnosis_date, 
         )
         g_patient_log.save()
 
@@ -516,6 +535,12 @@ class Card_id(APIView):
             type_call = 2,
             type_sess = 1,
             category_id = 4,
+            vaccine_type = vaccine,
+            vaccine_date1 = vaccine_first_date,
+            vaccine_dose = vaccine_doses ,
+            vaccine_date2 =vaccine_second_date ,
+            other_diagnos = detailed_diagnosis_info,
+            date_time = start_date,
         )
         g_incident_log.save()
 
@@ -525,6 +550,29 @@ class Card_id(APIView):
         g_patient.phone = phone
         g_patient.status_end = result_of_end
         g_patient.status_end_date = date_of_end
+        g_patient.pcr_reason = pcr_reason
+        g_patient.pcr_result = pcr_result
+        g_patient.result_kt = kt_result
+        g_patient.pcr_date_test = pcr_test_date
+        g_patient.pcr_date_receipt = pcr_result_date
+        g_patient.kt_date = kt_date 
+        g_patient.diagnosis_kt = kt_result_diagnosis
+        g_patient.xray = rentgen_result
+        g_patient.xray_date = rentgen_date 
+        g_patient.xray_result = rentgen_result_diagnosis 
+        g_patient.date_mobile_brigade = mb_date 
+        g_patient.late_reg_reason =late_reason 
+        g_patient.date_start = pmsp_info_datetime 
+        g_patient.pmsp_start_date = pmsp_info_datetime 
+        g_patient.info_function = tmc_function_info 
+        g_patient.info_cond =tmc_condition_info
+        g_patient.hospitalize_tmc = refusal_hospitalize
+        g_patient.status_end = end_monitoring_patient
+        g_patient.status_end_date = status_end_date    
+        g_patient.watch_diagnosis = diagnosis_monitoring
+        g_patient.patient_condition_start = patient_condition
+        g_patient.sign_observation_hospital =sign_observation
+        g_patient.diagnosis_date = diagnosis_date,
         g_patient.save()
         
         g_incident.rezident = is_rezident
@@ -561,6 +609,15 @@ class Card_id(APIView):
         g_incident.h_other_endocrin = pmsp_other_endo
         g_incident.h_hobl = pmsp_hobl
         g_incident.pregnancy = pregnancy
+        g_incident.type_call = 2
+        g_incident.type_sess = 1
+        g_incident.category_id = 4
+        g_incident.vaccine_type = vaccine
+        g_incident.vaccine_date1 = vaccine_first_date
+        g_incident.vaccine_dose = vaccine_doses 
+        g_incident.vaccine_date2 =vaccine_second_date 
+        g_incident.other_diagnos = detailed_diagnosis_info
+        g_incident.date_time = start_date
         g_incident.save()
 
 
