@@ -28,5 +28,8 @@ urlpatterns = [
     path('card/', Card.as_view(), name='card'),
     path('card/<int:id>', Card_id.as_view(), name='card_id'),
     # path('add_form/<int:id>', additional_form, name='form'),
+
+    #ЧЕК ЛИСТЫ
     path('card/checklist/save/<int:id>', CheckListSaveView.as_view(), name='checklist-save'),
+    path('card/checklists/<int:id>', CheckListJournalView.as_view(), name='checklists-journal'),
 ]

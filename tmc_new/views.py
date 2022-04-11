@@ -26,6 +26,8 @@ from rest_framework.decorators import (
 )
 from rest_framework.response import Response
 from django.template.loader import render_to_string
+import json
+from django.core import serializers
 # from django.contrib.auth import logout as auth_logout, login as auth_login, authenticate
 
 
@@ -303,12 +305,80 @@ class CheckListSaveView(APIView):
         return 'pussy'
 
     def post(self, request, id, *args, **kwargs):
+        date = request.POST.get('date')
+        sore_throat = request.POST.get('sore_throat')
+        nasal_congestion = request.POST.get('nasal_congestion')
+        shortness_breath = request.POST.get('shortness_breath')
+        vomiting = request.POST.get('vomiting')
+        print(vomiting)
+        nausea = request.POST.get('nausea')
+        diarrhea = request.POST.get('diarrhea')
+        dry_cough = request.POST.get('dry_cough')
+        palpitations = request.POST.get('palpitations')
+        debility = request.POST.get('debility')
+        headache = request.POST.get('headache')
+        congestion_chest = request.POST.get('congestion_chest')
+        anosmia = request.POST.get('anosmia')
+        loss_taste = request.POST.get('loss_taste')
+        cough_phlegm = request.POST.get('cough_phlegm')
+        sweating = request.POST.get('sweating')
+        dyspnea = request.POST.get('dyspnea')
+        muscle_pain = request.POST.get('muscle_pain')
+        joint_pain = request.POST.get('joint_pain')
+        discharge_eyes_redness = request.POST.get('discharge_eyes_redness')
+        rash = request.POST.get('rash')
+        operator_id = request.POST.get('operator_id')
+        temperature = request.POST.get('temperature')
+        saturation = request.POST.get('saturation')
+        wellbeing = request.POST.get('wellbeing')
+        home_nabl = request.POST.get('home_nabl')
+        vipoln_naznach = request.POST.get('vipoln_naznach')
+        sostoyznie = request.POST.get('sostoyznie')
+        narushen_karantin = request.POST.get('narushen_karantin')
+        video_call = request.POST.get('video_call')
+        jaloba_na_pmsp = request.POST.get('jaloba_na_pmsp')
+        p_povtor_pcr = request.POST.get('p_povtor_pcr')
+        p_go_street = request.POST.get('p_go_street')
+        p_kt = request.POST.get('p_kt')
+        p_n_naznachenie = request.POST.get('p_n_naznachenie')
+        p_n_list = request.POST.get('p_n_list')
+        p_n_raspiska = request.POST.get('p_n_raspiska')
+        p_n_mb = request.POST.get('p_n_mb')
+        p_n_call = request.POST.get('p_n_call')
+        medical_taken = request.POST.get('medical_taken')
+        violation_quar = request.POST.get('violation_quar')
+        violation_descr = request.POST.get('violation_descr')
+        f_send_mb = request.POST.get('f_send_mb')
+        f_corect_ls = request.POST.get('f_corect_ls')
+        f_repeat_call = request.POST.get('f_repeat_call')
+        f_conf_dc = request.POST.get('f_conf_dc')
+        f_other_comp_pmsp = request.POST.get('f_other_comp_pmsp')
+        f_social_help = request.POST.get('f_social_help')
+        snijenie_sluha = request.POST.get('snijenie_sluha')
+        boli_v_jivote = request.POST.get('boli_v_jivote')
+        onemenie = request.POST.get('onemenie')
+        blagodarnost = request.POST.get('blagodarnost')
+        f_primechanie = request.POST.get('f_primechanie')
+        p_dk_end = request.POST.get('p_dk_end')
+        p_gospt_ranee = request.POST.get('p_gospt_ranee')
+        p_net_svyazi = request.POST.get('p_net_svyazi')
+        p_error_data = request.POST.get('p_error_data')
         try:
-            return {'result': 'success'}
+            return HttpResponse({'result': 'success'})
         except:
-            return {'result': 'fail'}
+            return HttpResponse({'result': 'fail'})
 
 
+class CheckListJournalView(APIView):
+    def get(self, request, id, *args, **kwargs):
+        try:
+            g_observations = GObservation.objects.filter(patient_id=id)
+            response = serializers.serialize("json", g_observations)
+            print(response)
+            return JsonResponse(response, safe=False)
+        except:    
+            response = ''
+            return JsonResponse(response, safe=False)
 
 
 class Card_id(APIView):
