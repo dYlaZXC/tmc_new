@@ -13,9 +13,9 @@
     <title>Form</title>
 </head>
 <body>
-    <div class="row p-2" style="width: 100%; background-color: rgb(36, 36, 36); color: white;">
+    <div class="row main_container p-1" style="vertical-align: middle; background-color: rgb(36, 36, 36); color: white;">
         <div class="col-10">
-            <h2 style="font-weight: bold; vertical-align: middle;">{% block title %}  {% endblock %}</h2>
+            <h2 style="font-weight: bold; width: 100%; height: 34px; display: table-cell; vertical-align: middle;">{% block title %}  {% endblock %}</h2>
         </div>
         <div class="col-2 row">
         {% if not request.user.is_authenticated %}
@@ -30,8 +30,10 @@
         {% endif %}
         </div>
     </div>
+    <div class="main_container">
     {% block content %}
     {% endblock %}
+    </div>
 </body>
 <script>
      function logout() {    
@@ -43,6 +45,15 @@
     h3{
         font-size: 13px;
         font-weight: bold;
+    }
+    div{
+        box-sizing: border-box;
+    }
+    .main_container{
+        box-sizing: border-box;
+        width: 98%;
+        margin: 0 auto;
+        overflow: hidden;
     }
 </style>
 </html>

@@ -1,15 +1,13 @@
 {% extends 'base.html' %}
 {% block title %} Карточка {% endblock %}
 {% block content %}
-<div id="for_popup">
-    <!-- ДЛЯ ЧЕКЛИСТА -->
-</div>
+<div id="for_popup"></div>
 <form method="POST" name="card" id="card">
 {% csrf_token %}
 <div class="row p-2" style="border: 2px solid rgb(36, 36, 36);">
     <!-- 1 БЛОК -->
     <div class="col-3" style="border: 1px solid gray;">
-        <div class="row" style="height: 400px;">
+        <div class="row" style="height: 445px;">
             <iframe style="width: 100%;" src="https://demov5_kz.hostedcc.ru/agentdesktop/AgentDesktopSdkTest.jsp" frameborder="0"></iframe>
         </div>
         <button type="button">Позвонить</button>
@@ -18,7 +16,7 @@
             <div class="row mt-3">
                 <ul class="nav justify-content-start" style="padding: 0px; margin-left:5px;">
                     <li class="nav-item" style="padding: 0px;">
-                        <button class="active" id="patients" onclick="choseHistory('patients')" aria-current="page" onclick="" style="padding: 5px; 
+                        <button type="button" class="active" id="patients" onclick="choseHistory('patients')" aria-current="page" onclick="" style="padding: 5px; 
                                                                                             border-top: 1px solid #c9c9c9; 
                                                                                             border-left: 1px solid #c9c9c9; 
                                                                                             border-right:1px solid #c9c9c9; 
@@ -27,7 +25,7 @@
                     </button>
                     </li>
                     <li class="nav-item" style="padding: 0px;">
-                        <button id="calls" onclick="choseHistory('calls')" style="padding: 5px; 
+                        <button id="calls" type="button" onclick="choseHistory('calls')" style="padding: 5px; 
                                                                 border-top: 1px solid #c9c9c9; 
                                                                 border-left: 1px solid #c9c9c9; 
                                                                 border-right:1px solid #c9c9c9; 
@@ -36,9 +34,9 @@
                     </li>
                 </ul>
             </div>
-            <div id="modal_patients">
+            <div id="modal_patients" style="overflow: hidden; height: 150px;">
                 <table class="table table-bordered">
-                    <thead>
+                    <thead style="font-weight: bold; background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);">
                         <tr>
                             <th>№</th>
                             <th>ФИО</th>
@@ -60,9 +58,9 @@
                     </tbody>
                 </table>
             </div>
-            <div id="modal_calls" style="display: none;">
-                <table class="table table-bordered table-striped" style="border-bottom:rgb(36, 36, 36)">
-                    <thead>
+            <div id="modal_calls" style="display: none; overflow: hidden; height: 150px;">
+                <table class="table table-bordered">
+                    <thead style="font-weight: bold; background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);">
                         <tr>
                             <th>№</th>
                             <th>ЗВОНОК</th>
@@ -72,7 +70,7 @@
                             <th>ЗВОНОК</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="display: block; overflow: auto; height: 150px; width: 100%;">
                         <tr>
                             <td></td>
                             <td></td>
@@ -85,22 +83,26 @@
                 </table>
             </div>
             <div id="modal_info">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Дата и время</th>
-                            <th>Состояние</th>
-                            <th>Темп.</th>
-                            <th>Сат.</th>
+                <table class="table journal_table">
+                    <thead class="journal_head" style="height: 30px; background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);">
+                        <tr class="d-flex justify-content-between" style="height: 100%; border-bottom: 1px solid gray;">
+                            <th style="border: 1px solid gray;" class="text-center">Дата и время</th>
+                            <th style="border: 1px solid gray;" class="text-center">Состояние</th>
+                            <th style="border: 1px solid gray;" class="text-center">Темп.</th>
+                            <th style="border: 1px solid gray;" class="text-center">Сат.</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                    <tbody id="journal_body" style="display: block; overflow: auto; height: 150px; width: 100%;">
+                        {% for g_observation in g_observations %}
+                        <tr class="d-flex justify-content-between" style="background-color: gray;">
+                            <div>
+                                <td style="border: 1px solid gray;">{{ g_observation.date }}</td>
+                                <td style="border: 1px solid gray;">{{ g_observation.sostoyznie }}</td>
+                                <td style="border: 1px solid gray;">{{ g_observation.temperature }}</td>
+                                <td style="border: 1px solid gray;">{{ g_observation.saturation }}</td>
+                            </div>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -808,23 +810,29 @@
     </div>    
 </div>
     <!-- Сохранить/Закрыть -->
-    <div class="row text-center">
+    <div class="row mt-1 text-center">
         <div class="col-3">
             <select style="width: 200px;" name="" id="">
                 <option value=""></option>
             </select>
-        <button type="submit" class="btn btn-light">Сохранить</button>
+        <button type="submit" style="height: 25px;" class="button btn-light">Сохранить</button>
         </div>
         <div class="col-2">
-            <button type="button" class="btn btn-light">Закрыть</button>
+            <button type="button" style="height: 25px;" class="button btn-light">Закрыть</button>
         </div>
     </div>
 </div>
 </form>
 <style>
+    .journal_head th{
+        width: 30%;
+    }
+    .journal_body tr td{
+        width: 30px;
+    }
     table{
         font-size: 13px;
-        min-height: 150px;
+        border-collapse: collapse;
     }
     select{
         font-size: 13px;
@@ -861,6 +869,9 @@
     body{
         background-color: #e9e9e9;
     }
+    tbody, thead, tr{
+        display: block;
+    }
 </style>
 <script>
     window.bpspat.api.init("https://demov5_kz.hostedcc.ru");
@@ -888,12 +899,47 @@
     
 </script>
 <script>
+var JournalStatus = false
+
+
+        function GetObservationJournal(){
+        const full_url = window.location.href
+        const lastSegment = full_url.split("/").pop();
+        let patient_id = lastSegment
+        axios({
+            method: 'GET',
+            url: `checklists/` + patient_id,
+            responseType: 'json',
+        }).then(res => {
+            let data = res.data
+            console.log('DATA IS: PIZDATA ', data)
+            var tbody = document.getElementById("journal_body");
+            tbody.innerHTML = ''
+            for (var i = 0; i < Object.keys(JSON.parse(data)).length; i++) {
+                var myrow = document.createElement('TR');
+                var myhead = document.createElement('TH');
+                myrow.innerHTML = ''
+                // myrow.innerHTML = '<tr><td>' + parsed_data[i].fields.notify + '</td><td>' + parsed_data[i].fields.viewed + '</td><td></tr>'
+                // table.appendChild(myrow);
+                if (data != ''){
+                    tbody.innerHTML += '<tr><td><b>' + JSON.parse(data)[i].fields.date + '</b></td><td><b>' + JSON.parse(data)[i].fields.sostoyznie + '</b></td>' +
+                                      '<td><b>' + JSON.parse(data)[i].fields.temperature + '</b></td><td><b>' + JSON.parse(data)[i].fields.saturation + '</b></td></tr>'
+                }   
+                else{
+                    tbody.innerHTML = '<tr><td><b>Журналов не найдено</b></td></tr>'
+                }
+            }
+        })
+        JournalStatus = true
+    }
+
     function showDialog() {    
         $('#for_popup').load('/add_form/{{ g_patient.id }}');
         $('#popup').modal('show');
     }
     var currentDirectory = window.location.pathname.split('/').slice(0, -1).join('/')
         document.addEventListener("DOMContentLoaded", function(event) { 
+        GetObservationJournal()
         console.log(currentDirectory)
     });
     var is_resident = document.getElementById("is_resident");
@@ -916,1144 +962,1185 @@
 // nachalo checklist push
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-        function postCheckList(){
-			ElementsValuesMigrate('jaloba_na_pmsp_pre', 'jaloba_na_pmsp');
-			ElementsValuesMigrate('narushen_karantin_pre', 'narushen_karantin');
-			ElementsValuesMigrate('f_primechanie_pre', 'f_primechanie');
-			ElementsValuesMigrate('medical_taken_pre', 'medical_taken');
-			ElementsValuesMigrate('blagodarnost_pre', 'blagodarnost');
-			ElementsValuesMigrate('f_primechanie_pre', 'f_primechanie');
-			ElementsValuesMigrate('wellbeing_pre', 'wellbeing')
-			SetDateTime()
-			let date = document.getElementById('date').value 
-			let sore_throat = document.getElementById('sore_throat').value 
-			let nasal_congestion = document.getElementById('nasal_congestion').value 
-			let shortness_breath = document.getElementById('shortness_breath').value 
-			let vomiting = document.getElementById('vomiting').value 
-			let nausea = document.getElementById('nausea').value 
-			let diarrhea = document.getElementById('diarrhea').value 
-			let dry_cough = document.getElementById('dry_cough').value 
-			let palpitations = document.getElementById('palpitations').value 
-			let debility = document.getElementById('debility').value 
-			let headache = document.getElementById('headache').value 
-			let congestion_chest = document.getElementById('congestion_chest').value 
-			let anosmia = document.getElementById('anosmia').value 
-			let loss_taste = document.getElementById('loss_taste').value 
-			let cough_phlegm = document.getElementById('cough_phlegm').value 
-			let sweating = document.getElementById('sweating').value 
-			let dyspnea = document.getElementById('dyspnea').value 
-			let muscle_pain = document.getElementById('muscle_pain').value 
-			let joint_pain = document.getElementById('joint_pain').value 
-			let discharge_eyes_redness = document.getElementById('discharge_eyes_redness').value 
-			let rash = document.getElementById('rash').value 
-			let operator_id = document.getElementById('operator_id').value 
-			let temperature = document.getElementById('temperature').value 
-			let saturation = document.getElementById('saturation').value 
-			let wellbeing = document.getElementById('wellbeing').value 
-			let home_nabl = document.getElementById('home_nabl').value 
-			let vipoln_naznach = document.getElementById('vipoln_naznach').value 
-			let sostoyznie = document.getElementById('sostoyznie').value 
-			let narushen_karantin = document.getElementById('narushen_karantin').value 
-			let video_call = document.getElementById('video_call').value 
-			let jaloba_na_pmsp = document.getElementById('jaloba_na_pmsp').value 
-			let p_povtor_pcr = document.getElementById('p_povtor_pcr').value 
-			let p_go_street = document.getElementById('p_go_street').value 
-			let p_kt = document.getElementById('p_kt').value 
-			let p_n_naznachenie = document.getElementById('p_n_naznachenie').value 
-			let p_n_list = document.getElementById('p_n_list').value 
-			let p_n_raspiska = document.getElementById('p_n_raspiska').value 
-			let p_n_mb = document.getElementById('p_n_mb').value 
-			let p_n_call = document.getElementById('p_n_call').value 
-			let medical_taken = document.getElementById('medical_taken').value 
-			let violation_quar = document.getElementById('violation_quar').value 
-			let violation_descr = document.getElementById('violation_descr').value 
-			let f_send_mb = document.getElementById('f_send_mb').value 
-			let f_corect_ls = document.getElementById('f_corect_ls').value 
-			let f_repeat_call = document.getElementById('f_repeat_call').value 
-			let f_conf_dc = document.getElementById('f_conf_dc').value 
-			let f_other_comp_pmsp = document.getElementById('f_other_comp_pmsp').value 
-			let f_social_help = document.getElementById('f_social_help').value 
-			let snijenie_sluha = document.getElementById('snijenie_sluha').value 
-			let boli_v_jivote = document.getElementById('boli_v_jivote').value 
-			let onemenie = document.getElementById('onemenie').value 
-			let blagodarnost = document.getElementById('blagodarnost').value 
-			let f_primechanie = document.getElementById('f_primechanie').value 
-			let p_dk_end = document.getElementById('p_dk_end').value 
-			let p_gospt_ranee = document.getElementById('p_gospt_ranee').value 
-			let p_net_svyazi = document.getElementById('p_net_svyazi').value 
-			let p_error_data = document.getElementById('p_error_data').value 
-
-			// const json = JSON.stringify({
-			// 	'date' : date,
-			// 	'sore_throat' : sore_throat,
-			// 	'nasal_congestion' : nasal_congestion,
-			// 	'shortness_breath' : shortness_breath,
-			// 	'vomiting' : vomiting,
-			// 	'nausea' : nausea,
-			// 	'diarrhea' : diarrhea,
-			// 	'dry_cough' : dry_cough,
-			// 	'palpitations' : palpitations,
-			// 	'debility' : debility,
-			// 	'headache' : headache,
-			// 	'congestion_chest' : congestion_chest,
-			// 	'anosmia' : anosmia,
-			// 	'loss_taste' : loss_taste,
-			// 	'cough_phlegm' : cough_phlegm,
-			// 	'sweating' : sweating,
-			// 	'dyspnea' : dyspnea,
-			// 	'muscle_pain' : muscle_pain,
-			// 	'joint_pain' : joint_pain,
-			// 	'discharge_eyes_redness' : discharge_eyes_redness,
-			// 	'rash' : rash,
-			// 	'operator_id' : operator_id,
-			// 	'temperature' : temperature,
-			// 	'saturation' : saturation,
-			// 	'wellbeing' : wellbeing,
-			// 	'home_nabl' : home_nabl,
-			// 	'vipoln_naznach' : vipoln_naznach,
-			// 	'sostoyznie' : sostoyznie,
-			// 	'narushen_karantin' : narushen_karantin,
-			// 	'video_call' : video_call,
-			// 	'jaloba_na_pmsp' : jaloba_na_pmsp,
-			// 	'p_povtor_pcr' : p_povtor_pcr,
-			// 	'p_go_street' : p_go_street,
-			// 	'p_kt' : p_kt,
-			// 	'p_n_naznachenie' : p_n_naznachenie,
-			// 	'p_n_list' : p_n_list,
-			// 	'p_n_raspiska' : p_n_raspiska,
-			// 	'p_n_mb' : p_n_mb,
-			// 	'p_n_call' : p_n_call,
-			// 	'medical_taken' : medical_taken,
-			// 	'violation_quar' : violation_quar,
-			// 	'violation_descr' : violation_descr,
-			// 	'f_send_mb' : f_send_mb,
-			// 	'f_corect_ls' : f_corect_ls,
-			// 	'f_repeat_call' : f_repeat_call,
-			// 	'f_conf_dc' : f_conf_dc,
-			// 	'f_other_comp_pmsp' : f_other_comp_pmsp,
-			// 	'f_social_help' : f_social_help,
-			// 	'snijenie_sluha' : snijenie_sluha,
-			// 	'boli_v_jivote' : boli_v_jivote,
-			// 	'onemenie' : onemenie,
-			// 	'blagodarnost' : blagodarnost,
-			// 	'f_primechanie' : f_primechanie,
-			// 	'p_dk_end' : p_dk_end,
-			// 	'p_gospt_ranee' : p_gospt_ranee,
-			// 	'p_net_svyazi' : p_net_svyazi,
-			// 	'p_error_data' : p_error_data,
-	 
-			// });
-			const lastSegment = full_url.split("/").pop();
-			axios({
-				method: 'post',
-				url: 'checklist/save/' + lastSegment,
-                headers: {"X-CSRFToken": csrftoken},
-				data: {
-					date: date,
-					sore_throat: sore_throat,
-					nasal_congestion: nasal_congestion,
-					shortness_breath: shortness_breath,
-					vomiting: vomiting,
-					nausea: nausea,
-					diarrhea: diarrhea,
-					dry_cough: dry_cough,
-					palpitations: palpitations,
-					debility: debility,
-					headache: headache,
-					congestion_chest: congestion_chest,
-					anosmia: anosmia,
-					loss_taste: loss_taste,
-					cough_phlegm: cough_phlegm,
-					sweating: sweating,
-					dyspnea: dyspnea,
-					muscle_pain: muscle_pain,
-					joint_pain: joint_pain,
-					discharge_eyes_redness: discharge_eyes_redness,
-					rash: rash,
-					operator_id: operator_id,
-					temperature: temperature,
-					saturation: saturation,
-					wellbeing: wellbeing,
-					home_nabl: home_nabl,
-					vipoln_naznach: vipoln_naznach,
-					sostoyznie: sostoyznie,
-					narushen_karantin: narushen_karantin,
-					video_call: video_call,
-					jaloba_na_pmsp: jaloba_na_pmsp,
-					p_povtor_pcr: p_povtor_pcr,
-					p_go_street: p_go_street,
-					p_kt: p_kt,
-					p_n_naznachenie: p_n_naznachenie,
-					p_n_list: p_n_list,
-					p_n_raspiska: p_n_raspiska,
-					p_n_mb: p_n_mb,
-					p_n_call: p_n_call,
-					medical_taken: medical_taken,
-					violation_quar: violation_quar,
-					violation_descr: violation_descr,
-					f_send_mb: f_send_mb,
-					f_corect_ls: f_corect_ls,
-					f_repeat_call: f_repeat_call,
-					f_conf_dc: f_conf_dc,
-					f_other_comp_pmsp: f_other_comp_pmsp,
-					f_social_help: f_social_help,
-					snijenie_sluha: snijenie_sluha,
-					boli_v_jivote: boli_v_jivote,
-					onemenie: onemenie,
-					blagodarnost: blagodarnost,
-					f_primechanie: f_primechanie,
-					p_dk_end: p_dk_end,
-					p_gospt_ranee: p_gospt_ranee,
-					p_net_svyazi: p_net_svyazi,
-					p_error_data: p_error_data,
-				}
-            });	}
-</script>
-<script>
-	function ElementsValuesMigrate(id1, id2){
-		let pre_data = document.getElementById(id1)
-		let migrate_to = document.getElementById(id2)
-		try{
-			migrate_to.value = pre_data.value
-		}
-		catch(e){
-			//pass
-		}
-		finally{
-			//pass
-		}
-	}
 function SetDateTime(){ 
 	var now = new Date();
 	now. setMinutes(now. getMinutes() - now. getTimezoneOffset());
 	document. getElementById('date'). value = now. toISOString(). slice(0,16);
 }
 
-const CheckList = 	'<form class="px-2 row" id="popup" style="background-color: #e9e9e9; border: 2px solid black;" method="POST" style="padding: 0px;">' +
-'	<!-- БЛОК 1 -->' +
-'	<div class="col">' +
-'		<h3 class="p-1" style="border: 1px solid gray; border-radius: 5px 5px 0 0; font-size: 14px;">Информирование и контроль</h3>' +
-'		<table class="p-1" style="width: 100%; min-height: 50px;">' +
-'			<tbody style="display: block; min-height: 50px; border: 1px solid gray;" class="px-2">' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Соблюдение условий пребывания' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="home_nabl" id="home_nabl_true" class="input_radio" name="" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="home_nabl" id="home_nabl_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
+const CheckList = 
+'<form class="row" id="popup" style="background-color: #e9e9e9; border: 2px solid black;" method="POST" style="padding: 0px;">' +
+    '<div class="p-1" style="width: 100%; vertical-align: middle; background-color: rgb(36, 36, 36); color: white;">' +
+    '<h2 style="font-weight: bold; vertical-align: middle;">Добавить запись в журнал</h2>' +
+    '</div>' +
+	'<!-- БЛОК 1 -->' +
+	'<div class="col mt-2">' +
+		'<h3 class="p-1" style="border: 1px solid gray; border-radius: 5px 5px 0 0; font-size: 14px;">Информирование и контроль</h3>' +
+		'<table class="p-1" style="width: 100%; min-height: 50px;">' +
+			'<tbody style="display: block; min-height: 50px; border: 1px solid gray;" class="px-2">' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Соблюдение условий пребывания' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="home_nabl_" id="home_nabl_true" class="input_radio" name="" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="home_nabl_" id="home_nabl_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+                            '<input type="checkbox" hidden name="home_nabl" id="home_nabl">' +
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
 '						Выполнение назначений' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="vipoln_naznach" id="vipolt_naznach_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="vipoln_naznach" id="vipolt_naznach_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="vipoln_naznach_" id="vipoln_naznach_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="vipoln_naznach_" id="vipoln_naznach_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input type="checkbox" hidden name="vipoln_naznach" id="vipoln_naznach">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
 '						Видеозвонок оператора' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="video_call" id="video_call_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="video_call" id="video_call_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'			</tbody>' +
-'		</table>' +
-'		<div class="mt-1">' +
-'			<h3 style="font-size: 14px;">Жалобы пациента на ПМСП</h3>' +
-'			<textarea name="jaloba_na_pmsp_pre" id="jaloba_na_pmsp_pre" cols="55" rows="4"></textarea>' +
-'			<input type="text" hidden name="jaloba_na_pmsp" id="jaloba_na_pmsp">' +
-'		</div>' +
-'		<div class="mt-1">' +
-'			<h3 style="font-size: 14px;">Нарушения карантина пациентом</h3>' +
-'			<textarea name="violation_quar_pre" id="violation_quar_pre" cols="55" rows="4"></textarea>' +
-'			<input type="text" id="violation_quar" name="violation_quar" hidden>' +
-'		</div>' +
-'		<h3 class="mt-1 p-1" style="border: 1px solid gray; border-radius: 5px 5px 0 0; font-size: 14px;">Нарушение ПМСП</h3>' +
-'		<table class="p-1" style="width: 100%; min-height: 100px;">' +
-'			<tbody style="display: block; min-height: 100px; border: 1px solid gray;" class="px-2">' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Повторный забор ПЦР на ДН' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_povtor_pcr" id="p_povtor_pcr_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_povtor_pcr" id="p_povtor_pcr_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Разрешение выхода на улицу' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_go_street" id="p_go_street_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_go_street" id="p_go_street_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Разрешен самостоятельный выезд на КТ' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_kt" id="p_kt_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_kt" id="p_kt_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Неправильное назначение ЛС' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_n_naznachenie" id="p_n_naznachenie_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_n_naznachenie" id="p_n_naznachenie_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Невыдача чек-листа' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_n_list" id="p_n_list_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_n_list" id="p_n_list_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Не взята расписка' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_n_raspiska" id="p_n_raspiska_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_n_raspiska" id="p_n_raspiska_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Нет выезда МБ' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_n_mb" id="p_n_mb_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_n_mb" id="p_n_mb_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Не звонили в прош. сутки' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_n_call" id="p_n_call_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_n_call" id="p_n_call_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="video_call_" id="video_call_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="video_call_" id="video_call_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input type="checkbox" hidden id="video_call" name="video_call">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+			'</tbody>' +
+		'</table>' +
+		'<div class="mt-1">' +
+			'<h3 style="font-size: 14px;">Жалобы пациента на ПМСП</h3>' +
+			'<textarea name="jaloba_na_pmsp_pre" id="jaloba_na_pmsp_pre" cols="55" rows="2"></textarea>' +
+			'<input type="text" hidden name="jaloba_na_pmsp" id="jaloba_na_pmsp">' +
+		'</div>' +
+		'<div class="mt-1">' +
+			'<h3 style="font-size: 14px;">Нарушения карантина пациентом</h3>' +
+			'<textarea name="violation_quar_pre" id="violation_quar_pre" cols="55" rows="2"></textarea>' +
+			'<input type="text" id="violation_quar" name="violation_quar" hidden>' +
+		'</div>' +
+		'<h3 class="mt-1 p-1" style="border: 1px solid gray; border-radius: 5px 5px 0 0; font-size: 14px;">Нарушение ПМСП</h3>' +
+		'<table class="p-1" style="width: 100%; min-height: 100px;">' +
+			'<tbody style="display: block; min-height: 100px; border: 1px solid gray;" class="px-2">' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Повторный забор ПЦР на ДН' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_povtor_pcr_" id="p_povtor_pcr_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_povtor_pcr_" id="p_povtor_pcr_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="p_povtor_pcr" name="p_povtor_pcr">' +
+                            
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Разрешение выхода на улицу' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_go_street_" id="p_go_street_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_go_street_" id="p_go_street_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="p_go_street" name="p_go_street">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Разрешен самостоятельный выезд на КТ' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_kt_" id="p_kt_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_kt_" id="p_kt_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="p_kt" name="p_kt">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Неправильное назначение ЛС' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_n_naznachenie_" id="p_n_naznachenie_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_n_naznachenie_" id="p_n_naznachenie_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="p_n_naznachenie" name="p_n_naznachenie">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Невыдача чек-листа' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_n_list_" id="p_n_list_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_n_list_" id="p_n_list_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="p_n_list" name="p_n_list">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Не взята расписка' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_n_raspiska_" id="p_n_raspiska_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_n_raspiska_" id="p_n_raspiska_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="p_n_raspiska" name="p_n_raspiska">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Нет выезда МБ' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_n_mb_" id="p_n_mb_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_n_mb_" id="p_n_mb_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="p_n_mb" name="p_n_mb">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Не звонили в прош. сутки' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_n_call_" id="p_n_call_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_n_call_" id="p_n_call_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="p_n_call" name="p_n_call">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
 '						ДК завершен' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_dk_end" id="p_dk_end_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" style="width: 20px;" name="p_dk_end" id="p_dk_end_false" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_dk_end_" id="p_dk_end_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" style="width: 20px;" name="p_dk_end_" id="p_dk_end_false" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="p_dk_end" name="p_dk_end">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
 '						Госпитализирован ранее' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_gospt_ranee" id="p_gospt_ranee_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_gospt_ranee" id="p_gospt_ranee_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Нет связи с пациентом и ГП' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_net_svyazi" id="p_net_svyazi_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_net_svyazi" id="p_net_svyazi_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_gospt_ranee_" id="p_gospt_ranee_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_gospt_ranee_" id="p_gospt_ranee_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="p_gospt_ranee" name="p_gospt_ranee">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Нет связи с пациентом и ГП' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_net_svyazi_" id="p_net_svyazi_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_net_svyazi_" id="p_net_svyazi_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="p_net_svyazi" name="p_net_svyazi">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
 '						Неверные данные' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_error_data" id="p_error_data_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="p_error_data" id="p_error_data_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'			</tbody>' +
-'		</table>' +
-'		<h3 class="mt-1" style="font-size: 14px;">Описание нарушений ПМСП</h3>' +
-'		<textarea name="violation_descr_pre" id="violation_descr_pre" cols="55" rows="4"></textarea>' +
-'		<input type="text" id="violation_descr" name="violation_descr" hidden>' +
-'	</div>' +
-'	<!-- БЛОК 2 -->' +
-'	<div class="col">' +
-'		<label for="">Оценка текущего состояния</label>' +
-'		<select name="sostoyznie" id="sostoyznie">' +
-'			<option value=""></option>' +
-'			<option value="1">Бессимптомное</option>' +
-'			<option value="2">Легкой степени тяжести</option>' +
-'			<option value="3">Среднетяжелой степени тяжести</option>' +
-'			<option value="4">Тяжелой степени тяжести</option>' +
-'		</select>' +
-'		<div class="row">' +
-'			<div class="col">' +
-'				<label for="">Температура</label>' +
-'				<br>' +
-'				<input id="temperature" name="temperature" type="text">' +
-'			</div>' +
-'			<div class="col">' +
-'				<label for="">Сатурация</label>' +
-'				<input id="saturation" name="saturation" type="text">' +
-'			</div>' +
-'		</div>' +
-'		<h3 class="p-1 mt-2" style="border: 1px solid gray; border-radius: 5px 5px 0 0; font-size: 14px;">Чеклист мониторинг</h3>' +
-'		<table style="min-height: 100px; width: 100%">' +
-'			<tbody style="display: block; min-height: 100px; border: 1px solid gray;" class="px-2">' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Слабость' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="debility" id="debility_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="debility" id="debility_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Потливость' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" id="sweating_true" name="sweating" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" id="sweating_false" name="sweating" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Головная боль' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="headache" id="headache_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="headache" id="headache_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Выделение из глаз или покраснение' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="discharge_eyes_redness" id="discharge_eyes_redness_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="discharge_eyes_redness" id="discharge_eyes_redness_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Снижение слуха / боли в ушах' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="snijenie_sluha" id="snijenie_sluha_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="snijenie_sluha" id="snijenie_sluha_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Заложенность носа' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="nasal_congestion" id="nasal_congestion_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="nasal_congestion" id="nasal_congestion_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Потеря обоняния' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="anosmia" id="anosmia_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="anosmia" id="anosmia_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Потеря вкуса' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="loss_taste" id="loss_taste_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="loss_taste" id="loss_taste_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Боль/першение в горле' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="sore_throat" id="sore_throat_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="sore_throat" id="sore_throat_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Кашель сухой' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="dry_cough" id="dry_cough_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="dry_cough" id="dry_cough_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Кашель влажный с мокротой' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="cough_phlegm" id="cough_phlegm_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="cough_phlegm" id="cough_phlegm_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Затрудненность дыхания' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="shortness_breath" id="shortness_breath_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="shortness_breath" id="shortness_breath_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Одышка' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="dyspnea" id="dyspnea_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="dyspnea" id="dyspnea_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Ощущение сердцебиения/стестнения в груди' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="palpitations" id="palpitations_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="palpitations" id="palpitations_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Ощущение заложенности в грудной клетке' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="congestion_chest" id="congestion_chest_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="congestion_chest" id="congestion_chest_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Тошнота' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="nausea" id="nausea_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="nausea" id="nausea_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Рвота' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="vomiting" id="vomiting_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="vomiting" id="vomiting_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Боли в животе' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="boli_v_jivote" id="boli_v_jivote_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="boli_v_jivote" id="boli_v_jivote_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Диарея' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="diarrhea" id="diarrhea_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="diarrhea" id="diarrhea_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Боль в мышцах' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="muscle_pain" id="muscle_pain_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="muscle_pain" id="muscle_pain_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Боль в суставах' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="joint_pain" id="joint_pain_true" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input class="input_radio" name="joint_pain" id="joint_pain_false" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Онемение/боли в НК' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="onemenie" id="onemenie_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="onemenie" id="onemenie_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'				<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'					<td>' +
-'						Сыпь' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="rash" id="rash_true" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Да</label>' +
-'						</div>' +
-'					</td>' +
-'					<td>' +
-'						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'							<input name="rash" id="rash_false" class="input_radio" style="width: 20px;" type="radio">' +
-'							<label for="">Нет</label>' +
-'						</div>	' +
-'					</td>' +
-'				</tr>' +
-'			</tbody>' +
-'		</table>' +
-'		<h3 class="mt-1" style="font-size: 14px;">Жалобы на состояние здоровья</h3>' +
-'		<textarea name="wellbeing_pre" id="wellbeing_pre" cols="52" rows="2"></textarea>' +
-'		<!-- доработать -->' +
-'		<input id="wellbeing" name="wellbeing" type="text" hidden>' +
-'		</div>' +
-'	</div>' +
-'	<!-- НИЖНИЕ БЛОК -->' +
-'	<div class="row">' +
-'		<!-- БЛОК №1 -->' +
-'		<div class="col-8">' +
-'			<h3 class="p-1 mt-2" style="border: 1px solid gray; border-radius: 5px 5px 0 0; font-size: 14px;">Обратная связь</h3>' +
-'			<table class="p-1" style="width: 100%; min-height: 50px;">' +
-'				<tbody style="display: block; min-height: 50px; border: 1px solid gray;" class="px-2">' +
-'					<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'						<td>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_error_data_" id="p_error_data_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="p_error_data_" id="p_error_data_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="p_error_data" name="p_error_data">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+			'</tbody>' +
+		'</table>' +
+		'<h3 class="mt-1" style="font-size: 14px;">Описание нарушений ПМСП</h3>' +
+		'<textarea name="violation_descr_pre" id="violation_descr_pre" cols="55" rows="2"></textarea>' +
+		'<input type="text" id="violation_descr" name="violation_descr" hidden>' +
+        '<h3 class="p-1 mt-2" style="border: 1px solid gray; border-radius: 5px 5px 0 0; font-size: 14px;">Обратная связь</h3>' +
+			'<table class="p-1" style="width: 100%; min-height: 50px;">' +
+				'<tbody style="display: block; min-height: 50px; border: 1px solid gray;" class="px-2">' +
+					'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+						'<td>' +
 '							Отправить МБ' +
-'						</td>' +
-'						<td>' +
-'							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'								<input name="f_send_mb" id="f_send_mb_true" class="input_radio" style="width: 20px;" type="radio">' +
-'								<label for="">Да</label>' +
-'							</div>' +
-'						</td>' +
-'						<td>' +
-'							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'								<input name="f_send_mb" id="f_send_mb_false" class="input_radio" style="width: 20px;" type="radio">' +
-'								<label for="">Нет</label>' +
-'							</div>	' +
-'						</td>' +
-'					</tr>' +
-'					<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'						<td>' +
+						'</td>' +
+						'<td>' +
+							'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+								'<input name="f_send_mb_" id="f_send_mb_true" class="input_radio" style="width: 20px;" type="radio">' +
+								'<label for="">Да</label>' +
+							'</div>' +
+						'</td>' +
+						'<td>' +
+							'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+								'<input name="f_send_mb_" id="f_send_mb_false" class="input_radio" style="width: 20px;" type="radio">' +
+								'<label for="">Нет</label>' +
+						'<input hidden type="checkbox" id="f_send_mb" name="f_send_mb">' +
+							'</div>	' +
+						'</td>' +
+					'</tr>' +
+					'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+						'<td>' +
 '							Корректировка ЛС' +
-'						</td>' +
-'						<td>' +
-'							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'								<input name="f_corect_ls" id="f_corect_ls_true" class="input_radio" style="width: 20px;" type="radio">' +
-'								<label for="">Да</label>' +
-'							</div>' +
-'						</td>' +
-'						<td>' +
-'							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'								<input name="f_corect_ls" id="f_corect_ls_false" class="input_radio" style="width: 20px;" type="radio">' +
-'								<label for="">Нет</label>' +
-'							</div>	' +
-'						</td>' +
-'					</tr>' +
-'					<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'						<!-- не точно -->' +
-'						<td>' +
-'							Отбор биоматериала у контактных лиц' +
-'						</td>' +
-'						<td>' +
-'							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'								<input name="f_conf_dc" id="f_conf_dc_true" class="input_radio" style="width: 20px;" type="radio">' +
-'								<label for="">Да</label>' +
-'							</div>' +
-'						</td>' +
-'						<td>' +
-'							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'								<input name="f_conf_dc" id="f_conf_dc_false" class="input_radio" style="width: 20px;" type="radio">' +
-'								<label for="">Нет</label>' +
-'							</div>	' +
-'						</td>' +
-'					</tr>' +
-'					<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'						<td>' +
-'							Повторный звонок за сутки' +
-'						</td>' +
-'						<td>' +
-'							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'								<input name="f_repeat_call" id="f_repeat_call_true" class="input_radio" style="width: 20px;" type="radio">' +
-'								<label for="">Да</label>' +
-'							</div>' +
-'						</td>' +
-'						<td>' +
-'							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'								<input name="f_repeat_call" id="f_repeat_call_false" class="input_radio" style="width: 20px;" type="radio">' +
-'								<label for="">Нет</label>' +
-'							</div>	' +
-'						</td>' +
-'					</tr>' +
-'					<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'						<td>' +
-'							Подтвердить нарушение ДК' +
-'						</td>' +
-'						<td>' +
-'							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'								<input name="narushen_karantin" id="narushen_karantin_true" class="input_radio" style="width: 20px;" type="radio">' +
-'								<label for="">Да</label>' +
-'							</div>' +
-'						</td>' +
-'						<td>' +
-'							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'								<input name="narushen_karantin" id="narushen_karantin_false" class="input_radio" style="width: 20px;" type="radio">' +
-'								<label for="">Нет</label>' +
-'							</div>	' +
-'						</td>' +
-'					</tr>' +
-'					<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'						<td>' +
-'							Прочие жалобы на ПМСП' +
-'						</td>' +
-'						<td>' +
-'							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'								<input name="f_other_comp_pmsp" id="f_other_comp_pmsp_true" class="input_radio" style="width: 20px;" type="radio">' +
-'								<label for="">Да</label>' +
-'							</div>' +
-'						</td>' +
-'						<td>' +
-'							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'								<input name="f_other_comp_pmsp" id="f_other_comp_pmsp_false" class="input_radio" style="width: 20px;" type="radio">' +
-'								<label for="">Нет</label>' +
-'							</div>	' +
-'						</td>' +
-'					</tr>' +
-'					<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'						<td>' +
+						'</td>' +
+						'<td>' +
+							'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+								'<input name="f_corect_ls_" id="f_corect_ls_true" class="input_radio" style="width: 20px;" type="radio">' +
+								'<label for="">Да</label>' +
+							'</div>' +
+						'</td>' +
+						'<td>' +
+							'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+								'<input name="f_corect_ls_" id="f_corect_ls_false" class="input_radio" style="width: 20px;" type="radio">' +
+								'<label for="">Нет</label>' +
+						'<input hidden type="checkbox" id="f_corect_ls" name="f_corect_ls">' +
+
+							'</div>	' +
+						'</td>' +
+					'</tr>' +
+					'<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+						'<!-- не точно -->' +
+						'<td>' +
+							'Отбор биоматериала у контактных лиц' +
+						'</td>' +
+						'<td>' +
+							'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+								'<input name="f_conf_dc_" id="f_conf_dc_true" class="input_radio" style="width: 20px;" type="radio">' +
+								'<label for="">Да</label>' +
+							'</div>' +
+						'</td>' +
+						'<td>' +
+							'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+								'<input name="f_conf_dc_" id="f_conf_dc_false" class="input_radio" style="width: 20px;" type="radio">' +
+								'<label for="">Нет</label>' +
+						'<input hidden type="checkbox" id="f_conf_dc" name="f_conf_dc">' +
+
+							'</div>	' +
+						'</td>' +
+					'</tr>' +
+					'<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+						'<td>' +
+							'Повторный звонок за сутки' +
+						'</td>' +
+						'<td>' +
+							'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+								'<input name="f_repeat_call_" id="f_repeat_call_true" class="input_radio" style="width: 20px;" type="radio">' +
+								'<label for="">Да</label>' +
+							'</div>' +
+						'</td>' +
+						'<td>' +
+							'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+								'<input name="f_repeat_call_" id="f_repeat_call_false" class="input_radio" style="width: 20px;" type="radio">' +
+								'<label for="">Нет</label>' +
+						'<input hidden type="checkbox" id="f_repeat_call" name="f_repeat_call">' +
+
+							'</div>	' +
+						'</td>' +
+					'</tr>' +
+					'<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+						'<td>' +
+							'Подтвердить нарушение ДК' +
+						'</td>' +
+						'<td>' +
+							'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+								'<input name="narushen_karantin_" id="narushen_karantin_true" class="input_radio" style="width: 20px;" type="radio">' +
+								'<label for="">Да</label>' +
+							'</div>' +
+						'</td>' +
+						'<td>' +
+							'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+								'<input name="narushen_karantin_" id="narushen_karantin_false" class="input_radio" style="width: 20px;" type="radio">' +
+								'<label for="">Нет</label>' +
+						'<input hidden type="checkbox" id="narushen_karantin" name="narushen_karantin">' +
+
+							'</div>	' +
+						'</td>' +
+					'</tr>' +
+					'<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+						'<td>' +
+							'Прочие жалобы на ПМСП' +
+						'</td>' +
+						'<td>' +
+							'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+								'<input name="f_other_comp_pmsp_" id="f_other_comp_pmsp_true" class="input_radio" style="width: 20px;" type="radio">' +
+								'<label for="">Да</label>' +
+							'</div>' +
+						'</td>' +
+						'<td>' +
+							'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+								'<input name="f_other_comp_pmsp_" id="f_other_comp_pmsp_false" class="input_radio" style="width: 20px;" type="radio">' +
+								'<label for="">Нет</label>' +
+						'<input hidden type="checkbox" id="f_other_comp_pmsp" name="f_other_comp_pmsp">' +
+
+							'</div>	' +
+						'</td>' +
+					'</tr>' +
+					'<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+						'<td>' +
 '							Соц. помощь' +
-'						</td>' +
-'						<td>' +
-'							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'								<input name="f_social_help" id="f_social_help_true" class="input_radio" style="width: 20px;" type="radio">' +
-'								<label for="">Да</label>' +
-'							</div>' +
-'						</td>' +
-'						<td>' +
-'							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
-'								<input name="f_social_help" id="f_social_help_false" class="input_radio" style="width: 20px;" type="radio">' +
-'								<label for="">Нет</label>' +
-'							</div>	' +
-'						</td>' +
-'					</tr>' +
-'				</tbody>' +
-'			</table>' +
-'			<h3 style="font-size: 14px;;">Примечание</h3>' +
-'			<textarea name="f_primechanie_pre" id="f_primechanie_pre" cols="72" rows="2"></textarea>' +
-'			<input type="text" id="f_primechanie" hidden name="f_primechanie">' +
-'		</div>' +
-'		<div class="col-4">' +
-'			<h3 style="font-size: 14px;">Принимаемые препараты</h3>' +
-'			<textarea name="medical_taken_pre" id="medical_taken_pre" cols="36" rows="6"></textarea>' +
-'			<input type="text" id="medical_taken" name="medical_taken" hidden>' +
-'			<h3 style="font-size: 14px;">Благодарность ТМЦ</h3>' +
-'			<textarea name="blagodarnost_pre" id="blagodarnost_pre" cols="36" rows="6"></textarea>' +
-'			<input type="text" name="blagodarnost" hidden id="blagodarnost">' +
-'		</div>' +
-'	</div>' +
-'	<div class="row">' +
-'		<div class="col">' +
-'			<button class="btn btn-light">Видезвонок</button>' +
-'		</div>' +
-'		<div class="col row">' +
-'			<button onclick="postCheckList()" type="button" id="save_changes" class="button btn-light col p-0">Сохранить</button>' +
-"			<button class='button btn-light col p-0' type='button' id='close'>Отмена</button>" +
-'		</div>' +
-'	</div>' +
-'	<input type="datetime-local" hidden id="date" name="date">' +
-'	<input type="text" value="{{ id }}">' +
+						'</td>' +
+						'<td>' +
+							'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+								'<input name="f_social_help_" id="f_social_help_true" class="input_radio" style="width: 20px;" type="radio">' +
+								'<label for="">Да</label>' +
+							'</div>' +
+						'</td>' +
+						'<td>' +
+							'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+								'<input name="f_social_help_" id="f_social_help_false" class="input_radio" style="width: 20px;" type="radio">' +
+								'<label for="">Нет</label>' +
+						'<input hidden type="checkbox" id="f_social_help" name="f_social_help">' +
+
+							'</div>	' +
+						'</td>' +
+					'</tr>' +
+				'</tbody>' +
+			'</table>' +
+			'<h3 style="font-size: 14px; margin-top: 2px;">Примечание</h3>' +
+			'<textarea name="f_primechanie_pre" id="f_primechanie_pre" cols="55" rows="2"></textarea>' +
+			'<input type="text" id="f_primechanie" hidden name="f_primechanie">' +
+	'</div>' +
+	'<!-- БЛОК 2 -->' +
+	'<div class="col">' +
+		'<label for="">Оценка текущего состояния</label>' +
+		'<select name="sostoyznie" id="sostoyznie">' +
+			'<option value=""></option>' +
+			'<option value="1">Бессимптомное</option>' +
+			'<option value="2">Легкой степени тяжести</option>' +
+			'<option value="3">Среднетяжелой степени тяжести</option>' +
+			'<option value="4">Тяжелой степени тяжести</option>' +
+		'</select>' +
+		'<div class="row">' +
+			'<div class="col">' +
+				'<label for="">Температура</label>' +
+				'<br>' +
+				'<input id="temperature" name="temperature" type="text">' +
+			'</div>' +
+			'<div class="col">' +
+				'<label for="">Сатурация</label>' +
+				'<input id="saturation" name="saturation" type="text">' +
+			'</div>' +
+		'</div>' +
+		'<h3 class="p-1 mt-2" style="border: 1px solid gray; border-radius: 5px 5px 0 0; font-size: 14px;">Чеклист мониторинг</h3>' +
+		'<table style="min-height: 100px; width: 100%">' +
+			'<tbody style="display: block; min-height: 100px; border: 1px solid gray;" class="px-2">' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Слабость' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="debility_" id="debility_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="debility_" id="debility_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="debility" name="debility">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Потливость' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" id="sweating_true" name="sweating_" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" id="sweating_false" name="sweating_" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="sweating" name="sweating">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+'						Головная боль' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="headache_" id="headache_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="headache_" id="headache_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="headache" name="headache">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Выделение из глаз или покраснение' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="discharge_eyes_redness_" id="discharge_eyes_redness_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="discharge_eyes_redness_" id="discharge_eyes_redness_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="discharge_eyes_redness" name="discharge_eyes_redness">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Снижение слуха / боли в ушах' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="snijenie_sluha_" id="snijenie_sluha_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="snijenie_sluha_" id="snijenie_sluha_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="snijenie_sluha" name="snijenie_sluha">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+'						Заложенность носа' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="nasal_congestion_" id="nasal_congestion_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="nasal_congestion_" id="nasal_congestion_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="nasal_congestion" name="nasal_congestion">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+'						Потеря обоняния' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="anosmia_" id="anosmia_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="anosmia_" id="anosmia_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="anosmia" name="anosmia">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+'						Потеря вкуса' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="loss_taste_" id="loss_taste_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="loss_taste_" id="loss_taste_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="loss_taste" name="loss_taste">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Боль/першение в горле' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="sore_throat_" id="sore_throat_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="sore_throat_" id="sore_throat_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="sore_throat" name="sore_throat">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+'						Кашель сухой' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="dry_cough_" id="dry_cough_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="dry_cough_" id="dry_cough_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="dry_cough" name="dry_cough">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Кашель влажный с мокротой' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="cough_phlegm_" id="cough_phlegm_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="cough_phlegm_" id="cough_phlegm_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="cough_phlegm" name="cough_phlegm">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+'						Затрудненность дыхания' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="shortness_breath_" id="shortness_breath_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="shortness_breath_" id="shortness_breath_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="shortness_breath" name="shortness_breath">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Одышка' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="dyspnea_" id="dyspnea_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="dyspnea_" id="dyspnea_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="dyspnea" name="dyspnea">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Ощущение сердцебиения/стестнения в груди' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="palpitations_" id="palpitations_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="palpitations_" id="palpitations_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="palpitations" name="palpitations">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Ощущение заложенности в грудной клетке' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="congestion_chest_" id="congestion_chest_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="congestion_chest_" id="congestion_chest_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="congestion_chest" name="congestion_chest">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Тошнота' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="nausea_" id="nausea_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="nausea_" id="nausea_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="nausea" name="nausea">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Рвота' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="vomiting_" id="vomiting_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="vomiting_" id="vomiting_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="vomiting" name="vomiting">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Боли в животе' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="boli_v_jivote_" id="boli_v_jivote_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="boli_v_jivote_" id="boli_v_jivote_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="boli_v_jivote" name="boli_v_jivote">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Диарея' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="diarrhea_" id="diarrhea_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="diarrhea_" id="diarrhea_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="diarrhea" name="diarrhea">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Боль в мышцах' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="muscle_pain_" id="muscle_pain_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="muscle_pain_" id="muscle_pain_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="muscle_pain" name="muscle_pain">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Боль в суставах' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="joint_pain_" id="joint_pain_true" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input class="input_radio" name="joint_pain_" id="joint_pain_false" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="joint_pain" name="joint_pain">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Онемение/боли в НК' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="onemenie_" id="onemenie_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="onemenie_" id="onemenie_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="onemenie" name="onemenie">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+				'<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+					'<td>' +
+						'Сыпь' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="rash_" id="rash_true" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Да</label>' +
+						'</div>' +
+					'</td>' +
+					'<td>' +
+						'<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">' +
+							'<input name="rash_" id="rash_false" class="input_radio" style="width: 20px;" type="radio">' +
+							'<label for="">Нет</label>' +
+					'<input hidden type="checkbox" id="rash" name="rash">' +
+
+						'</div>	' +
+					'</td>' +
+				'</tr>' +
+			'</tbody>' +
+		'</table>' +
+		'<h3 class="mt-1" style="font-size: 14px;">Жалобы на состояние здоровья</h3>' +
+		'<textarea name="wellbeing_pre" id="wellbeing_pre" cols="53" rows="3"></textarea>' +
+		'<input id="wellbeing" name="wellbeing" type="text" hidden>' +
+        '<h3 style="font-size: 14px;">Принимаемые препараты</h3>' +
+			'<textarea name="medical_taken_pre" id="medical_taken_pre" cols="52" rows="3"></textarea>' +
+			'<input type="text" id="medical_taken" name="medical_taken" hidden>' +
+			'<h3 style="font-size: 14px;">Благодарность ТМЦ</h3>' +
+			'<textarea name="blagodarnost_pre" id="blagodarnost_pre" cols="53" rows="3"></textarea>' +
+			'<input type="text" name="blagodarnost" hidden id="blagodarnost">' +
+		'</div>' +
+	'</div>' +
+	'<div class="row">' +
+		'<div class="col">' +
+			'<button type="button" style="height: 25px !important; vertical-align: middle;" class="button btn-light">Видезвонок</button>' +
+		'</div>' +
+		'<div class="col row p-1">' +
+			'<button onclick="postCheckList()" style="height: 25px !important; vertical-align: middle;" type="button" id="save_changes" class="button btn-light col p-0">Сохранить</button>' +
+			'<button id="close" type="button" style="height: 25px !important; vertical-align: middle;" class="button btn-light col p-0">Отмена</button>' +
+		'</div>' +
+	'</div>' +
+	'<input type="datetime-local" hidden id="date" name="date">' +
+		'</div>' +
+	'</div>' +
 '</form>'
+
+function radioToCheckBox(id){
+    let checkbox = document.getElementById(id)
+    let radio_true = document.getElementById(id + '_true')
+    let radio_false = document.getElementById(id + '_false')
+    console.log(checkbox)
+    radio_true.addEventListener('click', function(event){
+        checkbox.checked = true
+        console.log('YES')
+    })
+    radio_false.addEventListener('click', function(event){
+        checkbox.checked = false
+        console.log('NO')
+    })
+}
+
 function addCheckList(){
     let div = document.getElementById('for_popup')
+    console.log(div.innerHTML)
+    if(div.innerHTML == ''){
     div.innerHTML += CheckList
+    }
     document.getElementById('close').addEventListener("click", function(event){
         $("#for_popup").empty();
-        let date = document.getElementsByName('date').value 
-		const sore_throat = document.getElementsByName('sore_throat').value 
-		const nasal_congestion = document.getElementsByName('nasal_congestion').value 
-		const shortness_breath = document.getElementsByName('shortness_breath').value 
-		const vomiting = document.getElementsByName('vomiting').value 
-		const nausea = document.getElementsByName('nausea').value 
-		const diarrhea = document.getElementsByName('diarrhea').value 
-		const dry_cough = document.getElementsByName('dry_cough').value 
-		const palpitations = document.getElementsByName('palpitations').value 
-		const debility = document.getElementsByName('debility').value 
-		const headache = document.getElementsByName('headache').value 
-		const congestion_chest = document.getElementsByName('congestion_chest').value 
-		const anosmia = document.getElementsByName('anosmia').value 
-		const loss_taste = document.getElementsByName('loss_taste').value 
-		const cough_phlegm = document.getElementsByName('cough_phlegm').value 
-		const sweating = document.getElementsByName('sweating').value 
-		const dyspnea = document.getElementsByName('dyspnea').value 
-		const muscle_pain = document.getElementsByName('muscle_pain').value 
-		const joint_pain = document.getElementsByName('joint_pain').value 
-		const discharge_eyes_redness = document.getElementsByName('discharge_eyes_redness').value 
-		const rash = document.getElementsByName('rash').value 
-		const operator_id = document.getElementsByName('operator_id').value 
-		const temperature = document.getElementsByName('temperature').value 
-		const saturation = document.getElementsByName('saturation').value 
-		const wellbeing = document.getElementsByName('wellbeing').value 
-		const home_nabl = document.getElementsByName('home_nabl').value 
-		const vipoln_naznach = document.getElementsByName('vipoln_naznach').value 
-		const sostoyznie = document.getElementsByName('sostoyznie').value 
-		const narushen_karantin = document.getElementsByName('narushen_karantin').value 
-		const video_call = document.getElementsByName('video_call').value 
-		const jaloba_na_pmsp = document.getElementsByName('jaloba_na_pmsp').value 
-		const p_povtor_pcr = document.getElementsByName('p_povtor_pcr').value 
-		const p_go_street = document.getElementsByName('p_go_street').value 
-		const p_kt = document.getElementsByName('p_kt').value 
-		const p_n_naznachenie = document.getElementsByName('p_n_naznachenie').value 
-		const p_n_list = document.getElementsByName('p_n_list').value 
-		const p_n_raspiska = document.getElementsByName('p_n_raspiska').value 
-		const p_n_mb = document.getElementsByName('p_n_mb').value 
-		const p_n_call = document.getElementsByName('p_n_call').value 
-		const medical_taken = document.getElementsByName('medical_taken').value 
-		const violation_quar = document.getElementsByName('violation_quar').value 
-		const violation_descr = document.getElementsByName('violation_descr').value 
-		const f_send_mb = document.getElementsByName('f_send_mb').value 
-		const f_corect_ls = document.getElementsByName('f_corect_ls').value 
-		const f_repeat_call = document.getElementsByName('f_repeat_call').value 
-		const f_conf_dc = document.getElementsByName('f_conf_dc').value 
-		const f_other_comp_pmsp = document.getElementsByName('f_other_comp_pmsp').value 
-		const f_social_help = document.getElementsByName('f_social_help').value 
-		const snijenie_sluha = document.getElementsByName('snijenie_sluha').value 
-		const boli_v_jivote = document.getElementsByName('boli_v_jivote').value 
-		const onemenie = document.getElementsByName('onemenie').value 
-		const blagodarnost = document.getElementsByName('blagodarnost').value 
-		const f_primechanie = document.getElementsByName('f_primechanie').value 
-		const p_dk_end = document.getElementsByName('p_dk_end').value 
-		const p_gospt_ranee = document.getElementsByName('p_gospt_ranee').value 
-		const p_net_svyazi = document.getElementsByName('p_net_svyazi').value 
-		const p_error_data = document.getElementsByName('p_error_data').value     
-});
+    });
+    console.log('petuch');
+    radioToCheckBox('sore_throat');
+    radioToCheckBox('nasal_congestion');
+    radioToCheckBox('shortness_breath');
+    radioToCheckBox('vomiting');
+    radioToCheckBox('nausea');
+    radioToCheckBox('diarrhea');
+    radioToCheckBox('dry_cough');
+    radioToCheckBox('palpitations');
+    radioToCheckBox('debility');
+    radioToCheckBox('headache');
+    radioToCheckBox('congestion_chest');
+    radioToCheckBox('anosmia');
+    radioToCheckBox('loss_taste');
+    radioToCheckBox('cough_phlegm');
+    radioToCheckBox('sweating');
+    radioToCheckBox('dyspnea');
+    radioToCheckBox('muscle_pain');
+    radioToCheckBox('joint_pain');
+    radioToCheckBox('discharge_eyes_redness');
+    radioToCheckBox('rash');
+    radioToCheckBox('home_nabl');
+    radioToCheckBox('vipoln_naznach');
+    radioToCheckBox('narushen_karantin');
+    radioToCheckBox('video_call');
+    radioToCheckBox('p_povtor_pcr');
+    radioToCheckBox('p_go_street');
+    radioToCheckBox('p_kt');
+    radioToCheckBox('p_n_naznachenie');
+    radioToCheckBox('p_n_list');
+    radioToCheckBox('p_n_raspiska');
+    radioToCheckBox('p_n_mb');
+    radioToCheckBox('p_n_call');
+    radioToCheckBox('f_send_mb');
+    radioToCheckBox('f_corect_ls');
+    radioToCheckBox('f_repeat_call');
+    radioToCheckBox('f_conf_dc');
+    radioToCheckBox('f_other_comp_pmsp');
+    radioToCheckBox('f_social_help');
+    radioToCheckBox('snijenie_sluha');
+    radioToCheckBox('boli_v_jivote');
+    radioToCheckBox('onemenie');
+    radioToCheckBox('p_dk_end');
+    radioToCheckBox('p_gospt_ranee');
+    radioToCheckBox('p_net_svyazi');
+    radioToCheckBox('p_error_data');
 }
 </script>
-<style>
+<script> 
+		function ElementsValuesMigrate(id1, id2){
+			let pre_data = document.getElementById(id1)
+			let migrate_to = document.getElementById(id2)
+			try{
+				migrate_to.value = pre_data.value
+			}
+			catch(e){
+				//pass
+			}
+			finally{
+				//pass
+			}
+		}
+	function SetDateTime(){ 
+		var now = new Date();
+		now. setMinutes(now. getMinutes() - now. getTimezoneOffset());
+		document. getElementById('date'). value = now. toISOString(). slice(0,16);
+	}  
+	// nachalo checklist push
+			function postCheckList(){
+                GetObservationJournal()
+                ElementsValuesMigrate('jaloba_na_pmsp_pre', 'jaloba_na_pmsp');
+                ElementsValuesMigrate('violation_quar_pre', 'violation_quar');
+                ElementsValuesMigrate('violation_descr_pre', 'violation_descr');
+                ElementsValuesMigrate('wellbeing_pre', 'wellbeing');
+                ElementsValuesMigrate('f_primechanie_pre', 'f_primechanie');
+                ElementsValuesMigrate('medical_taken_pre', 'medical_taken');
+                ElementsValuesMigrate('blagodarnost_pre', 'blagodarnost')
+                SetDateTime()
+                let date = document.getElementById('date').value 
+                let sore_throat = document.getElementById('sore_throat').checked
+                let nasal_congestion = document.getElementById('nasal_congestion').checked
+                let shortness_breath = document.getElementById('shortness_breath').checked
+                let vomiting = document.getElementById('vomiting').checked
+                let nausea = document.getElementById('nausea').checked
+                let diarrhea = document.getElementById('diarrhea').checked
+                let dry_cough = document.getElementById('dry_cough').checked 
+                let palpitations = document.getElementById('palpitations').checked
+                let debility = document.getElementById('debility').checked
+                let headache = document.getElementById('headache').checked
+                let congestion_chest = document.getElementById('congestion_chest').checked
+                let anosmia = document.getElementById('anosmia').checked
+                let loss_taste = document.getElementById('loss_taste').checked
+                let cough_phlegm = document.getElementById('cough_phlegm').checked
+                let sweating = document.getElementById('sweating').checked
+                let dyspnea = document.getElementById('dyspnea').checked
+                let muscle_pain = document.getElementById('muscle_pain').checked
+                let joint_pain = document.getElementById('joint_pain').checked
+                let discharge_eyes_redness = document.getElementById('discharge_eyes_redness').checked
+                let rash = document.getElementById('rash').checked
+                let temperature = document.getElementById('temperature').value 
+                let saturation = document.getElementById('saturation').value 
+                let wellbeing = document.getElementById('wellbeing').value 
+                let home_nabl = document.getElementById('home_nabl').checked
+                let vipoln_naznach = document.getElementById('vipoln_naznach').checked
+                let sostoyznie = document.getElementById('sostoyznie').value 
+                let narushen_karantin = document.getElementById('narushen_karantin').checked
+                let video_call = document.getElementById('video_call').checked
+                let jaloba_na_pmsp = document.getElementById('jaloba_na_pmsp').value 
+                let p_povtor_pcr = document.getElementById('p_povtor_pcr').checked
+                let p_go_street = document.getElementById('p_go_street').checked
+                let p_kt = document.getElementById('p_kt').checked
+                let p_n_naznachenie = document.getElementById('p_n_naznachenie').checked
+                let p_n_list = document.getElementById('p_n_list').checked
+                let p_n_raspiska = document.getElementById('p_n_raspiska').checked
+                let p_n_mb = document.getElementById('p_n_mb').checked
+                let p_n_call = document.getElementById('p_n_call').checked
+                let medical_taken = document.getElementById('medical_taken').value 
+                let violation_quar = document.getElementById('violation_quar').value 
+                let violation_descr = document.getElementById('violation_descr').value 
+                let f_send_mb = document.getElementById('f_send_mb').checked
+                let f_corect_ls = document.getElementById('f_corect_ls').checked
+                let f_repeat_call = document.getElementById('f_repeat_call').checked
+                let f_conf_dc = document.getElementById('f_conf_dc').checked
+                let f_other_comp_pmsp = document.getElementById('f_other_comp_pmsp').checked
+                let f_social_help = document.getElementById('f_social_help').checked
+                let snijenie_sluha = document.getElementById('snijenie_sluha').checked 
+                let boli_v_jivote = document.getElementById('boli_v_jivote').checked
+                let onemenie = document.getElementById('onemenie').checked
+                let blagodarnost = document.getElementById('blagodarnost').value 
+                let f_primechanie = document.getElementById('f_primechanie').value 
+                let p_dk_end = document.getElementById('p_dk_end').checked
+                let p_gospt_ranee = document.getElementById('p_gospt_ranee').checked
+                let p_net_svyazi = document.getElementById('p_net_svyazi').checked
+                let p_error_data = document.getElementById('p_error_data').checked 
+                const full_url = window.location.href
+				const lastSegment = full_url.split("/").pop();
+				axios({
+					method: 'post',
+					url: 'checklist/save/' + lastSegment + '?' + 
+                        'date='+ date + '&' + 
+                        'sore_throat='+ sore_throat + '&' + 
+                        'nasal_congestion='+ nasal_congestion + '&' + 
+                        'shortness_breath='+ shortness_breath + '&' + 
+                        'vomiting='+ vomiting + '&' + 
+                        'nausea='+ nausea + '&' + 
+                        'diarrhea='+ diarrhea + '&' + 
+                        'dry_cough='+ dry_cough + '&' + 
+                        'palpitations='+ palpitations + '&' + 
+                        'debility='+ debility + '&' + 
+                        'headache='+ headache + '&' + 
+                        'congestion_chest='+ congestion_chest + '&' + 
+                        'anosmia='+ anosmia + '&' + 
+                        'loss_taste='+ loss_taste + '&' + 
+                        'cough_phlegm='+ cough_phlegm + '&' + 
+                        'sweating='+ sweating + '&' + 
+                        'dyspnea='+ dyspnea + '&' + 
+                        'muscle_pain='+ muscle_pain + '&' + 
+                        'joint_pain='+ joint_pain + '&' + 
+                        'discharge_eyes_redness='+ discharge_eyes_redness + '&' + 
+                        'rash='+ rash + '&' +
+                        'temperature='+ temperature + '&' + 
+                        'saturation='+ saturation + '&' + 
+                        'wellbeing='+ wellbeing + '&' + 
+                        'home_nabl='+ home_nabl + '&' + 
+                        'vipoln_naznach='+ vipoln_naznach + '&' + 
+                        'sostoyznie='+ sostoyznie + '&' + 
+                        'narushen_karantin='+ narushen_karantin + '&' + 
+                        'video_call='+ video_call + '&' + 
+                        'jaloba_na_pmsp='+ jaloba_na_pmsp + '&' + 
+                        'p_povtor_pcr='+ p_povtor_pcr + '&' + 
+                        'p_go_street='+ p_go_street + '&' + 
+                        'p_kt='+ p_kt + '&' + 
+                        'p_n_naznachenie='+ p_n_naznachenie + '&' + 
+                        'p_n_list='+ p_n_list + '&' + 
+                        'p_n_raspiska='+ p_n_raspiska + '&' + 
+                        'p_n_mb='+ p_n_mb + '&' + 
+                        'p_n_call='+ p_n_call + '&' + 
+                        'medical_taken='+ medical_taken + '&' + 
+                        'violation_quar='+ violation_quar + '&' + 
+                        'violation_descr='+ violation_descr + '&' + 
+                        'f_send_mb='+ f_send_mb + '&' + 
+                        'f_corect_ls='+ f_corect_ls + '&' + 
+                        'f_repeat_call='+ f_repeat_call + '&' + 
+                        'f_conf_dc='+ f_conf_dc + '&' + 
+                        'f_other_comp_pmsp='+ f_other_comp_pmsp + '&' + 
+                        'f_social_help='+ f_social_help + '&' + 
+                        'snijenie_sluha='+ snijenie_sluha + '&' + 
+                        'boli_v_jivote='+ boli_v_jivote + '&' + 
+                        'onemenie='+ onemenie + '&' + 
+                        'blagodarnost='+ blagodarnost + '&' + 
+                        'f_primechanie='+ f_primechanie + '&' + 
+                        'p_dk_end='+ p_dk_end + '&' + 
+                        'p_gospt_ranee='+ p_gospt_ranee + '&' + 
+                        'p_net_svyazi='+ p_net_svyazi + '&' + 
+                        'p_error_data='+ p_error_data,
+					headers: {
+                                "X-CSRFToken": csrftoken,
+                            },
+				});	
+                $("#for_popup").empty();
+            }
+                
+</script>
+    <style>
     #popup{
         position:absolute;
 		top: 50%;
@@ -2076,163 +2163,4 @@ function addCheckList(){
 		min-height: 15px;
 	}
 </style>
-<script>   
-	// nachalo checklist push
-			function postCheckList(){
-				ElementsValuesMigrate('jaloba_na_pmsp_pre', 'jaloba_na_pmsp');
-				ElementsValuesMigrate('narushen_karantin_pre', 'narushen_karantin');
-				ElementsValuesMigrate('f_primechanie_pre', 'f_primechanie');
-				ElementsValuesMigrate('medical_taken_pre', 'medical_taken');
-				ElementsValuesMigrate('blagodarnost_pre', 'blagodarnost');
-				ElementsValuesMigrate('f_primechanie_pre', 'f_primechanie');
-				ElementsValuesMigrate('wellbeing_pre', 'wellbeing')
-				SetDateTime()
-	
-				// const json = JSON.stringify({
-				// 	'date' : date,
-				// 	'sore_throat' : sore_throat,
-				// 	'nasal_congestion' : nasal_congestion,
-				// 	'shortness_breath' : shortness_breath,
-				// 	'vomiting' : vomiting,
-				// 	'nausea' : nausea,
-				// 	'diarrhea' : diarrhea,
-				// 	'dry_cough' : dry_cough,
-				// 	'palpitations' : palpitations,
-				// 	'debility' : debility,
-				// 	'headache' : headache,
-				// 	'congestion_chest' : congestion_chest,
-				// 	'anosmia' : anosmia,
-				// 	'loss_taste' : loss_taste,
-				// 	'cough_phlegm' : cough_phlegm,
-				// 	'sweating' : sweating,
-				// 	'dyspnea' : dyspnea,
-				// 	'muscle_pain' : muscle_pain,
-				// 	'joint_pain' : joint_pain,
-				// 	'discharge_eyes_redness' : discharge_eyes_redness,
-				// 	'rash' : rash,
-				// 	'operator_id' : operator_id,
-				// 	'temperature' : temperature,
-				// 	'saturation' : saturation,
-				// 	'wellbeing' : wellbeing,
-				// 	'home_nabl' : home_nabl,
-				// 	'vipoln_naznach' : vipoln_naznach,
-				// 	'sostoyznie' : sostoyznie,
-				// 	'narushen_karantin' : narushen_karantin,
-				// 	'video_call' : video_call,
-				// 	'jaloba_na_pmsp' : jaloba_na_pmsp,
-				// 	'p_povtor_pcr' : p_povtor_pcr,
-				// 	'p_go_street' : p_go_street,
-				// 	'p_kt' : p_kt,
-				// 	'p_n_naznachenie' : p_n_naznachenie,
-				// 	'p_n_list' : p_n_list,
-				// 	'p_n_raspiska' : p_n_raspiska,
-				// 	'p_n_mb' : p_n_mb,
-				// 	'p_n_call' : p_n_call,
-				// 	'medical_taken' : medical_taken,
-				// 	'violation_quar' : violation_quar,
-				// 	'violation_descr' : violation_descr,
-				// 	'f_send_mb' : f_send_mb,
-				// 	'f_corect_ls' : f_corect_ls,
-				// 	'f_repeat_call' : f_repeat_call,
-				// 	'f_conf_dc' : f_conf_dc,
-				// 	'f_other_comp_pmsp' : f_other_comp_pmsp,
-				// 	'f_social_help' : f_social_help,
-				// 	'snijenie_sluha' : snijenie_sluha,
-				// 	'boli_v_jivote' : boli_v_jivote,
-				// 	'onemenie' : onemenie,
-				// 	'blagodarnost' : blagodarnost,
-				// 	'f_primechanie' : f_primechanie,
-				// 	'p_dk_end' : p_dk_end,
-				// 	'p_gospt_ranee' : p_gospt_ranee,
-				// 	'p_net_svyazi' : p_net_svyazi,
-				// 	'p_error_data' : p_error_data,
-		 
-				// });
-                const full_url = window.location.href
-				const lastSegment = full_url.split("/").pop();
-				axios({
-					method: 'post',
-					url: 'checklist/save/' + lastSegment,
-					headers: {"X-CSRFToken": csrftoken},
-					// data: {
-					// 	date: date,
-					// 	sore_throat: sore_throat,
-					// 	nasal_congestion: nasal_congestion,
-					// 	shortness_breath: shortness_breath,
-					// 	vomiting: vomiting,
-					// 	nausea: nausea,
-					// 	diarrhea: diarrhea,
-					// 	dry_cough: dry_cough,
-					// 	palpitations: palpitations,
-					// 	debility: debility,
-					// 	headache: headache,
-					// 	congestion_chest: congestion_chest,
-					// 	anosmia: anosmia,
-					// 	loss_taste: loss_taste,
-					// 	cough_phlegm: cough_phlegm,
-					// 	sweating: sweating,
-					// 	dyspnea: dyspnea,
-					// 	muscle_pain: muscle_pain,
-					// 	joint_pain: joint_pain,
-					// 	discharge_eyes_redness: discharge_eyes_redness,
-					// 	rash: rash,
-					// 	operator_id: operator_id,
-					// 	temperature: temperature,
-					// 	saturation: saturation,
-					// 	wellbeing: wellbeing,
-					// 	home_nabl: home_nabl,
-					// 	vipoln_naznach: vipoln_naznach,
-					// 	sostoyznie: sostoyznie,
-					// 	narushen_karantin: narushen_karantin,
-					// 	video_call: video_call,
-					// 	jaloba_na_pmsp: jaloba_na_pmsp,
-					// 	p_povtor_pcr: p_povtor_pcr,
-					// 	p_go_street: p_go_street,
-					// 	p_kt: p_kt,
-					// 	p_n_naznachenie: p_n_naznachenie,
-					// 	p_n_list: p_n_list,
-					// 	p_n_raspiska: p_n_raspiska,
-					// 	p_n_mb: p_n_mb,
-					// 	p_n_call: p_n_call,
-					// 	medical_taken: medical_taken,
-					// 	violation_quar: violation_quar,
-					// 	violation_descr: violation_descr,
-					// 	f_send_mb: f_send_mb,
-					// 	f_corect_ls: f_corect_ls,
-					// 	f_repeat_call: f_repeat_call,
-					// 	f_conf_dc: f_conf_dc,
-					// 	f_other_comp_pmsp: f_other_comp_pmsp,
-					// 	f_social_help: f_social_help,
-					// 	snijenie_sluha: snijenie_sluha,
-					// 	boli_v_jivote: boli_v_jivote,
-					// 	onemenie: onemenie,
-					// 	blagodarnost: blagodarnost,
-					// 	f_primechanie: f_primechanie,
-					// 	p_dk_end: p_dk_end,
-					// 	p_gospt_ranee: p_gospt_ranee,
-					// 	p_net_svyazi: p_net_svyazi,
-					// 	p_error_data: p_error_data,
-					// }
-				});	}
-	</script>
-	<script>
-		function ElementsValuesMigrate(id1, id2){
-			let pre_data = document.getElementById(id1)
-			let migrate_to = document.getElementById(id2)
-			try{
-				migrate_to.value = pre_data.value
-			}
-			catch(e){
-				//pass
-			}
-			finally{
-				//pass
-			}
-		}
-	function SetDateTime(){ 
-		var now = new Date();
-		now. setMinutes(now. getMinutes() - now. getTimezoneOffset());
-		document. getElementById('date'). value = now. toISOString(). slice(0,16);
-	}
-	</script>
 {% endblock %}

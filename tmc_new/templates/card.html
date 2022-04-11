@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title %} Карточка {% endblock %}
 {% block content %}
+<div style="overflow: hidden;">
 <div id="for_popup">
     <!-- ДЛЯ ЧЕКЛИСТА -->
 </div>
@@ -35,7 +36,7 @@
             </div>
             <div id="modal_patients">
                 <table class="table table-bordered">
-                    <thead>
+                    <thead style="background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);">
                         <tr>
                             <th>№</th>
                             <th>ФИО</th>
@@ -58,8 +59,8 @@
                 </table>
             </div>
             <div id="modal_calls" style="display: none;">
-                <table class="table table-bordered table-striped" style="border-bottom:rgb(36, 36, 36)">
-                    <thead>
+                <table class="table table-bordered" style="border-bottom:rgb(36, 36, 36)">
+                    <thead style="background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);">
                         <tr>
                             <th>№</th>
                             <th>ЗВОНОК</th>
@@ -83,7 +84,7 @@
             </div>
             <div id="modal_info">
                 <table class="table table-bordered table-striped">
-                    <thead>
+                    <thead style="background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);">
                         <tr>
                             <th>Дата и время</th>
                             <th>Состояние</th>
@@ -692,6 +693,7 @@
             <button type="button" class="btn btn-light">Закрыть</button>
         </div>
     </div>
+</div>
 </div>
 <style>
     table{
