@@ -486,6 +486,9 @@ class GPatient(models.Model):
         else:
             return self.pmsp_start_date
 
+    def pmsp_start_date_date_format(self):
+        return str(self.pmsp_start_date)[:10]
+
 
     def days_count(self):
         if self.pcr_date_receipt is not None:
