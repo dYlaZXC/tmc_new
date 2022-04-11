@@ -3,3 +3,6 @@ tmc_new/venv
 tmc_new/tmc_new/venv
 tmc_new/__pycache__/
 tmc_new/migrations/__pycache__/
+tmc_new/__pycache__/models.cpython-310.pyc
+tmc_new/__pycache__/urls.cpython-310.pyc
+tmc_new/__pycache__/views.cpython-310.pyc
