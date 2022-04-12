@@ -528,8 +528,8 @@ class Card_id(APIView):
         phone_home = request.POST.get('phone_home') #НОМЕР ТЕЛЕФОНА (ДОМАШНИЙ)
         additional_contacts = request.POST.get('additional_contacts') #ДОПОЛНИТЕЛЬНЫЕ КОНТАКТЫ
         info_for_tmc_agent = request.POST.get('info_for_tmc_agent') #ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ ДЛЯ СОТРУДНИКА ТМЦ
-        result_of_end = request.POST.get('result_of_end') #СТАТУС ПРИ СНЯТИИ С НАБЛЮДЕНИЯ
-        date_of_end = request.POST.get('date_of_end') #ДАТА СНЯТИЯ С НАБЛЮДЕНИЯ
+        result_of_end = request.POST.get('result_of_end') if request.POST.get('result_of_end') != '' else None #СТАТУС ПРИ СНЯТИИ С НАБЛЮДЕНИЯ
+        date_of_end = request.POST.get('date_of_end') if request.POST.get('date_of_end') != '' else None #ДАТА СНЯТИЯ С НАБЛЮДЕНИЯ
         s_risk_group = request.POST.get('s_risk_group') #ГРУППА РИСКА
         pmsp_ojirenie = request.POST.get('pmsp_ojirenie') #ОЖИРЕНИЕ ПМСП
         pmsp_serdce = request.POST.get('pmsp_serdce') #СЕРДЦЕ ПМСП
@@ -550,7 +550,7 @@ class Card_id(APIView):
         diagnosis_monitoring = request.POST.get('diagnosis_monitoring') #ДИАГНОЗ НАБЛЮДЕНИЯ
         diagnosis_date = request.POST.get('diagnosis_date') #ДИАГНОЗ НАБЛЮДЕНИЯ
         patient_condition = request.POST.get('patient_condition') #СОСТОЯНИЕ ПАЦИЕНТА
-        start_date = request.POST.get('start_date') #ДАТА ВЗЯТИЯ НА ДОМАШНЕЕ НАБЛЮДЕНИЕ
+        pmsp_start_date = request.POST.get('pmsp_start_date') #ДАТА ВЗЯТИЯ НА ДОМАШНЕЕ НАБЛЮДЕНИЕ
         sign_observation = request.POST.get('sign_observation') #ПОСЛЕ СТАЦИОНАРА
         pneumonia = request.POST.get('pneumonia') #ПНЕВМОНИЯ
         pcr_reason = request.POST.get('pcr_reason') #ПРИЧИНА СДАЧИ ПЦР
@@ -572,7 +572,7 @@ class Card_id(APIView):
         refusal_hospitalize = request.POST.get('refusal_hospitalize') #ОТКАЗ ОТ ГОСПИТАЛИЗАЦИИ 
         end_monitoring_patient = request.POST.get('end_monitoring_patient') #ЗАВЕРШЕНИЕ НАБЛЮДЕНИЯ СО СЛОВ ПАЦИЕНТА
         stationar = request.POST.get('stationar') #СТАЦИОНАР
-        status_end_date = request.POST.get('status_end_date') #ДАТА ЗАВЕРШЕНИЯ НАБЛЮДЕНИЯ
+        status_end_date = request.POST.get('status_end_date') if request.POST.get('status_end_date') != '' else None #ДАТА ЗАВЕРШЕНИЯ НАБЛЮДЕНИЯ
         vaccine = request.POST.get('vaccine') #ТИП ВАКЦИНЫ
         vaccine_doses = request.POST.get('vaccine_doses') #КОЛИЧЕСТВО ПОЛУЧЕННЫХ ДОЗ ВАКЦИНЫ
         vaccine_first_date = request.POST.get('vaccine_first_date') #ДАТА ПОЛУЧЕНИЯ ПЕРВОЙ ДОЗЫ
@@ -592,6 +592,7 @@ class Card_id(APIView):
         # SAVING TO MODEL (LOG)
 
         g_patient = GPatient.objects.get(id=id)
+        
         g_patient_log = GPatientLog(
             iin = iin,
             num_crossdoc = num_doc,
@@ -610,19 +611,47 @@ class Card_id(APIView):
             xray_date = rentgen_date ,
             xray_result = rentgen_result_diagnosis , 
             date_mobile_brigade = mb_date ,
-            late_reg_reason =late_reason ,
+            # late_reg_reason =late_reason , v logah netu takogo columna
             date_start = pmsp_info_datetime ,
             pmsp_start_date = pmsp_info_datetime ,
             info_function = tmc_function_info ,
             info_cond =tmc_condition_info,
             hospitalize_tmc = refusal_hospitalize,
-            status_end = end_monitoring_patient,
-            status_end_date = status_end_date,    
+            p_close_end_date = status_end_date,    # p_close_end_date <-- na samom dele eto
             watch_diagnosis = diagnosis_monitoring,
             patient_condition_start = patient_condition,
             sign_observation_hospital =sign_observation,
             diagnosis_date = diagnosis_date, 
         )
+
+        print(g_patient_log.iin)
+        print(g_patient_log.num_crossdoc)
+        print(g_patient_log.pmsp_name)
+        print(g_patient_log.phone)
+        print(g_patient_log.status_end)
+        print(g_patient_log.status_end_date)
+        print(g_patient_log.pcr_reason)
+        print(g_patient_log.pcr_result)
+        print(g_patient_log.result_kt)
+        print(g_patient_log.pcr_date_test)
+        print(g_patient_log.pcr_date_receipt)
+        print(g_patient_log.kt_date)
+        print(g_patient_log.diagnosis_kt)
+        print(g_patient_log.xray)
+        print(g_patient_log.xray_date)
+        print(g_patient_log.xray_result)
+        print(g_patient_log.date_mobile_brigade)
+        print(g_patient_log.date_start)
+        print(g_patient_log.pmsp_start_date)
+        print(g_patient_log.info_function)
+        print(g_patient_log.info_cond)
+        print(g_patient_log.hospitalize_tmc)
+        print(g_patient_log.p_close_end_date)
+        print(g_patient_log.watch_diagnosis)
+        print(g_patient_log.patient_condition_start)
+        print(g_patient_log.sign_observation_hospital)
+        print(g_patient_log.diagnosis_date)
+
         g_patient_log.save()
 
         g_incident = GIncident.objects.get(id=g_patient.incident_id)
@@ -669,7 +698,7 @@ class Card_id(APIView):
             vaccine_dose = vaccine_doses ,
             vaccine_date2 =vaccine_second_date ,
             other_diagnos = detailed_diagnosis_info,
-            date_time = start_date,
+            # date_time = pmsp_start_date,
         )
         g_incident_log.save()
 
@@ -696,12 +725,11 @@ class Card_id(APIView):
         g_patient.info_function = tmc_function_info 
         g_patient.info_cond =tmc_condition_info
         g_patient.hospitalize_tmc = refusal_hospitalize
-        g_patient.status_end = end_monitoring_patient
         g_patient.status_end_date = status_end_date    
         g_patient.watch_diagnosis = diagnosis_monitoring
         g_patient.patient_condition_start = patient_condition
         g_patient.sign_observation_hospital =sign_observation
-        g_patient.diagnosis_date = diagnosis_date,
+        g_patient.diagnosis_date = diagnosis_date
         g_patient.save()
         
         g_incident.rezident = is_rezident
@@ -746,7 +774,7 @@ class Card_id(APIView):
         g_incident.vaccine_dose = vaccine_doses 
         g_incident.vaccine_date2 =vaccine_second_date 
         g_incident.other_diagnos = detailed_diagnosis_info
-        g_incident.date_time = start_date
+        # g_incident.date_time = start_date
         g_incident.save()
 
 

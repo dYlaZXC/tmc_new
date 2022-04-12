@@ -435,7 +435,7 @@
                 <div class="col">
                     <label for="">Дата взятия ДН</label>
                     <br>
-                    <input id="start_date" name="start_date" type="date">
+                    <input id="pmsp_start_date" name="pmsp_start_date" type="date" value="{{g_patient.pmsp_start_date_date_format}}">
                 </div>
             </div>
             <div class="row">
@@ -453,11 +453,11 @@
                     <div class="mx-auto">
                         <div class="row" class="mx-auto" style="width: 80%;">
                             <div class="col">
-                                <input style="width: 20px;" type="radio" name="sign_observation" id="sign_observation">
+                                <input style="width: 20px;" type="radio" name="sign_observation" id="sign_observation" value="1">
                                 <label for="">Да</label>
                             </div>
                             <div class="col">
-                                <input style="width: 20px;" type="radio" name="sign_observation" id="sign_observation">
+                                <input style="width: 20px;" type="radio" name="sign_observation" id="sign_observation" value="0">
                                 <label for="">Нет</label>
                             </div>
                         </div>
@@ -599,33 +599,33 @@
                         {% if g_patient.result_kt == True %}
                         <div class="row">
                             <div class="col">
-                                <input checked style="width: 20px;" type="radio" id="kt_result" name="kt_result">
+                                <input checked style="width: 20px;" type="radio" id="kt_result" name="kt_result" value="1">
                                 <label for="">+</label>
                             </div>
                             <div class="col">
-                                <input style="width: 20px;" type="radio" id="kt_result" name="kt_result">
+                                <input style="width: 20px;" type="radio" id="kt_result" name="kt_result" value="0">
                                 <label for="">-</label>
                             </div>
                         </div>
                         {% elif g_patient.result_kt == False %}
                         <div class="row">
                             <div class="col">
-                                <input style="width: 20px;" type="radio" id="kt_result" name="kt_result">
+                                <input style="width: 20px;" type="radio" id="kt_result" name="kt_result" value="1">
                                 <label for="">+</label>
                             </div>
                             <div class="col">
-                                <input checked style="width: 20px;" type="radio" id="kt_result" name="kt_result">
+                                <input checked style="width: 20px;" type="radio" id="kt_result" name="kt_result" value="0">
                                 <label for="">-</label>
                             </div>
                         </div>
                         {% else %}
                         <div class="row">
                             <div class="col">
-                                <input style="width: 20px;" type="radio" id="kt_result" name="kt_result">
+                                <input style="width: 20px;" type="radio" id="kt_result" name="kt_result" value="1">
                                 <label for="">+</label>
                             </div>
                             <div class="col">
-                                <input style="width: 20px;" type="radio" id="kt_result" name="kt_result">
+                                <input style="width: 20px;" type="radio" id="kt_result" name="kt_result" value="0">
                                 <label for="">-</label>
                             </div>
                         </div>
@@ -659,36 +659,36 @@
                     Рентген
                     </h3>
                     <div class="p-1" name="Рентген" style="border: 1px solid gray;">
-                        {% if g_patient.xray_result == True %}
+                        {% if g_patient.xray == True %}
                         <div class="row">
                             <div class="col">
-                                <input checked style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio">
+                                <input checked style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio" value="1">
                                 <label for="">+</label>
                             </div>
                             <div class="col">
-                                <input style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio">
+                                <input style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio" value="0">
                                 <label for="">-</label>
                             </div>
                         </div>
-                        {% elif g_patient.xray_result == False %}
+                        {% elif g_patient.xray == False %}
                         <div class="row">
                             <div class="col">
-                                <input style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio">
+                                <input style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio" value="1">
                                 <label for="">+</label>
                             </div>
                             <div class="col">
-                                <input checked style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio">
+                                <input checked style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio" value="0">
                                 <label for="">-</label>
                             </div>
                         </div>
                         {% else %}
                         <div class="row">
                             <div class="col">
-                                <input style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio">
+                                <input style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio" value="1">
                                 <label for="">+</label>
                             </div>
                             <div class="col">
-                                <input style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio">
+                                <input style="width: 20px;" name="rentgen_result" id="rentgen_result" type="radio" value="0">
                                 <label for="">-</label>
                             </div>
                         </div>
@@ -703,7 +703,7 @@
             </div>
             <div class="row mt-2">
                 <label for="">Заключение рентгена</label>
-                <input class="mx-auto" style="width: 95%;" value="{{ g_patient.xray }}" name="rentgen_result_diagnosis" id="rentgen_result_diagnosis" type="text">
+                <input class="mx-auto" style="width: 95%;" value="{{ g_patient.xray_result }}" name="rentgen_result_diagnosis" id="rentgen_result_diagnosis" type="text">
             </div>
             <div class="row mt-2">
                 <label for="">Дата выезда МБ</label>
