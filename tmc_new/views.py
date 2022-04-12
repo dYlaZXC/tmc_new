@@ -448,6 +448,7 @@ class Card_id(APIView):
             print(g_patient.hospitalize_tmc)
             g_incident = GIncident.objects.get(id=g_patient.incident_id)
             print(g_incident.date_time)
+            g_observations = GObservation.objects.filter(patient_id=id)
             s_regions = SRegion.objects.all()
             s_villages = SVillage.objects.all()
             s_countries = SCountry.objects.all()
@@ -467,6 +468,7 @@ class Card_id(APIView):
             return render(request, 'card_id.html',
             {
                 'g_patient': g_patient,
+                'g_observations': g_observations,
                 'g_incident': g_incident,
                 's_regions': s_regions,
                 's_streets': s_streets,

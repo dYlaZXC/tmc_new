@@ -2,6 +2,918 @@
 {% block title %} Карточка {% endblock %}
 {% block content %}
 <div id="for_popup"></div>
+{% for g_observation in g_observations %}
+<div id="form_{{ g_observation.id }}" style="position:absolute; visibility:hidden;
+                                top: 50%;
+                                left: 50%;
+                                transform:translate(-50%, -50%);
+                                box-shadow: 9px 9px 9px 9px gray;">
+    <form class="row" style="background-color: #e9e9e9; border: 2px solid black;" method="POST" style="padding: 0px;" 
+>
+    <div class="p-1" style="width: 100%; vertical-align: middle; background-color: rgb(36, 36, 36); color: white;">
+    <h2 style="font-weight: bold; vertical-align: middle;">Добавить запись в журнал</h2>
+    </div>
+	<!-- БЛОК 1 -->
+	<div class="col mt-2">
+		<h3 class="p-1" style="border: 1px solid gray; border-radius: 5px 5px 0 0; font-size: 14px;">Информирование и контроль</h3>
+		<table class="p-1" style="width: 100%; min-height: 50px;">
+			<tbody style="display: block; min-height: 50px; border: 1px solid gray;" class="px-2">
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Соблюдение условий пребывания
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.home_nabl == True %} checked {% endif %} name="home_nabl_" id="home_nabl_true" class="input_radio" name="" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>'
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input name="home_nabl_" id="home_nabl_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+                            <input {% if g_observation.home_nabl == False %} checked {% endif %} type="checkbox" hidden name="home_nabl" id="home_nabl">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Выполнение назначений
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.vipoln_naznach == True %} checked {% endif %} class="input_radio" name="vipoln_naznach_" id="vipoln_naznach_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.vipoln_naznach == False %} checked {% endif %} class="input_radio" name="vipoln_naznach_" id="vipoln_naznach_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input type="checkbox" hidden name="vipoln_naznach" id="vipoln_naznach">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Видеозвонок оператора
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.video_call == True %} selected {% endif %} name="video_call_" id="video_call_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.video_call == False %} selected {% endif %} name="video_call_" id="video_call_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input type="checkbox" hidden id="video_call" name="video_call">
+						</div>	
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="mt-1">
+			<h3 style="font-size: 14px;">Жалобы пациента на ПМСП</h3>
+			<textarea name="jaloba_na_pmsp_pre" id="jaloba_na_pmsp_pre" cols="55" rows="2">
+                {{ g_observation.jaloba_na_pmsp }}
+            </textarea>
+			<input  type="text" hidden name="jaloba_na_pmsp" id="jaloba_na_pmsp">
+		</div>
+		<div class="mt-1">
+			<h3 style="font-size: 14px;">Нарушения карантина пациентом</h3>
+			<textarea name="violation_quar_pre" id="violation_quar_pre" cols="55" rows="2">
+                {{ g_observation.jaloba_na_pmsp }}
+            </textarea>
+			<input type="text" id="violation_quar" name="violation_quar" hidden>
+		</div>
+		<h3 class="mt-1 p-1" style="border: 1px solid gray; border-radius: 5px 5px 0 0; font-size: 14px;">Нарушение ПМСП</h3>
+		<table class="p-1" style="width: 100%; min-height: 100px;">
+			<tbody style="display: block; min-height: 100px; border: 1px solid gray;" class="px-2">
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Повторный забор ПЦР на ДН
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_povtor_pcr == True %} checked {% endif %} class="input_radio" name="p_povtor_pcr_" id="p_povtor_pcr_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_povtor_pcr == False %} checked {% endif %} class="input_radio" name="p_povtor_pcr_" id="p_povtor_pcr_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="p_povtor_pcr" name="p_povtor_pcr">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Разрешение выхода на улицу
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_go_street == True %} checked {% endif %} class="input_radio" name="p_go_street_" id="p_go_street_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_go_street == False %} checked {% endif %} class="input_radio" name="p_go_street_" id="p_go_street_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="p_go_street" name="p_go_street">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Разрешен самостоятельный выезд на КТ
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_kt == True %} checked {% endif %} class="input_radio" name="p_kt_" id="p_kt_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_kt == False %} checked {% endif %} class="input_radio" name="p_kt_" id="p_kt_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="p_kt" name="p_kt">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Неправильное назначение ЛС
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_n_naznachenie == True %} checked {% endif %} class="input_radio" name="p_n_naznachenie_" id="p_n_naznachenie_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_n_naznachenie == False %} checked {% endif %} class="input_radio" name="p_n_naznachenie_" id="p_n_naznachenie_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="p_n_naznachenie" name="p_n_naznachenie">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Невыдача чек-листа
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_n_list == True %} checked {% endif %} class="input_radio" name="p_n_list_" id="p_n_list_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_n_list == False %} checked {% endif %} class="input_radio" name="p_n_list_" id="p_n_list_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="p_n_list" name="p_n_list">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Не взята расписка
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_n_raspiska == True %} checked {% endif %} class="input_radio" name="p_n_raspiska_" id="p_n_raspiska_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_n_raspiska == False %} checked {% endif %} class="input_radio" name="p_n_raspiska_" id="p_n_raspiska_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="p_n_raspiska" name="p_n_raspiska">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Нет выезда МБ
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_n_mb == True %} checked {% endif %} class="input_radio" name="p_n_mb_" id="p_n_mb_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_n_mb == False %} checked {% endif %} class="input_radio" name="p_n_mb_" id="p_n_mb_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="p_n_mb" name="p_n_mb">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Не звонили в прош. сутки
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_n_call == True %} checked {% endif %} class="input_radio" name="p_n_call_" id="p_n_call_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_n_call == False %} checked {% endif %} class="input_radio" name="p_n_call_" id="p_n_call_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="p_n_call" name="p_n_call">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						ДК завершен
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_dk_end == True %} checked {% endif %} class="input_radio" name="p_dk_end_" id="p_dk_end_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_dk_end == False %} checked {% endif %} class="input_radio" style="width: 20px;" name="p_dk_end_" id="p_dk_end_false" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="p_dk_end" name="p_dk_end">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Госпитализирован ранее
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_gospt_ranee == True %} checked {% endif %} class="input_radio" name="p_gospt_ranee_" id="p_gospt_ranee_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_gospt_ranee == False %} checked {% endif %} class="input_radio" name="p_gospt_ranee_" id="p_gospt_ranee_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="p_gospt_ranee" name="p_gospt_ranee">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Нет связи с пациентом и ГП
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_net_svyazi == True %} checked {% endif %} class="input_radio" name="p_net_svyazi_" id="p_net_svyazi_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_net_svyazi == False %} checked {% endif %} class="input_radio" name="p_net_svyazi_" id="p_net_svyazi_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="p_net_svyazi" name="p_net_svyazi">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Неверные данные
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_error_data == True %} checked {% endif %} class="input_radio" name="p_error_data_" id="p_error_data_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.p_error_data == False %} checked {% endif %} class="input_radio" name="p_error_data_" id="p_error_data_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="p_error_data" name="p_error_data">
+						</div>	
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<h3 class="mt-1" style="font-size: 14px;">Описание нарушений ПМСП</h3>
+		<textarea name="violation_descr_pre" id="violation_descr_pre" cols="55" rows="2"></textarea>
+		<input type="text" id="violation_descr" name="violation_descr" hidden>
+        <h3 class="p-1 mt-2" style="border: 1px solid gray; border-radius: 5px 5px 0 0; font-size: 14px;">Обратная связь</h3>
+			<table class="p-1" style="width: 100%; min-height: 50px;">
+				<tbody style="display: block; min-height: 50px; border: 1px solid gray;" class="px-2">
+					<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+						<td>
+							Отправить МБ
+						</td>
+						<td>
+							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+								<input {% if g_observation.f_send_mb == True %} checked {% endif %} name="f_send_mb_" id="f_send_mb_true" class="input_radio" style="width: 20px;" type="radio">
+								<label for="">Да</label>
+							</div>
+						</td>
+						<td>
+							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+								<input {% if g_observation.f_send_mb == False %} checked {% endif %} name="f_send_mb_" id="f_send_mb_false" class="input_radio" style="width: 20px;" type="radio">
+								<label for="">Нет</label>
+						<input hidden type="checkbox" id="f_send_mb" name="f_send_mb">
+							</div>	
+						</td>
+					</tr>
+					<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+						<td>
+							Корректировка ЛС
+						</td>
+						<td>
+							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+								<input {% if g_observation.f_corect_ls == True %} checked {% endif %} name="f_corect_ls_" id="f_corect_ls_true" class="input_radio" style="width: 20px;" type="radio">
+								<label for="">Да</label>
+							</div>
+						</td>
+						<td>
+							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+								<input {% if g_observation.f_corect_ls == False %} checked {% endif %} name="f_corect_ls_" id="f_corect_ls_false" class="input_radio" style="width: 20px;" type="radio">
+								<label for="">Нет</label>
+						<input hidden type="checkbox" id="f_corect_ls" name="f_corect_ls">
+							</div>	
+						</td>
+					</tr>
+					<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+						<!-- не точно -->
+						<td>
+							Отбор биоматериала у контактных лиц
+						</td>
+						<td>
+							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+								<input {% if g_observation.f_conf_dc == True %} checked {% endif %} name="f_conf_dc_" id="f_conf_dc_true" class="input_radio" style="width: 20px;" type="radio">
+								<label for="">Да</label>
+							</div>
+						</td>
+						<td>
+							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+								<input {% if g_observation.f_conf_dc == False %} checked {% endif %} name="f_conf_dc_" id="f_conf_dc_false" class="input_radio" style="width: 20px;" type="radio">
+								<label for="">Нет</label>
+						<input hidden type="checkbox" id="f_conf_dc" name="f_conf_dc">
+							</div>	
+						</td>
+					</tr>
+					<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+						<td>
+							Повторный звонок за сутки
+						</td>
+						<td>
+							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+								<input {% if g_observation.f_repeat_call == True %} checked {% endif %} name="f_repeat_call_" id="f_repeat_call_true" class="input_radio" style="width: 20px;" type="radio">
+								<label for="">Да</label>
+							</div>
+						</td>
+						<td>
+							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+								<input {% if g_observation.f_repeat_call == False %} checked {% endif %} name="f_repeat_call_" id="f_repeat_call_false" class="input_radio" style="width: 20px;" type="radio">
+								<label for="">Нет</label>
+						<input hidden type="checkbox" id="f_repeat_call" name="f_repeat_call">
+							</div>	
+						</td>
+					</tr>
+					<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+						<td>
+							Подтвердить нарушение ДК
+						</td>
+						<td>
+							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+								<input {% if g_observation.narushen_karantin == True %} checked {% endif %} name="narushen_karantin_" id="narushen_karantin_true" class="input_radio" style="width: 20px;" type="radio">
+								<label for="">Да</label>
+							</div>
+						</td>
+						<td>
+							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+								<input {% if g_observation.narushen_karantin == False %} checked {% endif %} name="narushen_karantin_" id="narushen_karantin_false" class="input_radio" style="width: 20px;" type="radio">
+								<label for="">Нет</label>
+						<input hidden type="checkbox" id="narushen_karantin" name="narushen_karantin">
+							</div>	
+						</td>
+					</tr>
+					<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+						<td>
+							Прочие жалобы на ПМСП
+						</td>
+						<td>
+							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+								<input {% if g_observation.f_other_comp_pmsp == True %} checked {% endif %} name="f_other_comp_pmsp_" id="f_other_comp_pmsp_true" class="input_radio" style="width: 20px;" type="radio">
+								<label for="">Да</label>
+							</div>
+						</td>
+						<td>
+							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+								<input {% if g_observation.f_other_comp_pmsp == False %} checked {% endif %} name="f_other_comp_pmsp_" id="f_other_comp_pmsp_false" class="input_radio" style="width: 20px;" type="radio">
+								<label for="">Нет</label>
+						<input hidden type="checkbox" id="f_other_comp_pmsp" name="f_other_comp_pmsp">
+							</div>	
+						</td>
+					</tr>
+					<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+						<td>
+							Соц. помощь
+						</td>
+						<td>
+							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+								<input {% if g_observation.f_social_help == True %} checked {% endif %} name="f_social_help_" id="f_social_help_true" class="input_radio" style="width: 20px;" type="radio">
+								<label for="">Да</label>
+							</div>
+						</td>
+						<td>
+							<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+								<input {% if g_observation.f_social_help == False %} checked {% endif %} name="f_social_help_" id="f_social_help_false" class="input_radio" style="width: 20px;" type="radio">
+								<label for="">Нет</label>
+						<input hidden type="checkbox" id="f_social_help" name="f_social_help">
+							</div>	
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<h3 style="font-size: 14px; margin-top: 2px;">Примечание</h3>
+			<textarea name="f_primechanie_pre" id="f_primechanie_pre" cols="55" rows="2"></textarea>
+			<input type="text" id="f_primechanie" hidden name="f_primechanie">
+	</div>
+	<!-- БЛОК 2 -->
+	<div class="col">
+		<label for="">Оценка текущего состояния</label>
+		<select name="sostoyznie" id="sostoyznie">
+
+			<option value=""></option>
+			<option {% if g_observation.sostoyznie == 1 %} selected {% endif %} value="1">Бессимптомное</option>
+			<option {% if g_observation.sostoyznie == 2 %} selected {% endif %} value="2">Легкой степени тяжести</option>
+			<option {% if g_observation.sostoyznie == 3 %} selected {% endif %} value="3">Среднетяжелой степени тяжести</option>
+			<option {% if g_observation.sostoyznie == 4 %} selected {% endif %} value="4">Тяжелой степени тяжести</option>
+		</select>
+		<div class="row">
+			<div class="col">
+				<label for="">Температура</label>
+				<br>
+				<input id="temperature" value="{{ g_observation.temperature }}" name="temperature" type="text">
+			</div>
+			<div class="col">
+				<label for="">Сатурация</label>
+				<input id="saturation" name="saturation" value="{{ g_observation.saturation }}" type="text">
+			</div>
+		</div>
+		<h3 class="p-1 mt-2" style="border: 1px solid gray; border-radius: 5px 5px 0 0; font-size: 14px;">Чеклист мониторинг</h3>
+		<table style="min-height: 100px; width: 100%">
+			<tbody style="display: block; min-height: 100px; border: 1px solid gray;" class="px-2">
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Слабость
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.debility == True %} checked {% endif %} name="debility_" id="debility_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.debility == False %} checked {% endif %} name="debility_" id="debility_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="debility" name="debility">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Потливость
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.sweating == True %} checked {% endif %} class="input_radio" id="sweating_true" name="sweating_" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.sweating == False %} checked {% endif %} class="input_radio" id="sweating_false" name="sweating_" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="sweating" name="sweating">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Головная боль
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.headache == True %} checked {% endif %} class="input_radio" name="headache_" id="headache_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.headache == False %} checked {% endif %} class="input_radio" name="headache_" id="headache_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="headache" name="headache">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Выделение из глаз или покраснение
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.discharge_eyes_redness == True %} checked {% endif %} class="input_radio" name="discharge_eyes_redness_" id="discharge_eyes_redness_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.discharge_eyes_redness == False %} checked {% endif %} class="input_radio" name="discharge_eyes_redness_" id="discharge_eyes_redness_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="discharge_eyes_redness" name="discharge_eyes_redness">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Снижение слуха / боли в ушах
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.snijenie_sluha == True %} checked {% endif %} class="input_radio" name="snijenie_sluha_" id="snijenie_sluha_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.snijenie_sluha == False %} checked {% endif %} class="input_radio" name="snijenie_sluha_" id="snijenie_sluha_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="snijenie_sluha" name="snijenie_sluha">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Заложенность носа
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.nasal_congestion == True %} checked {% endif %} class="input_radio" name="nasal_congestion_" id="nasal_congestion_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.nasal_congestion == False %} checked {% endif %} class="input_radio" name="nasal_congestion_" id="nasal_congestion_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="nasal_congestion" name="nasal_congestion">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Потеря обоняния
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.anosmia == True %} checked {% endif %} name="anosmia_" id="anosmia_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.anosmia == False %} checked {% endif %} name="anosmia_" id="anosmia_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="anosmia" name="anosmia">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Потеря вкуса
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.loss_taste == True %} checked {% endif %} name="loss_taste_" id="loss_taste_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.loss_taste == False %} checked {% endif %} name="loss_taste_" id="loss_taste_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="loss_taste" name="loss_taste">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Боль/першение в горле
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.sore_throat == True %} checked {% endif %} name="sore_throat_" id="sore_throat_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.sore_throat == False %} checked {% endif %} name="sore_throat_" id="sore_throat_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="sore_throat" name="sore_throat">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Кашель сухой
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.dry_cough == True %} checked {% endif %} class="input_radio" name="dry_cough_" id="dry_cough_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.dry_cough == False %} checked {% endif %} class="input_radio" name="dry_cough_" id="dry_cough_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="dry_cough" name="dry_cough">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Кашель влажный с мокротой
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.cough_phlegm == True %} checked {% endif %} class="input_radio" name="cough_phlegm_" id="cough_phlegm_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.cough_phlegm == False %} checked {% endif %} class="input_radio" name="cough_phlegm_" id="cough_phlegm_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="cough_phlegm" name="cough_phlegm">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Затрудненность дыхания
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.shortness_breath == True %} checked {% endif %} name="shortness_breath_" id="shortness_breath_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.shortness_breath == False %} checked {% endif %} name="shortness_breath_" id="shortness_breath_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="shortness_breath" name="shortness_breath">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Одышка
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.dyspnea == True %} checked {% endif %} name="dyspnea_" id="dyspnea_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.dyspnea == False %} checked {% endif %} name="dyspnea_" id="dyspnea_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="dyspnea" name="dyspnea">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Ощущение сердцебиения/стестнения в груди
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.palpitations == True %} checked {% endif %} name="palpitations_" id="palpitations_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.palpitations == False %} checked {% endif %} name="palpitations_" id="palpitations_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="palpitations" name="palpitations">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Ощущение заложенности в грудной клетке
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.congestion_chest == True %} checked {% endif %} name="congestion_chest_" id="congestion_chest_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.congestion_chest == False %} checked {% endif %} name="congestion_chest_" id="congestion_chest_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="congestion_chest" name="congestion_chest">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Тошнота
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.nausea == True %} checked {% endif %} name="nausea_" id="nausea_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.nausea == False %} checked {% endif %} class="input_radio" name="nausea_" id="nausea_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="nausea" name="nausea">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Рвота
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.vomiting == True %} checked {% endif %} name="vomiting_" id="vomiting_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.vomiting == False %} checked {% endif %} name="vomiting_" id="vomiting_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="vomiting" name="vomiting">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Боли в животе
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.boli_v_jivote == True %} checked {% endif %} name="boli_v_jivote_" id="boli_v_jivote_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.boli_v_jivote == False %} checked {% endif %} name="boli_v_jivote_" id="boli_v_jivote_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="boli_v_jivote" name="boli_v_jivote">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Диарея
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.diarrhea == True %} checked {% endif %} name="diarrhea_" id="diarrhea_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.diarrhea == False %} checked {% endif %} name="diarrhea_" id="diarrhea_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="diarrhea" name="diarrhea">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Боль в мышцах
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.muscle_pain == True %} checked {% endif %} name="muscle_pain_" id="muscle_pain_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.muscle_pain == False %} checked {% endif %} name="muscle_pain_" id="muscle_pain_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="muscle_pain" name="muscle_pain">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Боль в суставах
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.joint_pain == True %} checked {% endif %} class="input_radio" name="joint_pain_" id="joint_pain_true" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.joint_pain == False %} checked {% endif %} class="input_radio" name="joint_pain_" id="joint_pain_false" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="joint_pain" name="joint_pain">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Онемение/боли в НК
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.onemenie == True %} checked {% endif %} name="onemenie_" id="onemenie_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.onemenie == False %} checked {% endif %} name="onemenie_" id="onemenie_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="onemenie" name="onemenie">
+						</div>	
+					</td>
+				</tr>
+				<tr class="mt-1 mb-1" style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+					<td>
+						Сыпь
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.rash == True %} checked {% endif %} name="rash_" id="rash_true" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Да</label>
+						</div>
+					</td>
+					<td>
+						<div style="display:flex; flex-direction: row; justify-content: end; align-items: center">
+							<input {% if g_observation.rash == False %} checked {% endif %} name="rash_" id="rash_false" class="input_radio" style="width: 20px;" type="radio">
+							<label for="">Нет</label>
+					<input hidden type="checkbox" id="rash" name="rash">
+						</div>	
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<h3 class="mt-1" style="font-size: 14px;">Жалобы на состояние здоровья</h3>
+		<textarea name="wellbeing_pre" id="wellbeing_pre" cols="53" rows="3">{{ g_observation.wellbeing }}</textarea>
+		<input id="wellbeing" name="wellbeing" type="text" hidden>
+        <h3 style="font-size: 14px;">Принимаемые препараты</h3>
+			<textarea name="medical_taken_pre" id="medical_taken_pre" cols="52" rows="3">{{ g_observation.medical_taken }}</textarea>
+			<input type="text" id="medical_taken" name="medical_taken" hidden>
+			<h3 style="font-size: 14px;">Благодарность ТМЦ</h3>
+			<textarea name="blagodarnost_pre" id="blagodarnost_pre" cols="53" rows="3">{{ g_observation.blagodarnost }}</textarea>
+			<input type="text" name="blagodarnost" hidden id="blagodarnost">
+		</div>
+	<div class="row">
+		<div class="col">
+			<button type="button" style="height: 25px !important; vertical-align: middle;" class="button btn-light">Видезвонок</button>
+		</div>
+		<div class="col row p-1">
+			<button onclick="postCheckList()" style="height: 25px !important; vertical-align: middle;" type="button" id="save_changes" class="button btn-light col p-0">Сохранить</button>
+			<button id="close" onclick="hideCheckList({{ g_observation.id }})" type="button" style="height: 25px !important; vertical-align: middle;" class="button btn-light col p-0">Отмена</button>
+		</div>
+	</div>
+	<input type="datetime-local" hidden id="date" name="date">
+		</div>
+	</div>
+</form>
+</div>
+{% endfor %}
 <form method="POST" name="card" id="card">
 {% csrf_token %}
 <div class="row p-2" style="border: 2px solid rgb(36, 36, 36);">
@@ -22,7 +934,7 @@
                                                                                             border-right:1px solid #c9c9c9; 
                                                                                             border-radius:10% 10% 0 0;">
                             Пациенты
-                    </button>
+                        </button>
                     </li>
                     <li class="nav-item" style="padding: 0px;">
                         <button id="calls" type="button" onclick="choseHistory('calls')" style="padding: 5px; 
@@ -95,12 +1007,10 @@
                     <tbody id="journal_body" style="display: block; overflow: auto; height: 150px; width: 100%;">
                         {% for g_observation in g_observations %}
                         <tr class="d-flex justify-content-between" style="background-color: gray;">
-                            <div>
-                                <td style="border: 1px solid gray;">{{ g_observation.date }}</td>
-                                <td style="border: 1px solid gray;">{{ g_observation.sostoyznie }}</td>
-                                <td style="border: 1px solid gray;">{{ g_observation.temperature }}</td>
-                                <td style="border: 1px solid gray;">{{ g_observation.saturation }}</td>
-                            </div>
+                            <td style="width: 100rem !important; border: 1px solid gray;">{{ g_observation.date }}</td>
+                            <td style="width: 100rem !important; border: 1px solid gray;">{{ g_observation.sostoyznie }}</td>
+                            <td style="width: 100rem !important; border: 1px solid gray;">{{ g_observation.temperature }}</td>
+                            <td style="width: 100rem !important; border: 1px solid gray;">{{ g_observation.saturation }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -922,7 +1832,7 @@ var JournalStatus = false
                 // myrow.innerHTML = '<tr><td>' + parsed_data[i].fields.notify + '</td><td>' + parsed_data[i].fields.viewed + '</td><td></tr>'
                 // table.appendChild(myrow);
                 if (data != ''){
-                    tbody.innerHTML += '<tr><td><b>' + JSON.parse(data)[i].fields.date + '</b></td><td><b>' + JSON.parse(data)[i].fields.sostoyznie + '</b></td>' +
+                    tbody.innerHTML += `<tr onclick="callCheckList('form_${JSON.parse(data)[i].pk}')"><td><b>` + JSON.parse(data)[i].fields.date.split('.')[0].replace('T', ' ') + '</b></td><td><b>' + JSON.parse(data)[i].fields.sostoyznie + '</b></td>' +
                                       '<td><b>' + JSON.parse(data)[i].fields.temperature + '</b></td><td><b>' + JSON.parse(data)[i].fields.saturation + '</b></td></tr>'
                 }   
                 else{
@@ -1927,6 +2837,16 @@ function radioToCheckBox(id){
         console.log('NO')
     })
 }
+function hideCheckList(id){
+    let form = document.getElementById('form_' + id)
+    form.style.visibility = 'hidden' 
+}
+
+function callCheckList(id){
+    let form = document.getElementById(id)
+    form.style.visibility = 'visible'
+}
+
 
 function addCheckList(){
     let div = document.getElementById('for_popup')
@@ -2147,6 +3067,7 @@ function addCheckList(){
 		left: 50%;
         transform:translate(-50%, -50%);
         box-shadow: 9px 9px 9px 9px gray;
+        width: 60%;
     }
 	table{
 		border: 1px solid gray;
@@ -2156,8 +3077,9 @@ function addCheckList(){
 		vertical-align: middle;
 		font-size: 12px;
 	}
-	tr{
-		height: 18px;
+
+	.journal_body tr td{
+		width: 100rem;
 	}
 	input{
 		min-height: 15px;
