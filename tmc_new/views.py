@@ -310,7 +310,6 @@ class CheckListSaveView(APIView):
         nasal_congestion = request.POST.get('nasal_congestion')
         shortness_breath = request.POST.get('shortness_breath')
         vomiting = request.POST.get('vomiting')
-        print(vomiting)
         nausea = request.POST.get('nausea')
         diarrhea = request.POST.get('diarrhea')
         dry_cough = request.POST.get('dry_cough')
@@ -363,6 +362,66 @@ class CheckListSaveView(APIView):
         p_gospt_ranee = request.POST.get('p_gospt_ranee')
         p_net_svyazi = request.POST.get('p_net_svyazi')
         p_error_data = request.POST.get('p_error_data')
+        new_g_observation = GObservation(
+            date=date,
+            sore_throat=sore_throat,
+            nasal_congestion=nasal_congestion,
+            shortness_breath=shortness_breath,
+            vomiting=vomiting,
+            nausea=nausea,
+            diarrhea=diarrhea,
+            dry_cough=dry_cough,
+            palpitations=palpitations,
+            debility=debility,
+            headache=headache,
+            congestion_chest=congestion_chest,
+            anosmia=anosmia,
+            loss_taste=loss_taste,
+            cough_phlegm=cough_phlegm,
+            sweating=sweating,
+            dyspnea=dyspnea,
+            muscle_pain=muscle_pain,
+            joint_pain=joint_pain,
+            discharge_eyes_redness=discharge_eyes_redness,
+            rash=rash,
+            operator_id=operator_id,
+            temperature=temperature,
+            saturation=saturation,
+            wellbeing=wellbeing,
+            home_nabl=home_nabl,
+            vipoln_naznach=vipoln_naznach,
+            sostoyznie=sostoyznie,
+            narushen_karantin=narushen_karantin,
+            video_call=video_call,
+            jaloba_na_pmsp=jaloba_na_pmsp,
+            p_povtor_pcr=p_povtor_pcr,
+            p_go_street=p_go_street,
+            p_kt=p_kt,
+            p_n_naznachenie=p_n_naznachenie,
+            p_n_list=p_n_list,
+            p_n_raspiska=p_n_raspiska,
+            p_n_mb=p_n_mb,
+            p_n_call=p_n_call,
+            medical_taken=medical_taken,
+            violation_quar=violation_quar,
+            violation_descr=violation_descr,
+            f_send_mb=f_send_mb,
+            f_corect_ls=f_corect_ls,
+            f_repeat_call=f_repeat_call,
+            f_conf_dc=f_conf_dc,
+            f_other_comp_pmsp=f_other_comp_pmsp,
+            f_social_help=f_social_help,
+            snijenie_sluha=snijenie_sluha,
+            boli_v_jivote=boli_v_jivote,
+            onemenie=onemenie,
+            blagodarnost=blagodarnost,
+            f_primechanie=f_primechanie,
+            p_dk_end=p_dk_end,
+            p_gospt_ranee=p_gospt_ranee,
+            p_net_svyazi=p_net_svyazi,
+            p_error_data=p_error_data,
+        )
+        new_g_observation.save()
         try:
             return HttpResponse({'result': 'success'})
         except:
@@ -713,8 +772,8 @@ class Card_id(APIView):
 
 @api_view(["GET"])
 @permission_classes((permissions.AllowAny,))
-def additional_form(request, id):
-
+def additional_form(request, patient_id, checklist_id):
+    g_observation = GObservation.objects.get(id=checklist_id)
     return HttpResponse(render_to_string("modal_checklist.html"), {'id': id})
 
 
