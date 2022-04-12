@@ -452,73 +452,73 @@ class Card_id(APIView):
         else:
             is_rezident = False
             
-        birthday = request.POST.get('birthday') #ДАТА РОЖДЕНИЯ
-        sex = request.POST.get('sex') #ПОЛ
-        s_country = request.POST.get('s_country') #ГРАЖДАНСТВО
-        num_doc = request.POST.get('num_doc') #НОМЕР ДОКУМЕНТА
-        s_region = request.POST.get('s_region') #РАЙОН
-        s_village = request.POST.get('s_village') #ДЕРЕВНЯ
-        s_street = request.POST.get('s_street') #УЛИЦА
-        home = request.POST.get('home') #НОМЕР ДОМА
-        block = request.POST.get('block') #НОМЕР БЛОКА
-        kv = request.POST.get('kv') #НОМЕР КВАРТИРЫ
-        date_vz = request.POST.get('date_vz') #ДАТА ВЗЯТИЯ
-        time_vz = request.POST.get('time_vz') #ВРЕМЯ ВЗЯТИЯ
-        pmsp = request.POST.get('pmsp') #ПМСП
-        phone = request.POST.get('phone') #НОМЕР ТЕЛЕФОНА (МОБИЛЬНЫЙ)
-        phone_home = request.POST.get('phone_home') #НОМЕР ТЕЛЕФОНА (ДОМАШНИЙ)
-        additional_contacts = request.POST.get('additional_contacts') #ДОПОЛНИТЕЛЬНЫЕ КОНТАКТЫ
-        info_for_tmc_agent = request.POST.get('info_for_tmc_agent') #ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ ДЛЯ СОТРУДНИКА ТМЦ
-        result_of_end = request.POST.get('result_of_end') if request.POST.get('result_of_end') != '' else None #СТАТУС ПРИ СНЯТИИ С НАБЛЮДЕНИЯ
-        date_of_end = request.POST.get('date_of_end') if request.POST.get('date_of_end') != '' else None #ДАТА СНЯТИЯ С НАБЛЮДЕНИЯ
-        s_risk_group = request.POST.get('s_risk_group') #ГРУППА РИСКА
-        pmsp_ojirenie = request.POST.get('pmsp_ojirenie') #ОЖИРЕНИЕ ПМСП
-        pmsp_serdce = request.POST.get('pmsp_serdce') #СЕРДЦЕ ПМСП
-        pmsp_ag = request.POST.get('pmsp_ag') #АРТЕРИАЛЬНАЯ ГИПЕРТЕНЗИЯ ПМСП
-        pmsp_bronh = request.POST.get('pmsp_bronh') #БРОНХИАЛЬНАЯ АСТМА ПМСП
-        pmsp_pechen = request.POST.get('pmsp_pechen') #БОЛЕЗНЬ ПЕЧЕНИ ПМСП
-        pmsp_gemat = request.POST.get('pmsp_gemat') #ГЕМАТОЛОГИЧЕСКОЙ РАССТРОЙСТВО ПМСП
-        pmsp_pochek = request.POST.get('pmsp_pochek') #БОЛЕЗНЬ ПОЧЕК ПМСП
-        pmsp_onko = request.POST.get('pmsp_onko') #ОНКОЛОГИЯ ПМСП
-        pmsp_other_chronic =  request.POST.get('pmsp_other_chronic') #ДРУГИЕ ХРОНИЧЕСКИЕ ЗАБОЛЕВАНИЯ ПМСП
-        pmsp_pneumonia = request.POST.get('pmsp_pneumonia') #ПНЕВМОНИЯ ПМСП
-        pmsp_diabetes = request.POST.get('pmsp_diabetes') #САХАРНЫЙ ДИАБЕТ ПМСП
-        pmsp_other_endo = request.POST.get('pmsp_other_endo') #ДРУГИЕ ЭНДОКРИННЫЕ ЗАБОЛЕВАНИЯ ПМСП
-        pmsp_hobl = request.POST.get('pmsp_hobl') #ХОБЛ ПМСП
-        pregnancy = request.POST.get('pregnancy') #БЕРЕМЕННОСТЬ ТРИМЕСТР
-        detailed_diagnosis_info = request.POST.get('detailed_diagnosis_info') #ПОДРОБНОЕ ОПИСАНИЕ ДИАГНОЗА
-        nosologiya = request.POST.get('nosologiya') #НОЗОЛОГИЯ
-        diagnosis_monitoring = request.POST.get('diagnosis_monitoring') #ДИАГНОЗ НАБЛЮДЕНИЯ
-        diagnosis_date = request.POST.get('diagnosis_date') #ДИАГНОЗ НАБЛЮДЕНИЯ
-        patient_condition = request.POST.get('patient_condition') #СОСТОЯНИЕ ПАЦИЕНТА
-        pmsp_start_date = request.POST.get('pmsp_start_date') #ДАТА ВЗЯТИЯ НА ДОМАШНЕЕ НАБЛЮДЕНИЕ
-        sign_observation = request.POST.get('sign_observation') #ПОСЛЕ СТАЦИОНАРА
-        pneumonia = request.POST.get('pneumonia') #ПНЕВМОНИЯ
-        pcr_reason = request.POST.get('pcr_reason') #ПРИЧИНА СДАЧИ ПЦР
-        pcr_result = request.POST.get('pcr_result') #РЕЗУЛЬТАТ ПЦР
-        pcr_test_date = request.POST.get('pcr_test_date') #ДАТА СДАЧИ ПЦР ТЕСТА
-        pcr_result_date = request.POST.get('pcr_result_date') #ДАТА ПОЛУЧЕНИЯ РЕЗУЛЬТАТА ПЦР
-        kt_result = request.POST.get('kt_result') #РЕЗУЛЬТАТ КТ
-        kt_date = request.POST.get('kt_date') #ДАТА КТ
-        kt_result_diagnosis = request.POST.get('kt_result_diagnosis') #РЕЗУЛЬТАТ ДИАГНОЗА КТ
-        rentgen_result = request.POST.get('rentgen_result') #РЕЗУЛЬТАТ
-        rentgen_date = request.POST.get('rentgen_date') #ДАТА РЕНТГЕНА
-        rentgen_result_diagnosis = request.POST.get('rentgen_result_diagnosis') #ЗАКЛЮЧЕНИЕ РЕНТГЕНА
-        mb_date = request.POST.get('mb_date') #ДАТА ВЫЕЗДА МБ
-        late_reason = request.POST.get('late_reason') #ПРИЧИНА ПОЗДНЕЙ ПОДАЧИ
-        pmsp_info_datetime = request.POST.get('pmsp_info_datetime') #ДАТА ПОЛУЧЕНИЯ ДАННЫХ ОТ ПМСП
-        first_call_datetime = request.POST.get('first_call_datetitme') #ДАТА ПЕРВОГО ЗВОНКА
-        tmc_function_info = request.POST.get('tmc_function_info') #ИНФОРМИРОВАНИЕ О ФУНКЦИЯХ ТМЦ
-        tmc_condition_info = request.POST.get('tmc_condition_info') #ИНФОРМИРОВАНИЕ ОБ УСЛОВИЯХ ТМЦ
-        refusal_hospitalize = request.POST.get('refusal_hospitalize') #ОТКАЗ ОТ ГОСПИТАЛИЗАЦИИ 
-        end_monitoring_patient = request.POST.get('end_monitoring_patient') #ЗАВЕРШЕНИЕ НАБЛЮДЕНИЯ СО СЛОВ ПАЦИЕНТА
-        stationar = request.POST.get('stationar') #СТАЦИОНАР
+        birthday =            request.POST.get('birthday')   if request.POST.get('birthday')   != '' else None #ДАТА РОЖДЕНИЯ
+        sex =                 request.POST.get('sex')        if request.POST.get('sex')        != '' else None #ПОЛ
+        s_country =           request.POST.get('s_country')  if request.POST.get('s_country')  != '' else None #ГРАЖДАНСТВО
+        num_doc =             request.POST.get('num_doc')    if request.POST.get('num_doc')    != '' else None #НОМЕР ДОКУМЕНТА
+        s_region =            request.POST.get('s_region')   if request.POST.get('s_region')   != '' else None #РАЙОН
+        s_village =           request.POST.get('s_village')  if request.POST.get('s_village')  != '' else None #ДЕРЕВНЯ
+        s_street =            request.POST.get('s_street')   if request.POST.get('s_street')   != '' else None #УЛИЦА
+        home =                request.POST.get('home')       if request.POST.get('home')       != '' else None #НОМЕР ДОМА
+        block =               request.POST.get('block')      if request.POST.get('block')      != '' else None #НОМЕР БЛОКА
+        kv =                  request.POST.get('kv')         if request.POST.get('kv')         != '' else None #НОМЕР КВАРТИРЫ
+        date_vz =             request.POST.get('date_vz')    if request.POST.get('date_vz')    != '' else None #ДАТА ВЗЯТИЯ
+        time_vz =             request.POST.get('time_vz')    if request.POST.get('time_vz')    != '' else None #ВРЕМЯ ВЗЯТИЯ
+        pmsp =                request.POST.get('pmsp')       if request.POST.get('pmsp')       != '' else None #ПМСП
+        phone =               request.POST.get('phone')      if request.POST.get('phone')      != '' else None #НОМЕР ТЕЛЕФОНА (МОБИЛЬНЫЙ)
+        phone_home =          request.POST.get('phone_home') if request.POST.get('phone_home') != '' and request.POST.get('phone_home') != 'None' else None  #НОМЕР ТЕЛЕФОНА (ДОМАШНИЙ)
+        additional_contacts = request.POST.get('additional_contacts') if request.POST.get('additional_contacts') != '' else None #ДОПОЛНИТЕЛЬНЫЕ КОНТАКТЫ
+        info_for_tmc_agent =  request.POST.get('info_for_tmc_agent')  if request.POST.get('info_for_tmc_agent')  != '' else None #ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ ДЛЯ СОТРУДНИКА ТМЦ
+        result_of_end =       request.POST.get('result_of_end') if request.POST.get('result_of_end') != '' else None #СТАТУС ПРИ СНЯТИИ С НАБЛЮДЕНИЯ
+        date_of_end =         request.POST.get('date_of_end') if request.POST.get('date_of_end') != '' else None #ДАТА СНЯТИЯ С НАБЛЮДЕНИЯ
+        s_risk_group =        request.POST.get('s_risk_group')  if request.POST.get('s_risk_group')  != '' else None #ГРУППА РИСКА
+        pmsp_ojirenie =       request.POST.get('pmsp_ojirenie') if request.POST.get('pmsp_ojirenie') != '' else None #ОЖИРЕНИЕ ПМСП
+        pmsp_serdce =         request.POST.get('pmsp_serdce')   if request.POST.get('pmsp_serdce')   != '' else None #СЕРДЦЕ ПМСП
+        pmsp_ag =             request.POST.get('pmsp_ag') if request.POST.get('pmsp_ag') != '' else None #АРТЕРИАЛЬНАЯ ГИПЕРТЕНЗИЯ ПМСП
+        pmsp_bronh =  request.POST.get('pmsp_bronh')  if request.POST.get('pmsp_bronh')  != '' else None #БРОНХИАЛЬНАЯ АСТМА ПМСП
+        pmsp_pechen = request.POST.get('pmsp_pechen') if request.POST.get('pmsp_pechen') != '' else None  #БОЛЕЗНЬ ПЕЧЕНИ ПМСП
+        pmsp_gemat =  request.POST.get('pmsp_gemat')  if request.POST.get('pmsp_gemat')  != '' else None #ГЕМАТОЛОГИЧЕСКОЙ РАССТРОЙСТВО ПМСП
+        pmsp_pochek = request.POST.get('pmsp_pochek') if request.POST.get('pmsp_pochek') != '' else None  #БОЛЕЗНЬ ПОЧЕК ПМСП
+        pmsp_onko =   request.POST.get('pmsp_onko') if request.POST.get('pmsp_onko') != '' else None #ОНКОЛОГИЯ ПМСП
+        pmsp_other_chronic =  request.POST.get('pmsp_other_chronic') if request.POST.get('pmsp_other_chronic') != '' else None #ДРУГИЕ ХРОНИЧЕСКИЕ ЗАБОЛЕВАНИЯ ПМСП
+        pmsp_pneumonia =      request.POST.get('pmsp_pneumonia')  if request.POST.get('pmsp_pneumonia')  != '' else None #ПНЕВМОНИЯ ПМСП
+        pmsp_diabetes =       request.POST.get('pmsp_diabetes')   if request.POST.get('pmsp_diabetes')   != '' else None #САХАРНЫЙ ДИАБЕТ ПМСП
+        pmsp_other_endo =     request.POST.get('pmsp_other_endo') if request.POST.get('pmsp_other_endo') != '' else None #ДРУГИЕ ЭНДОКРИННЫЕ ЗАБОЛЕВАНИЯ ПМСП
+        pmsp_hobl =           request.POST.get('pmsp_hobl') if request.POST.get('pmsp_hobl') != '' else None #ХОБЛ ПМСП
+        pregnancy =           request.POST.get('pregnancy') if request.POST.get('pregnancy') != '' else None #БЕРЕМЕННОСТЬ ТРИМЕСТР
+        detailed_diagnosis_info = request.POST.get('detailed_diagnosis_info') if request.POST.get('detailed_diagnosis_info') != '' else None #ПОДРОБНОЕ ОПИСАНИЕ ДИАГНОЗА
+        nosologiya = request.POST.get('nosologiya') if request.POST.get('nosologiya') != '' else None #НОЗОЛОГИЯ
+        diagnosis_monitoring = request.POST.get('diagnosis_monitoring') if request.POST.get('diagnosis_monitoring') != '' else None #ДИАГНОЗ НАБЛЮДЕНИЯ
+        diagnosis_date = request.POST.get('diagnosis_date') if request.POST.get('diagnosis_date') != '' else None #ДИАГНОЗ НАБЛЮДЕНИЯ
+        patient_condition = request.POST.get('patient_condition') if request.POST.get('patient_condition') != '' else None #СОСТОЯНИЕ ПАЦИЕНТА
+        pmsp_start_date = request.POST.get('pmsp_start_date') if request.POST.get('pmsp_start_date') != '' else None#ДАТА ВЗЯТИЯ НА ДОМАШНЕЕ НАБЛЮДЕНИЕ
+        sign_observation = request.POST.get('sign_observation') if request.POST.get('sign_observation') != '' else None #ПОСЛЕ СТАЦИОНАРА
+        pneumonia = request.POST.get('pneumonia') if request.POST.get('pneumonia') != '' else None #ПНЕВМОНИЯ
+        pcr_reason = request.POST.get('pcr_reason') if request.POST.get('pcr_reason') != '' else None #ПРИЧИНА СДАЧИ ПЦР
+        pcr_result = request.POST.get('pcr_result') if request.POST.get('pcr_result') != '' else None #РЕЗУЛЬТАТ ПЦР
+        pcr_test_date = request.POST.get('pcr_test_date') if request.POST.get('pcr_test_date') != '' else None #ДАТА СДАЧИ ПЦР ТЕСТА
+        pcr_result_date = request.POST.get('pcr_result_date') if request.POST.get('pcr_result_date') != '' else None #ДАТА ПОЛУЧЕНИЯ РЕЗУЛЬТАТА ПЦР
+        kt_result = request.POST.get('kt_result') if request.POST.get('kt_result') != '' else None #РЕЗУЛЬТАТ КТ
+        kt_date = request.POST.get('kt_date') if request.POST.get('kt_date') != '' else None #ДАТА КТ
+        kt_result_diagnosis = request.POST.get('kt_result_diagnosis') if request.POST.get('kt_result_diagnosis') != '' else None #РЕЗУЛЬТАТ ДИАГНОЗА КТ
+        rentgen_result = request.POST.get('rentgen_result') if request.POST.get('rentgen_result') != '' else None #РЕЗУЛЬТАТ
+        rentgen_date = request.POST.get('rentgen_date') if request.POST.get('rentgen_date') != '' else None #ДАТА РЕНТГЕНА
+        rentgen_result_diagnosis = request.POST.get('rentgen_result_diagnosis') if request.POST.get('rentgen_result_diagnosis') != '' else None #ЗАКЛЮЧЕНИЕ РЕНТГЕНА
+        mb_date = request.POST.get('mb_date') if request.POST.get('mb_date') != '' else None #ДАТА ВЫЕЗДА МБ
+        late_reason = request.POST.get('late_reason') if request.POST.get('late_reason') != '' else None #ПРИЧИНА ПОЗДНЕЙ ПОДАЧИ
+        pmsp_info_datetime = request.POST.get('pmsp_info_datetime') if request.POST.get('pmsp_info_datetime') != '' else None #ДАТА ПОЛУЧЕНИЯ ДАННЫХ ОТ ПМСП
+        first_call_datetime = request.POST.get('first_call_datetitme') if request.POST.get('first_call_datetitme') != '' else None # ДАТА ПЕРВОГО ЗВОНКА
+        tmc_function_info = request.POST.get('tmc_function_info') if request.POST.get('tmc_function_info') != '' else None #ИНФОРМИРОВАНИЕ О ФУНКЦИЯХ ТМЦ
+        tmc_condition_info = request.POST.get('tmc_condition_info') if request.POST.get('tmc_condition_info') != '' else None #ИНФОРМИРОВАНИЕ ОБ УСЛОВИЯХ ТМЦ
+        refusal_hospitalize = request.POST.get('refusal_hospitalize') if request.POST.get('refusal_hospitalize') != '' else None #ОТКАЗ ОТ ГОСПИТАЛИЗАЦИИ 
+        end_monitoring_patient = request.POST.get('end_monitoring_patient') if request.POST.get('end_monitoring_patient') != '' else None #ЗАВЕРШЕНИЕ НАБЛЮДЕНИЯ СО СЛОВ ПАЦИЕНТА
+        stationar = request.POST.get('stationar') if request.POST.get('stationar') != '' else None #СТАЦИОНАР
         status_end_date = request.POST.get('status_end_date') if request.POST.get('status_end_date') != '' else None #ДАТА ЗАВЕРШЕНИЯ НАБЛЮДЕНИЯ
-        vaccine = request.POST.get('vaccine') #ТИП ВАКЦИНЫ
-        vaccine_doses = request.POST.get('vaccine_doses') #КОЛИЧЕСТВО ПОЛУЧЕННЫХ ДОЗ ВАКЦИНЫ
-        vaccine_first_date = request.POST.get('vaccine_first_date') #ДАТА ПОЛУЧЕНИЯ ПЕРВОЙ ДОЗЫ
-        vaccine_second_date = request.POST.get('vaccine_second_date') #ДАТА ПОЛУЧЕНИЯ ВТОРОЙ ДОЗЫ
-        presc_therapy =request.POST.get('presc_therapy') # Назначения
+        vaccine = request.POST.get('vaccine') if request.POST.get('vaccine') != '' else None #ТИП ВАКЦИНЫ
+        vaccine_doses = request.POST.get('vaccine_doses') if request.POST.get('vaccine_doses') != '' else None #КОЛИЧЕСТВО ПОЛУЧЕННЫХ ДОЗ ВАКЦИНЫ
+        vaccine_first_date = request.POST.get('vaccine_first_date') if request.POST.get('vaccine_first_date') != '' else None #ДАТА ПОЛУЧЕНИЯ ПЕРВОЙ ДОЗЫ
+        vaccine_second_date = request.POST.get('vaccine_second_date') if request.POST.get('vaccine_second_date') != '' else None #ДАТА ПОЛУЧЕНИЯ ВТОРОЙ ДОЗЫ
+        presc_therapy = request.POST.get('presc_therapy') if request.POST.get('presc_therapy') != '' else None # Назначения
 
 
 
@@ -564,34 +564,6 @@ class Card_id(APIView):
             sign_observation_hospital =sign_observation,
             diagnosis_date = diagnosis_date, 
         )
-
-        print(g_patient_log.iin)
-        print(g_patient_log.num_crossdoc)
-        print(g_patient_log.pmsp_name)
-        print(g_patient_log.phone)
-        print(g_patient_log.status_end)
-        print(g_patient_log.status_end_date)
-        print(g_patient_log.pcr_reason)
-        print(g_patient_log.pcr_result)
-        print(g_patient_log.result_kt)
-        print(g_patient_log.pcr_date_test)
-        print(g_patient_log.pcr_date_receipt)
-        print(g_patient_log.kt_date)
-        print(g_patient_log.diagnosis_kt)
-        print(g_patient_log.xray)
-        print(g_patient_log.xray_date)
-        print(g_patient_log.xray_result)
-        print(g_patient_log.date_mobile_brigade)
-        print(g_patient_log.date_start)
-        print(g_patient_log.pmsp_start_date)
-        print(g_patient_log.info_function)
-        print(g_patient_log.info_cond)
-        print(g_patient_log.hospitalize_tmc)
-        print(g_patient_log.p_close_end_date)
-        print(g_patient_log.watch_diagnosis)
-        print(g_patient_log.patient_condition_start)
-        print(g_patient_log.sign_observation_hospital)
-        print(g_patient_log.diagnosis_date)
 
         g_patient_log.save()
 
@@ -641,6 +613,7 @@ class Card_id(APIView):
             other_diagnos = detailed_diagnosis_info,
             # date_time = pmsp_start_date,
         )
+
         g_incident_log.save()
 
         g_patient.iin = iin

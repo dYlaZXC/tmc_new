@@ -197,7 +197,7 @@
                     <select name="s_village" id="s_village">
                         <option value=""></option>
                         {% for s_village in s_villages %}
-                            <option {% if s_village.village_id == g_incident.village %} selected {% endif %} value="{{ s_village.id }}">{{ s_village.name_ru }}</option>
+                            <option {% if s_village.village_id == g_incident.village %} selected {% endif %} value="{{ s_village.village_id }}">{{ s_village.name_ru }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -262,7 +262,7 @@
             <div class="col">
                 <label for="phone_home">Тел. стац.</label>
                 <br>
-                <input type="text" id="phone_home" {% if g_incident.phone_contact != 0 %} value="{{ g_incident.phone_contact }}" {% else %} value="" {% endif %} name="phone_home">
+                <input type="text" id="phone_home" {% if g_incident.phone_contact != None %} value="{{ g_incident.phone_contact }}" {% else %} value="" {% endif %} name="phone_home">
             </div>
         </div>
         <div class="row">
@@ -399,7 +399,7 @@
             </div>
             <div class="row mt-3 text-center">
                 <label class="col-3" for="">Подробное описание диагноза</label>
-                <input class="col-9" style="height: 55px; width: 72.5%;" value="{{ g_incident.other_diagnos }}" id="detailed_diagnosis_info" name="detailed_diagnosis_info" name="" type="text">
+                <input class="col-9" style="height: 55px; width: 72.5%;" value="{% if g_incident.other_diagnos != None %}{{ g_incident.other_diagnos }}{% endif %}" id="detailed_diagnosis_info" name="detailed_diagnosis_info" name="" type="text">
             </div>
             <div class="row mt-3 text-center">
                 <label class="col-3" for="">Нозология</label>
