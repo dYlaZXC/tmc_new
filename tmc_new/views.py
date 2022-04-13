@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 from contextlib import nullcontext
 from distutils.ccompiler import new_compiler
 from math import nan

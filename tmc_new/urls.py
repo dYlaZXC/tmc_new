@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from .views import *
+from django.views.static import serve
+from django.contrib.staticfiles.urls import static
+from .settings import MEDIA_URL, MEDIA_ROOT, STATIC_ROOT
+from django.conf.urls import url
 
 
 urlpatterns = [
@@ -38,4 +42,9 @@ urlpatterns = [
     #TEST
     # path('card/test/', set_users, name='test'),
     # path('card/test/get', parse_users, name='test-get')
+    path('card/checklists/<int:id>', CheckListJournalView.as_view(), name='checklists-journal'),
+
+    url(r'static/(?P<path>.*)$', serve, {"document_root": STATIC_ROOT})
 ]
+
+urlpatterns += static(MEDIA_URL, document_root = MEDIA_ROOT)
