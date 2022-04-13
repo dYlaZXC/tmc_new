@@ -11,7 +11,7 @@
         <div class="row" style="height: 400px;">
             <iframe style="width: 100%;" src="https://demov5_kz.hostedcc.ru/agentdesktop/AgentDesktopSdkTest.jsp" frameborder="0"></iframe>
         </div>
-        <button type="button">Позвонить</button>
+        <button type="button" onclick="dialNumber(document.getElementById('phone').value)">Позвонить</button>
         <button type="button" onclick="showDialog()">Добавить</button>
             <div class="row mt-3">
                 <ul class="nav justify-content-start" style="padding: 0px; margin-left:5px;">
@@ -740,7 +740,6 @@
     window.bpspat.api.init("https://demov5_kz.hostedcc.ru");
     document.getElementById("repeater").src = window.location.href.replace("AgentDesktopSdkTest", "UniversalRepeater");
 
-    
     function makeActive(id) {
         var patients = document.getElementById();
         var call_history = docuemnt.getElementById()
