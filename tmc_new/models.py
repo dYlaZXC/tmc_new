@@ -268,6 +268,8 @@ class GIncident(models.Model):
 
     def time_start(self):
         if self.date_time is not None:
+            if self.date_time.hour == 0:
+                return str(self.date_time.hour) + '0:' + str(self.date_time.minute)
             return str(self.date_time.hour) + ':' + str(self.date_time.minute)
 
 
