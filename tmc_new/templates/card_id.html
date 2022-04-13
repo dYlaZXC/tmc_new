@@ -901,11 +901,11 @@
 		</div>
 	<div class="row">
 		<div class="col">
-			<button type="button" style="height: 25px !important; vertical-align: middle;" class="button btn-light">Видезвонок</button>
+
 		</div>
 		<div class="col row p-1">
-			<button onclick="postCheckList()" style="height: 25px !important; vertical-align: middle;" type="button" id="save_changes" class="button btn-light col p-0">Сохранить</button>
-			<button id="close" onclick="hideCheckList({{ g_observation.id }})" type="button" style="height: 25px !important; vertical-align: middle;" class="button btn-light col p-0">Отмена</button>
+			<div class="col"></div>
+			<button id="close" onclick="hideCheckList({{ g_observation.id }})" type="button" style="height: 25px !important; vertical-align: middle;" class="button btn-light col p-0">Закрыть</button>
 		</div>
 	</div>
 	<input type="datetime-local" hidden id="date" name="date">
@@ -919,16 +919,16 @@
 <div class="row p-2" style="border: 2px solid rgb(36, 36, 36);">
     <!-- 1 БЛОК -->
     <div class="col-3" style="border: 1px solid gray;">
-        <div class="row" style="height: 445px;">
+        <div class="row" style="height: 425px;">
             <iframe style="width: 100%;" src="https://demov5_kz.hostedcc.ru/agentdesktop/AgentDesktopSdkTest.jsp" frameborder="0"></iframe>
         </div>
-        <button type="button">Позвонить</button>
+        <button type="button" onclick="Call()">Позвонить</button>
         <!-- <button type="button" onclick="showDialog()">Добавить</button> -->
         <button type="button" onclick="addCheckList()">Добавить</button>
-            <div class="row mt-3">
+            <div class="mt-2">
                 <ul class="nav justify-content-start" style="padding: 0px; margin-left:5px;">
                     <li class="nav-item" style="padding: 0px;">
-                        <button type="button" class="active" id="patients" onclick="choseHistory('patients')" aria-current="page" onclick="" style="padding: 5px; 
+                        <button type="button" class="active ml-2" id="patients" onclick="choseHistory('patients'); makeActive('patients');" aria-current="page" onclick="" style="padding: 5px; 
                                                                                             border-top: 1px solid #c9c9c9; 
                                                                                             border-left: 1px solid #c9c9c9; 
                                                                                             border-right:1px solid #c9c9c9; 
@@ -937,7 +937,7 @@
                         </button>
                     </li>
                     <li class="nav-item" style="padding: 0px;">
-                        <button id="calls" type="button" onclick="choseHistory('calls')" style="padding: 5px; 
+                        <button id="calls" type="button" onclick="choseHistory('calls'); makeActive('calls');" style="padding: 5px; 
                                                                 border-top: 1px solid #c9c9c9; 
                                                                 border-left: 1px solid #c9c9c9; 
                                                                 border-right:1px solid #c9c9c9; 
@@ -946,73 +946,47 @@
                     </li>
                 </ul>
             </div>
-            <div id="modal_patients" style="overflow: hidden; height: 150px;">
-                <table class="table table-bordered">
-                    <thead style="font-weight: bold; background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);">
-                        <tr>
-                            <th>№</th>
-                            <th>ФИО</th>
-                            <th>Телефон</th>
-                            <th>ПМСП</th>
-                            <th>Дата начала</th>
-                            <th>Дата окончания</th>
+            <div id="modal_patients" style="height: 150px;">
+                <table class="table journal_table" style="border: 2px solid black;">
+                    <thead class="patients_head" style="height: 30px; background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);">
+                        <tr class="d-flex justify-content-between" style="height: 100%; border-bottom: 1px solid gray;">
+                            <th style="border: 1px solid gray; width: 30%;" class="text-center">ФИО</th>
+                            <th style="border: 1px solid gray; width: 17.5%;" class="text-center">Телефон</th>
+                            <th style="border: 1px solid gray; width: 17.5%;" class="text-center">ПМСП</th>
+                            <th style="border: 1px solid gray; width: 17.5%;" class="text-center">Дата начала</th>
+							<th style="border: 1px solid gray; width: 17.5%;" class="text-center">Дата окончания</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                    <tbody id="patients_body" style="display: block; overflow-y: auto; overflow-x: hidden; height: 125px;">
+
                     </tbody>
                 </table>
             </div>
-            <div id="modal_calls" style="display: none; overflow: hidden; height: 150px;">
-                <table class="table table-bordered">
-                    <thead style="font-weight: bold; background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);">
-                        <tr>
-                            <th>№</th>
-                            <th>ЗВОНОК</th>
-                            <th>ЗВОНОК</th>
-                            <th>ЗВОНОК</th>
-                            <th>ЗВОНОК</th>
-                            <th>ЗВОНОК</th>
+            <div id="modal_calls" style="display: none; height: 150px;">
+                <table class="table table-bordered calls_table" style="border: 2px solid black;">
+                    <thead style="height: 30px; font-weight: bold; background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);">
+                        <tr class="d-flex justify-content-between">
+                            <th style="width: 50%;" class="text-center">Дата и время</th>
+                            <th style="width: 50%;" class="text-center">Оператор</th>
                         </tr>
                     </thead>
-                    <tbody style="display: block; overflow: auto; height: 150px; width: 100%;">
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                    <tbody id="calls_body" style="display: block; overflow: auto; height: 125px; overflow-y: auto; overflow-x: hidden;">
+
                     </tbody>
                 </table>
             </div>
-            <div id="modal_info">
-                <table class="table journal_table">
+            <div id="modal_info" class="mt-3" style="height: 150px;">
+                <table class="table journal_table" style="border: 2px solid black;">
                     <thead class="journal_head" style="height: 30px; background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);">
                         <tr class="d-flex justify-content-between" style="height: 100%; border-bottom: 1px solid gray;">
-                            <th style="border: 1px solid gray;" class="text-center">Дата и время</th>
-                            <th style="border: 1px solid gray;" class="text-center">Состояние</th>
-                            <th style="border: 1px solid gray;" class="text-center">Темп.</th>
-                            <th style="border: 1px solid gray;" class="text-center">Сат.</th>
+                            <th style="border: 1px solid gray; width: 30%;" class="text-center">Дата и время</th>
+                            <th style="border: 1px solid gray; width: 23.3%;" class="text-center">Состояние</th>
+                            <th style="border: 1px solid gray; width: 23.3%;" class="text-center">Темп.</th>
+                            <th style="border: 1px solid gray; width: 23.3%;" class="text-center">Сат.</th>
                         </tr>
                     </thead>
-                    <tbody id="journal_body" style="display: block; overflow: auto; height: 125px; width: 100%;">
-                        {% for g_observation in g_observations %}
-                        <tr class="d-flex justify-content-between" style="background-color: gray;">
-                            <td style="width: 100rem !important; border: 1px solid gray;">{{ g_observation.date }}</td>
-                            <td style="width: 100rem !important; border: 1px solid gray;">{{ g_observation.sostoyznie }}</td>
-                            <td style="width: 100rem !important; border: 1px solid gray;">{{ g_observation.temperature }}</td>
-                            <td style="width: 100rem !important; border: 1px solid gray;">{{ g_observation.saturation }}</td>
-                        </tr>
-                        {% endfor %}
+                    <tbody id="journal_body" style="display: block; overflow-y: auto; overflow-x: hidden; height: 125px;">
+
                     </tbody>
                 </table>
             </div>
@@ -1212,7 +1186,7 @@
     <!-- 3 БЛОК -->
     <div class="col-3">
         <div class="p-1">
-            <div class="row mt-1">
+            <div class="row">
                 <label class="col-3" for="">Группа риска</label>
                 <select class="col-9" style="width: 40%;" name="s_riskgroup" id="s_riskgroup">
                     <option value=""></option>
@@ -1424,7 +1398,7 @@
     <!-- 4 БЛОК -->
     <div class="col-3">
         <div class="p-1"></div>
-            <div class="mt-1 row">
+            <div class="row">
                 <label for="" class="col-4">Причина сдачи ПЦР</label>
                 <select class="col-8" name="pcr_reason" id="pcr_reason" style="width: 60%;">
                     <option value=""></option>
@@ -1444,7 +1418,7 @@
                         background-color:rgb(204, 204, 204);">
                     Результат ПЦР
                     </h3>
-                    <div class="p-1" name="Результат ПЦР" style="height: 45px; border: 1px solid gray;">
+                    <div name="Результат ПЦР" style="height: 45px; border: 1px solid gray;">
                         {% if g_patient.pcr_result == True %}
                         <div class="row">
                             <div class="col">
@@ -1505,7 +1479,7 @@
                         background-color:rgb(204, 204, 204);">
                     Результат КТ
                     </h3>
-                    <div class="p-1" name="Результат КТ" style="border: 1px solid gray;">
+                    <div name="Результат КТ" style="border: 1px solid gray;">
                         {% if g_patient.result_kt == True %}
                         <div class="row">
                             <div class="col">
@@ -1568,7 +1542,7 @@
                         background-color:rgb(204, 204, 204);">
                     Рентген
                     </h3>
-                    <div class="p-1" name="Рентген" style="border: 1px solid gray;">
+                    <div name="Рентген" style="border: 1px solid gray;">
                         {% if g_patient.xray == True %}
                         <div class="row">
                             <div class="col">
@@ -1728,17 +1702,18 @@
         <button type="submit" style="height: 25px;" class="button btn-light">Сохранить</button>
         </div>
         <div class="col-2">
-            <button type="button" style="height: 25px;" class="button btn-light">Закрыть</button>
+			<a href="{% url 'main' %}">
+            	<button type="button" style="height: 25px;" class="button btn-light">Закрыть</button>
+			</a>
         </div>
     </div>
 </div>
 </form>
+<input type="text" id="user_id" name="user_id" hidden value="{{ request.user.username }}">
+<input type="text" id="operator_name" name="operator_name" hidden>
 <style>
     .journal_head th{
         width: 30%;
-    }
-    .journal_body tr td{
-        width: 30px;
     }
     table{
         font-size: 13px;
@@ -1766,8 +1741,7 @@
       height: 20px;
     }
     .active{
-        background-color:rgb(36, 36, 36);
-        color: white;
+        background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);
     }
     a{
         text-decoration: none;
@@ -1782,18 +1756,30 @@
     tbody, thead, tr{
         display: block;
     }
+	td{
+		display: inline-block;
+	}
 </style>
 <script>
-    window.bpspat.api.init("https://demov5_kz.hostedcc.ru");
-    document.getElementById("repeater").src = window.location.href.replace("AgentDesktopSdkTest", "UniversalRepeater");
+
 
     
-    function makeActive(id) {
-        var patients = document.getElementById();
-        var call_history = docuemnt.getElementById()
-        element.classList.add("active")
-        element.classList.remove("active");
+
+	function makeActive(id) {
+		var patients = document.getElementById('patients');
+        var call_history = document.getElementById('calls')
+		if (id==='patients'){
+			patients.classList.add("active")
+	        call_history.classList.remove("active");
+		}
+		else{
+			patients.classList.remove("active")
+			call_history.classList.add("active")
+		}
+
     }
+
+
     function choseHistory(button) {
         var modal_patients = document.getElementById('modal_patients');
         var modal_calls = document.getElementById('modal_calls')
@@ -1818,30 +1804,72 @@ var JournalStatus = false
         let patient_id = lastSegment
         axios({
             method: 'GET',
-            url: `checklists/` + patient_id,
+            url: `checklists/journal/` + patient_id,
             responseType: 'json',
         }).then(res => {
             let data = res.data
-            console.log('DATA IS: PIZDATA ', data)
             var tbody = document.getElementById("journal_body");
             tbody.innerHTML = ''
             for (var i = 0; i < Object.keys(JSON.parse(data)).length; i++) {
-                var myrow = document.createElement('TR');
-                var myhead = document.createElement('TH');
-                myrow.innerHTML = ''
-                // myrow.innerHTML = '<tr><td>' + parsed_data[i].fields.notify + '</td><td>' + parsed_data[i].fields.viewed + '</td><td></tr>'
-                // table.appendChild(myrow);
-                if (data != ''){
-                    tbody.innerHTML += `<tr onclick="callCheckList('form_${JSON.parse(data)[i].pk}')"><td><b>` + JSON.parse(data)[i].fields.date.split('.')[0].replace('T', ' ') + '</b></td><td><b>' + JSON.parse(data)[i].fields.sostoyznie + '</b></td>' +
-                                      '<td><b>' + JSON.parse(data)[i].fields.temperature + '</b></td><td><b>' + JSON.parse(data)[i].fields.saturation + '</b></td></tr>'
-                }   
-                else{
-                    tbody.innerHTML = '<tr><td><b>Журналов не найдено</b></td></tr>'
-                }
+				// console.log(JSON.parse(data)[i].pk)
+				journal_date = JSON.parse(data)[i].fields.date ? JSON.parse(data)[i].fields.date.split('.')[0].replace('T', ' ') : ''
+                    tbody.innerHTML += `<tr class="row text-center border border-dark p-1" style="background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);" onclick="callCheckList('form_${JSON.parse(data)[i].pk}')"><td class='col-4'><b>` + journal_date  + '</b></td><td class="col-2"><b>' + JSON.parse(data)[i].fields.sostoyznie + '</b></td>' +
+                                      '<td class="col-3"><b>' + JSON.parse(data)[i].fields.temperature + '</b></td><td class="col-3"><b>' + JSON.parse(data)[i].fields.saturation + '</b></td></tr>'
+					tbody.children[i].classList.add("row")					  
             }
         })
         JournalStatus = true
     }
+	function GetObservationCalls(){
+        const full_url = window.location.href
+        const lastSegment = full_url.split("/").pop();
+        let patient_id = lastSegment
+        axios({
+            method: 'GET',
+            url: `checklists/calls/` + patient_id,
+            responseType: 'json',
+        }).then(res => {
+            let data = res.data
+            var tbody = document.getElementById("calls_body");
+            tbody.innerHTML = ''
+            for (var i = 0; i < Object.keys(JSON.parse(data)).length; i++) {
+				calls_date = JSON.parse(data)[i].fields.date_time ? JSON.parse(data)[i].fields.date_time.split('.')[0].replace('T', ' ') : ''
+                    tbody.innerHTML += `<tr style="background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);" +
+					 class="row text-center border border-dark p-1"><td class='col'><b>` + calls_date  + 
+						'</b></td><td class="col"><b>' +  JSON.parse(data)[i].fields.operator_id + '</b></td></tr>'
+            }
+        })
+        JournalStatus = true
+    }
+
+	function GetObservationPatients(){
+        const full_url = window.location.href
+        const lastSegment = full_url.split("/").pop();
+        let patient_id = lastSegment
+		let operator_id = document.getElementById('user_id').value
+        axios({
+            method: 'GET',
+            url: `checklists/patients/` + operator_id,
+            responseType: 'json',
+        }).then(res => {
+            let data = res.data
+            var tbody = document.getElementById("patients_body");
+            tbody.innerHTML = ''
+            for (var i = 0; i < Object.keys(JSON.parse(data)).length; i++) {
+				calls_date = JSON.parse(data)[i].fields.date_time ? JSON.parse(data)[i].fields.date_time.split('.')[0].replace('T', ' ') : ''
+                    tbody.innerHTML += `<tr style="background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);" class="row text-center border border-dark p-1">` +
+					 '<td class="col"><b>' + JSON.parse(data)[i].fields.fio  + '</b></td>' +
+					 '<td class="col"><b>' + JSON.parse(data)[i].fields.phone + '</b></td>' +
+					 '<td class="col"><b>' + JSON.parse(data)[i].fields.pmsp + '</b></td>' +
+					 '<td class="col"><b>' + JSON.parse(data)[i].fields.date_start + '</b></td>' +
+					 '<td class="col"><b>' + JSON.parse(data)[i].fields.status_end_date + '</b></td>' +
+					 '</tr>'
+            }
+        })
+        JournalStatus = true
+    }
+
+
 
     function showDialog() {    
         $('#for_popup').load('/add_form/{{ g_patient.id }}');
@@ -1850,6 +1878,10 @@ var JournalStatus = false
     var currentDirectory = window.location.pathname.split('/').slice(0, -1).join('/')
         document.addEventListener("DOMContentLoaded", function(event) { 
         GetObservationJournal()
+		GetObservationCalls()
+		GetObservationPatients()
+		window.bpspat.api.init("https://demov5_kz.hostedcc.ru");
+    	document.getElementById("repeater").src = window.location.href.replace("AgentDesktopSdkTest", "UniversalRepeater");
         console.log(currentDirectory)
     });
     var is_resident = document.getElementById("is_resident");
@@ -1872,11 +1904,6 @@ var JournalStatus = false
 // nachalo checklist push
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-function SetDateTime(){ 
-	var now = new Date();
-	now. setMinutes(now. getMinutes() - now. getTimezoneOffset());
-	document. getElementById('date'). value = now. toISOString(). slice(0,16);
-}
 
 const CheckList = 
 '<form class="row" id="popup" style="background-color: #e9e9e9; border: 2px solid black;" method="POST" style="padding: 0px;">' +
@@ -2850,6 +2877,12 @@ function callCheckList(id){
 }
 
 
+
+function Call() {
+        window.bpspat.api.selectService('Универсальный смешанный сервис')
+        window.bpspat.api.dialNumber(document.getElementById('phone').value)
+		// bpspat.api.
+    }
 function addCheckList(){
     let div = document.getElementById('for_popup')
     console.log(div.innerHTML)
@@ -2937,66 +2970,68 @@ function addCheckList(){
                 ElementsValuesMigrate('medical_taken_pre', 'medical_taken');
                 ElementsValuesMigrate('blagodarnost_pre', 'blagodarnost')
                 SetDateTime()
-                let date = document.getElementById('date').value 
-                let sore_throat = document.getElementById('sore_throat').checked
-                let nasal_congestion = document.getElementById('nasal_congestion').checked
-                let shortness_breath = document.getElementById('shortness_breath').checked
-                let vomiting = document.getElementById('vomiting').checked
-                let nausea = document.getElementById('nausea').checked
-                let diarrhea = document.getElementById('diarrhea').checked
-                let dry_cough = document.getElementById('dry_cough').checked 
-                let palpitations = document.getElementById('palpitations').checked
-                let debility = document.getElementById('debility').checked
-                let headache = document.getElementById('headache').checked
-                let congestion_chest = document.getElementById('congestion_chest').checked
-                let anosmia = document.getElementById('anosmia').checked
-                let loss_taste = document.getElementById('loss_taste').checked
-                let cough_phlegm = document.getElementById('cough_phlegm').checked
-                let sweating = document.getElementById('sweating').checked
-                let dyspnea = document.getElementById('dyspnea').checked
-                let muscle_pain = document.getElementById('muscle_pain').checked
-                let joint_pain = document.getElementById('joint_pain').checked
-                let discharge_eyes_redness = document.getElementById('discharge_eyes_redness').checked
-                let rash = document.getElementById('rash').checked
-                let temperature = document.getElementById('temperature').value 
-                let saturation = document.getElementById('saturation').value 
-                let wellbeing = document.getElementById('wellbeing').value 
-                let home_nabl = document.getElementById('home_nabl').checked
-                let vipoln_naznach = document.getElementById('vipoln_naznach').checked
-                let sostoyznie = document.getElementById('sostoyznie').value 
-                let narushen_karantin = document.getElementById('narushen_karantin').checked
-                let video_call = document.getElementById('video_call').checked
-                let jaloba_na_pmsp = document.getElementById('jaloba_na_pmsp').value 
-                let p_povtor_pcr = document.getElementById('p_povtor_pcr').checked
-                let p_go_street = document.getElementById('p_go_street').checked
-                let p_kt = document.getElementById('p_kt').checked
-                let p_n_naznachenie = document.getElementById('p_n_naznachenie').checked
-                let p_n_list = document.getElementById('p_n_list').checked
-                let p_n_raspiska = document.getElementById('p_n_raspiska').checked
-                let p_n_mb = document.getElementById('p_n_mb').checked
-                let p_n_call = document.getElementById('p_n_call').checked
-                let medical_taken = document.getElementById('medical_taken').value 
-                let violation_quar = document.getElementById('violation_quar').value 
-                let violation_descr = document.getElementById('violation_descr').value 
-                let f_send_mb = document.getElementById('f_send_mb').checked
-                let f_corect_ls = document.getElementById('f_corect_ls').checked
-                let f_repeat_call = document.getElementById('f_repeat_call').checked
-                let f_conf_dc = document.getElementById('f_conf_dc').checked
-                let f_other_comp_pmsp = document.getElementById('f_other_comp_pmsp').checked
-                let f_social_help = document.getElementById('f_social_help').checked
-                let snijenie_sluha = document.getElementById('snijenie_sluha').checked 
-                let boli_v_jivote = document.getElementById('boli_v_jivote').checked
-                let onemenie = document.getElementById('onemenie').checked
-                let blagodarnost = document.getElementById('blagodarnost').value 
-                let f_primechanie = document.getElementById('f_primechanie').value 
-                let p_dk_end = document.getElementById('p_dk_end').checked
-                let p_gospt_ranee = document.getElementById('p_gospt_ranee').checked
-                let p_net_svyazi = document.getElementById('p_net_svyazi').checked
-                let p_error_data = document.getElementById('p_error_data').checked 
+
+                let sore_throat = document.getElementById('sore_throat').checked ? 1 : 0
+                let nasal_congestion = document.getElementById('nasal_congestion').checked ? 1 : 0
+                let shortness_breath = document.getElementById('shortness_breath').checked ? 1 : 0
+                let vomiting = document.getElementById('vomiting').checked ? 1 : 0
+                let nausea = document.getElementById('nausea').checked ? 1 : 0
+                let diarrhea = document.getElementById('diarrhea').checked ? 1 : 0
+                let dry_cough = document.getElementById('dry_cough').checked ? 1  : 0
+                let palpitations = document.getElementById('palpitations').checked ? 1 : 0
+                let debility = document.getElementById('debility').checked ? 1 : 0
+                let headache = document.getElementById('headache').checked ? 1 : 0
+                let congestion_chest = document.getElementById('congestion_chest').checked ? 1 : 0
+                let anosmia = document.getElementById('anosmia').checked ? 1 : 0
+                let loss_taste = document.getElementById('loss_taste').checked ? 1 : 0
+                let cough_phlegm = document.getElementById('cough_phlegm').checked ? 1 : 0
+                let sweating = document.getElementById('sweating').checked ? 1 : 0
+                let dyspnea = document.getElementById('dyspnea').checked ? 1 : 0
+                let muscle_pain = document.getElementById('muscle_pain').checked ? 1 : 0
+                let joint_pain = document.getElementById('joint_pain').checked ? 1 : 0
+                let discharge_eyes_redness = document.getElementById('discharge_eyes_redness').checked ? 1 : 0
+                let rash = document.getElementById('rash').checked ? 1 : 0
+                let home_nabl = document.getElementById('home_nabl').checked ? 1 : 0
+                let vipoln_naznach = document.getElementById('vipoln_naznach').checked ? 1 : 0
+                let narushen_karantin = document.getElementById('narushen_karantin').checked ? 1 : 0
+                let video_call = document.getElementById('video_call').checked ? 1 : 0
+                let p_povtor_pcr = document.getElementById('p_povtor_pcr').checked ? 1 : 0
+                let p_go_street = document.getElementById('p_go_street').checked ? 1 : 0
+                let p_kt = document.getElementById('p_kt').checked ? 1 : 0
+                let p_n_naznachenie = document.getElementById('p_n_naznachenie').checked ? 1 : 0
+                let p_n_list = document.getElementById('p_n_list').checked ? 1 : 0
+                let p_n_raspiska = document.getElementById('p_n_raspiska').checked ? 1 : 0
+                let p_n_mb = document.getElementById('p_n_mb').checked ? 1 : 0
+                let p_n_call = document.getElementById('p_n_call').checked ? 1 : 0
+                let f_send_mb = document.getElementById('f_send_mb').checked ? 1 : 0
+                let f_corect_ls = document.getElementById('f_corect_ls').checked ? 1 : 0
+                let f_repeat_call = document.getElementById('f_repeat_call').checked ? 1 : 0
+                let f_conf_dc = document.getElementById('f_conf_dc').checked ? 1 : 0
+                let f_other_comp_pmsp = document.getElementById('f_other_comp_pmsp').checked ? 1 : 0
+                let f_social_help = document.getElementById('f_social_help').checked ? 1 : 0
+                let snijenie_sluha = document.getElementById('snijenie_sluha').checked ? 1  : 0
+                let boli_v_jivote = document.getElementById('boli_v_jivote').checked ? 1 : 0
+                let onemenie = document.getElementById('onemenie').checked ? 1 : 0
+                let p_dk_end = document.getElementById('p_dk_end').checked ? 1 : 0
+                let p_gospt_ranee = document.getElementById('p_gospt_ranee').checked ? 1 : 0
+                let p_net_svyazi = document.getElementById('p_net_svyazi').checked ? 1 : 0
+                let p_error_data = document.getElementById('p_error_data').checked ? 1 : 0
+
+                let blagodarnost = document.getElementById('blagodarnost').value !='' ? document.getElementById('blagodarnost').value : 0
+                let f_primechanie = document.getElementById('f_primechanie').value !='' ? document.getElementById('f_primechanie').value : 0
+                let medical_taken = document.getElementById('medical_taken').value !='' ? document.getElementById('medical_taken').value : 0
+                let violation_quar = document.getElementById('violation_quar').value !='' ? document.getElementById('violation_quar').value : 0
+                let violation_descr = document.getElementById('violation_descr').value !='' ? document.getElementById('violation_descr').value : 0
+                let jaloba_na_pmsp = document.getElementById('jaloba_na_pmsp').value !='' ? document.getElementById('jaloba_na_pmsp').value : 0
+                let temperature = document.getElementById('temperature').value !='' ? document.getElementById('temperature').value : 0
+                let saturation = document.getElementById('saturation').value !='' ? document.getElementById('saturation').value : 0
+                let wellbeing = document.getElementById('wellbeing').value !='' ? document.getElementById('wellbeing').value : 0
+                let sostoyznie = document.getElementById('sostoyznie').value !='' ? document.getElementById('sostoyznie').value : 0
+                let date = document.getElementById('date').value !='' ? document.getElementById('date').value : 0
                 const full_url = window.location.href
 				const lastSegment = full_url.split("/").pop();
 				axios({
-					method: 'post',
+					method: 'get',
 					url: 'checklist/save/' + lastSegment + '?' + 
                         'date='+ date + '&' + 
                         'sore_throat='+ sore_throat + '&' + 
@@ -3057,7 +3092,11 @@ function addCheckList(){
 					headers: {
                                 "X-CSRFToken": csrftoken,
                             },
-				});	
+				})
+                .then((res) => {
+                    GetObservationJournal()
+                })
+                ;	
                 $("#for_popup").empty();
             }
                 
@@ -3087,4 +3126,26 @@ function addCheckList(){
 		min-height: 15px;
 	}
 </style>
+
+<!-- MASSIVE USER CREATE -->
+<!-- <script>
+	function SetUsers(){
+        const full_url = window.location.href
+        const lastSegment = full_url.split("/").pop();
+        axios({
+            method: 'GET',
+            url: `test/get`,
+            responseType: 'json',
+        }).then(res => {
+            let data = res.data
+            for (var i = 0; i < Object.keys(JSON.parse(data)).length; i++) {
+				axios({
+					method: 'GET',
+					url: `test/?username=` + JSON.parse(data)[i].fields.login + `&password=` + JSON.parse(data)[i].fields.password,
+					responseType: 'json'
+				})
+            }
+        })
+    }
+</script> -->
 {% endblock %}
