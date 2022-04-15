@@ -609,6 +609,7 @@ class Card_id(APIView):
         g_patient = GPatient.objects.get(id=id)
         
         g_patient_log = GPatientLog(
+            id = g_patient.id,
             iin = iin,
             num_crossdoc = num_doc,
             pmsp_name = pmsp,
@@ -643,6 +644,7 @@ class Card_id(APIView):
 
         g_incident = GIncident.objects.get(id=g_patient.incident_id)
         g_incident_log = GIncidentLog(
+            id = g_incident.id,
             resident = is_rezident,
             iin= iin,
             birthday = birthday,
