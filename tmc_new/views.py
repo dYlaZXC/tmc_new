@@ -514,7 +514,6 @@ class Card_id(APIView):
 
     def post(self, request, id, *args, **kwargs):
 
-
         # CONTEXT
         s_regions = SRegion.objects.all()
         s_villages = SVillage.objects.all()
@@ -652,12 +651,13 @@ class Card_id(APIView):
             date_mobile_brigade = mb_date ,
             # late_reg_reason =late_reason , v logah netu takogo columna
             date_start = g_patient.date_start ,
+            date_end = g_patient.date_end,
             pmsp_start_date = g_patient.pmsp_start_date ,
             info_function = True if tmc_function_info == 'on' else False,
             info_cond = True if tmc_condition_info == 'on' else False,
             hospitalize_tmc = True if refusal_hospitalize == 'on' else False,
             p_close_end_date = status_end_date,    # p_close_end_date <-- na samom dele eto
-            watch_diagnosis = diagnosis_monitoring,
+            watch_diagnosis = g_patient.diagnosis_monitoring,
             patient_condition_start = g_patient.patient_condition_start,
             sign_observation_hospital = g_patient.sign_observation_hospital,
             diagnosis_date = g_patient.diagnosis_date, 
@@ -742,7 +742,7 @@ class Card_id(APIView):
         g_patient.info_cond = True if tmc_condition_info == 'on' else False
         g_patient.hospitalize_tmc = True if refusal_hospitalize == 'on' else False
         g_patient.status_end_date = status_end_date    #????????????
-        g_patient.watch_diagnosis = diagnosis_monitoring
+        g_patient.watch_diagnosis = g_patient.diagnosis_monitoring
         g_patient.presc_therapy = presc_therapy
         g_patient.complaint_ses = complaint_ses
         g_patient.d_feedback = complaint_days
