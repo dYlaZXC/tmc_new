@@ -54,7 +54,7 @@ class LoginView(APIView):
         else:
             print('НЕ НАШЕЛ')
             message = 'Неправильно указаны данные!'
-            return render(request, 'login.html', {'message': message})            
+            return render(request, 'login.html', {'message': message})
 
 
 class LogoutView(APIView):
@@ -234,12 +234,25 @@ class LogoutView(SuccessURLAllowedHostsMixin, TemplateView):
 class Main(APIView):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            g_patients = GPatient.objects.filter(status_end__isnull=True)
+            g_patients = GPatient.objects.filter(status_end__isnull=True, pcr_date_receipt__gt=datetime.now().date() - timedelta(days=30))
             return render(request, 'main.html', {
                 'g_patients': g_patients,
             })
         else:
             return redirect('login')
+
+    def post(self, request, *args, **kwargs):
+        query = request.POST.get('query')
+        g_patients = GPatient.objects.filter(status_end__isnull=True, fio__icontains=query)
+        if not g_patients:
+            g_patients = GPatient.objects.filter(status_end__isnull=True, iin__icontains=query)      
+            if not g_patients:
+                g_patients = GPatient.objects.filter(status_end__isnull=True, phone__icontains=query)
+                if not g_patients:
+                    g_patients = GPatient.objects.filter(status_end__isnull=True)
+        return render(request, 'main.html', {
+            'g_patients': g_patients,
+        })
 
 
 class Card(APIView):
@@ -267,7 +280,7 @@ class Card(APIView):
                 's_statuses_end': s_statuses_end,
             })
         else:
-            return redirect('login')     
+            return redirect('login')
 
     def post(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -435,17 +448,17 @@ class CheckListJournalView(APIView):
             g_observations = GObservation.objects.filter(patient_id=id)
             response = serializers.serialize("json", g_observations)
             return JsonResponse(response, safe=False)
-        except:    
+        except:
             response = ''
             return JsonResponse(response, safe=False)
 
 
-class CheckListCallsView(APIView):
-    def get(self, request, id, *args, **kwargs):
-            d_calling_list = DCallingList.objects.filter(patient_id=id)
-            response = serializers.serialize("json", d_calling_list)
-            print(response)
-            return JsonResponse(response, safe=False)
+#class CheckListCallsView(APIView):
+#    def get(self, request, id, *args, **kwargs):
+#            d_calling_list = DCallingList.objects.filter(patient_id=id)
+#            response = serializers.serialize("json", d_calling_list)
+#            print(response)
+#            return JsonResponse(response, safe=False)
 
 
 # class CheckListPatientsView(APIView):
@@ -475,8 +488,8 @@ class Card_id(APIView):
             s_vaccines = SVaccines.objects.all()
             try:
                 last_call = last_call = DCallingList.objects.filter(patient_id=id).first().date_time
-            except AttributeError:
-                last_call = ''    
+            except:
+                last_call = ''
             # END CONTEXT
             return render(request, 'card_id.html',
             {
@@ -495,11 +508,13 @@ class Card_id(APIView):
                 's_late_regs': s_late_regs,
                 's_vaccines': s_vaccines,
                 'last_call': last_call,
-            }) 
+            })
         else:
             return redirect('login')
 
     def post(self, request, id, *args, **kwargs):
+
+        opa
 
 
         # CONTEXT
@@ -517,15 +532,15 @@ class Card_id(APIView):
 
 
         # FORM DATA
-        
+
         fio = request.POST.get('fio') #ФИО
-        iin = request.POST.get('iin') #ИИН 
+        iin = request.POST.get('iin') #ИИН
         is_rezident = request.POST.get('is_rezident')# Резидент
         if is_rezident == 'on':
             is_rezident = True
         else:
             is_rezident = False
-            
+
         birthday =            request.POST.get('birthday')   if request.POST.get('birthday')   != '' else None #ДАТА РОЖДЕНИЯ
         sex =                 request.POST.get('sex')        if request.POST.get('sex')        != '' else None #ПОЛ
         s_country =           request.POST.get('s_country')  if request.POST.get('s_country')  != '' else None #ГРАЖДАНСТВО
@@ -595,11 +610,7 @@ class Card_id(APIView):
         presc_therapy = request.POST.get('presc_therapy') if request.POST.get('presc_therapy') != '' else None # Назначения
 
 
-
-
-
-
-
+        time_vz = time_vz if time_vz != None else '00:00'
         # END FORM DATA
         d_t = str(date_vz) + ' ' + str(time_vz)
         date_time = datetime.strptime(d_t, "%Y-%m-%d %H:%M")
@@ -607,7 +618,7 @@ class Card_id(APIView):
         # SAVING TO MODEL (LOG)
 
         g_patient = GPatient.objects.get(id=id)
-        
+
         g_patient_log = GPatientLog(
             id = g_patient.id,
             iin = iin,
@@ -625,7 +636,7 @@ class Card_id(APIView):
             diagnosis_kt = kt_result_diagnosis,
             xray = rentgen_result,
             xray_date = rentgen_date ,
-            xray_result = rentgen_result_diagnosis , 
+            xray_result = rentgen_result_diagnosis,
             date_mobile_brigade = mb_date ,
             # late_reg_reason =late_reason , v logah netu takogo columna
             date_start = pmsp_info_datetime ,
@@ -636,8 +647,9 @@ class Card_id(APIView):
             p_close_end_date = status_end_date,    # p_close_end_date <-- na samom dele eto
             watch_diagnosis = diagnosis_monitoring,
             patient_condition_start = patient_condition,
-            sign_observation_hospital =sign_observation,
+            sign_observation_hospital = g_patient.sign_observation,
             diagnosis_date = diagnosis_date, 
+            date_edit_log = datetime.now() + timedelta(hours=6),
         )
 
         g_patient_log.save()
@@ -688,6 +700,7 @@ class Card_id(APIView):
             vaccine_date2 =vaccine_second_date ,
             other_diagnos = detailed_diagnosis_info,
             # date_time = pmsp_start_date,
+            date_edit_log = datetime.now() + timedelta(hours=6),
         )
 
         g_incident_log.save()
@@ -718,7 +731,7 @@ class Card_id(APIView):
         g_patient.status_end_date = status_end_date    
         g_patient.watch_diagnosis = diagnosis_monitoring
         g_patient.patient_condition_start = patient_condition
-        g_patient.sign_observation_hospital =sign_observation
+        g_patient.sign_observation_hospital = g_patient.sign_observation
         g_patient.diagnosis_date = diagnosis_date
         g_patient.save()
         
@@ -795,20 +808,20 @@ def additional_form(request, patient_id, checklist_id):
     return HttpResponse(render_to_string("modal_checklist.html"), {'id': id})
 
 
-# def set_users(request):
-#     username_post = request.GET.get('username')
-#     password_post = request.GET.get('password')
-#     # try:
-#     user = User()
-#     user.username = username_post 
-#     user.set_password(password_post)
-#     user.save()
-#     return JsonResponse({'result': 'success'})
-#     # except:
-#     #     return JsonResponse({'result': 'fail'})    
+def set_users(request):
+    username_post = request.GET.get('username')
+    password_post = request.GET.get('password')
+    try:
+        user = User()
+        user.username = username_post 
+        user.set_password(password_post)
+        user.save()
+        return JsonResponse({'result': 'success'})
+    except:
+        return JsonResponse({'result': 'fail'})    
 
 
-# def parse_users(request):
-#     s_operators = SOperators.objects.all()
-#     response = serializers.serialize('json', s_operators)
-#     return JsonResponse(response, safe=False)
+def parse_users(request):
+    s_operators = SOperators.objects.all()
+    response = serializers.serialize('json', s_operators)
+    return JsonResponse(response, safe=False)

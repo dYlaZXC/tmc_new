@@ -1071,7 +1071,7 @@
                     <select name="s_region" id="s_region">
                         <option value=""></option>
                         {% for s_region in s_regions %}
-                            <option {% if s_region.postal_code == g_incident.loc_region %} selected {% endif %} value="{{ s_region.id }}">{{ s_region.name_ru }}</option>
+                            <option {% if s_region.postal_code == g_incident.loc_region %} selected {% endif %} value="{{ s_region.postal_code}}"> {{ s_region.name_ru }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -1335,9 +1335,10 @@
                             После стационара
                     </h6>
                     <div class="mx-auto">
+						{% if g_patient.sign_observation %}
                         <div class="row" class="mx-auto" style="width: 80%;">
                             <div class="col">
-                                <input style="width: 20px;" type="radio" name="sign_observation" id="sign_observation" value="1">
+                                <input style="width: 20px;" type="radio" name="sign_observation" id="sign_observation" value="1" checked>
                                 <label for="">Да</label>
                             </div>
                             <div class="col">
@@ -1345,6 +1346,18 @@
                                 <label for="">Нет</label>
                             </div>
                         </div>
+						{% else %} 
+						<div class="row" class="mx-auto" style="width: 80%;">
+                            <div class="col">
+                                <input style="width: 20px;" type="radio" name="sign_observation" id="sign_observation" value="1">
+                                <label for="">Да</label>
+                            </div>
+                            <div class="col">
+                                <input style="width: 20px;" type="radio" name="sign_observation" id="sign_observation" value="0" checked>
+                                <label for="">Нет</label>
+                            </div>
+                        </div>
+						{% endif %}
                     </div>
                 </div>
                 <div class="col">
@@ -1359,7 +1372,30 @@
                         Наличие пневмонии
                     </h6>
                     <div class="mx-auto" style="width: 80%;">
+						{% if g_patient.pneumonia %}
                         <div class="row">
+                            <div class="col">
+                                <input style="width: 20px;" type="radio" name="pneumonia" id="pmeumonia" value="1" checked>
+                                <label for="">Да</label>
+                            </div>
+                            <div class="col">
+                                <input style="width: 20px;" type="radio" name="pneumonia" id="pmeumonia">
+                                <label for="">Нет</label>
+                            </div>
+                        </div>
+						{% elif g_patient.pneumonia == False %}
+						<div class="row">
+                            <div class="col">
+                                <input style="width: 20px;" type="radio" name="pneumonia" id="pmeumonia">
+                                <label for="">Да</label>
+                            </div>
+                            <div class="col">
+                                <input style="width: 20px;" type="radio" name="pneumonia" id="pmeumonia" value="0" checked>
+                                <label for="">Нет</label>
+                            </div>
+                        </div>
+						{% else %} 
+						<div class="row">
                             <div class="col">
                                 <input style="width: 20px;" type="radio" name="pneumonia" id="pmeumonia">
                                 <label for="">Да</label>
@@ -1369,6 +1405,7 @@
                                 <label for="">Нет</label>
                             </div>
                         </div>
+						{% endif %}
                    </div>
                 </div>
             </div>

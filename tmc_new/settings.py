@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-inm1-d)u&zie_*1rk@*+zuucf*)-gg@75ku2^ezs7%^5gds*=e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['87.255.194.204']
+ALLOWED_HOSTS = ['87.255.194.204', 'mdc.1312.kz', '127.0.0.1']
 
 
 # Application definition
@@ -86,10 +86,10 @@ WSGI_APPLICATION = 'tmc_new.wsgi.application'
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'mdc_local',
-       'USER': 'db_user',
-       'PASSWORD': '3sWeDse5hb',
-       'HOST': '91.201.215.27',
+       'NAME': 'mdc',
+       'USER': 'mdc',
+       'PASSWORD': '9bvhxjWk8VzRAbDQ',
+       'HOST': '87.255.194.204',
        'PORT': '5432',
    }
 }
