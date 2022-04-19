@@ -50,7 +50,7 @@ class LoginView(APIView):
         if user is not None:
             auth_login(request, user)
             print('НАШЕЛ')
-            return redirect('main')
+.            return redirect('main')
         else:
             print('НЕ НАШЕЛ')
             message = 'Неправильно указаны данные!'
@@ -234,7 +234,7 @@ class LogoutView(SuccessURLAllowedHostsMixin, TemplateView):
 class Main(APIView):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            g_patients = GPatient.objects.filter(status_end__isnull=True, pcr_date_receipt__gt=datetime.now().date() - timedelta(days=30))
+            g_patients = GPatient.objects.filter(status_end__isnull=True)
             return render(request, 'main.html', {
                 'g_patients': g_patients,
             })
@@ -317,7 +317,7 @@ class Card(APIView):
 class CheckListSaveView(APIView):
 
     def get(self, request, id, *args, **kwargs):
-        date = datetime.now()
+        date = datetime.now() + timedelta(hours=6)
         sore_throat = request.GET.get('sore_throat')
         nasal_congestion = request.GET.get('nasal_congestion')
         shortness_breath = request.GET.get('shortness_breath')
@@ -514,8 +514,6 @@ class Card_id(APIView):
 
     def post(self, request, id, *args, **kwargs):
 
-        opa
-
 
         # CONTEXT
         s_regions = SRegion.objects.all()
@@ -608,174 +606,195 @@ class Card_id(APIView):
         vaccine_first_date = request.POST.get('vaccine_first_date') if request.POST.get('vaccine_first_date') != '' else None #ДАТА ПОЛУЧЕНИЯ ПЕРВОЙ ДОЗЫ
         vaccine_second_date = request.POST.get('vaccine_second_date') if request.POST.get('vaccine_second_date') != '' else None #ДАТА ПОЛУЧЕНИЯ ВТОРОЙ ДОЗЫ
         presc_therapy = request.POST.get('presc_therapy') if request.POST.get('presc_therapy') != '' else None # Назначения
-
+        complaint_ses = request.POST.get('complaint') if request.POST.get('complaint') != '' else None # ЖАЛОБЫ СЭС
+        complaint_days = request.POST.get('complaint_days') if request.POST.get('complaint_days') != '' else None #ЖАЛОБЫ КОЛИЧЕСТВО ДНЕЙ
+        other_simp = request.POST.get('nosologiya') if request.POST.get('nosologiya') != '' else None #Нозология
+        print('vaccine: ', vaccine)
+        print('vaccine_doses: ', vaccine_doses)
+        print('vaccine_first_date: ', vaccine_first_date)
+        print('vaccine_second_date: ', vaccine_second_date)
 
         time_vz = time_vz if time_vz != None else '00:00'
         # END FORM DATA
         d_t = str(date_vz) + ' ' + str(time_vz)
-        date_time = datetime.strptime(d_t, "%Y-%m-%d %H:%M")
+        try:
+            date_time = datetime.strptime(d_t, "%Y-%m-%d %H:%M")
+        except:
+            date_time = str(date_vz) + ' ' + str(time_vz)  
 
         # SAVING TO MODEL (LOG)
-
+        date_edit = datetime.now() + timedelta(hours=6)
+        print(date_edit)
         g_patient = GPatient.objects.get(id=id)
 
-        g_patient_log = GPatientLog(
+        g_patient_log = GPatientLog.objects.create(
             id = g_patient.id,
-            iin = iin,
-            num_crossdoc = num_doc,
-            pmsp_name = pmsp,
+            iin = g_patient.iin,
+            fio = g_patient.fio,
+            date_edit_log = date_edit,
+            user_id_edit = request.user.id,
+            num_crossdoc = g_patient.num_crossdoc,
+            pmsp_name = g_patient.pmsp_name,
             phone = phone,
             status_end = result_of_end,
             status_end_date = date_of_end,
-            pcr_reason = pcr_reason,
-            pcr_result = pcr_result,
-            result_kt = kt_result,
-            pcr_date_test = pcr_test_date,
-            pcr_date_receipt = pcr_result_date,
-            kt_date = kt_date ,
-            diagnosis_kt = kt_result_diagnosis,
-            xray = rentgen_result,
-            xray_date = rentgen_date ,
-            xray_result = rentgen_result_diagnosis,
+            pcr_reason = g_patient.pcr_reason,
+            pcr_result = g_patient.pcr_result,
+            presc_therapy = presc_therapy,
+            result_kt = g_patient.result_kt,
+            pcr_date_test = g_patient.pcr_date_test,
+            pcr_date_receipt = g_patient.pcr_date_receipt,
+            kt_date = g_patient.kt_date ,
+            diagnosis_kt = g_patient.diagnosis_kt,
+            xray = g_patient.xray,
+            xray_date = g_patient.xray_date ,
+            xray_result = g_patient.xray_result,
             date_mobile_brigade = mb_date ,
             # late_reg_reason =late_reason , v logah netu takogo columna
-            date_start = pmsp_info_datetime ,
-            pmsp_start_date = pmsp_info_datetime ,
-            info_function = tmc_function_info ,
-            info_cond =tmc_condition_info,
-            hospitalize_tmc = refusal_hospitalize,
+            date_start = g_patient.date_start ,
+            pmsp_start_date = g_patient.pmsp_start_date ,
+            info_function = True if tmc_function_info == 'on' else False,
+            info_cond = True if tmc_condition_info == 'on' else False,
+            hospitalize_tmc = True if refusal_hospitalize == 'on' else False,
             p_close_end_date = status_end_date,    # p_close_end_date <-- na samom dele eto
             watch_diagnosis = diagnosis_monitoring,
-            patient_condition_start = patient_condition,
-            sign_observation_hospital = g_patient.sign_observation,
-            diagnosis_date = diagnosis_date, 
-            date_edit_log = datetime.now() + timedelta(hours=6),
+            patient_condition_start = g_patient.patient_condition_start,
+            sign_observation_hospital = g_patient.sign_observation_hospital,
+            diagnosis_date = g_patient.diagnosis_date, 
+            complaint_ses = complaint_ses,
+            d_feedback = complaint_days,
         )
-
         g_patient_log.save()
-
+        
         g_incident = GIncident.objects.get(id=g_patient.incident_id)
-        g_incident_log = GIncidentLog(
+        g_incident_log = GIncidentLog.objects.create(
             id = g_incident.id,
             resident = is_rezident,
-            iin= iin,
-            birthday = birthday,
-            sex =sex,
-            citizenship_id = s_country,
-            num_crossdoc = num_doc,
-            loc_region = s_region,
-            village = s_village,
-            loc_street = s_street,
-            loc_home = home,
-            loc_block = block,
-            loc_flat = kv,
-            date_time = date_time,
-            pmsp_name = pmsp,
+            iin= g_incident.iin,
+            birthday = g_incident.birthday,
+            sex = g_incident.sex,
+            citizenship_id = g_incident.citizenship_id,
+            num_crossdoc = g_incident.num_crossdoc,
+            loc_region = g_incident.loc_region,
+            village = g_incident.village,
+            loc_street = g_incident.loc_street,
+            loc_home = g_incident.loc_home,
+            loc_block = g_incident.loc_block,
+            loc_flat = g_incident.loc_flat,
+            date_time = g_incident.date_time,
+            pmsp_name = g_incident.pmsp_name,
             phone = phone,
             phone_contact_m = phone, 
             phone_contact = phone_home,
             phone_other = additional_contacts,
             coment = info_for_tmc_agent,
-            risk_group = s_risk_group,
-            ojirenie = pmsp_ojirenie,
-            serdce = pmsp_serdce,
-            hypertension = pmsp_ag,    
-            astma = pmsp_bronh,
-            pechen = pmsp_pechen,
-            gema_rast = pmsp_gemat,
-            pochki = pmsp_pochek,
-            cancer = pmsp_onko,
-            h_oth_zabolev = pmsp_other_chronic,
-            h_pnevmonia = pmsp_pneumonia,
-            h_sahar_diabet = pmsp_diabetes,
-            h_oth_endocrin = pmsp_other_endo,
-            h_hobl = pmsp_hobl,
-            pregnancy = pregnancy,
+            risk_group = g_incident.risk_group,
+            ojirenie =  g_incident.ojirenie,
+            serdce =  g_incident.serdce,
+            hypertension =  g_incident.hypertension,    
+            astma =  g_incident.astma,
+            pechen =  g_incident.pechen,
+            gema_rast =  g_incident.gema_rast,
+            pochki =  g_incident.pochki,
+            cancer =  g_incident.cancer,
+            h_oth_zabolev =  g_incident.h_oth_zabolev,
+            h_pnevmonia =  g_incident.h_pnevmonia,
+            h_sahar_diabet =  g_incident.h_sahar_diabet,
+            h_oth_endocrin =  g_incident.h_oth_endocrin,
+            h_hobl =  g_incident.h_hobl,
+            pregnancy = g_incident.pregnancy,
             type_call = 2,
             type_sess = 1,
             category_id = 4,
             vaccine_type = vaccine,
             vaccine_date1 = vaccine_first_date,
             vaccine_dose = vaccine_doses ,
-            vaccine_date2 =vaccine_second_date ,
+            vaccine_date2 = vaccine_second_date ,
             other_diagnos = detailed_diagnosis_info,
+            date_edit=date_edit,
+            user_edit=request.user.id,
+            other_simp=other_simp,
             # date_time = pmsp_start_date,
-            date_edit_log = datetime.now() + timedelta(hours=6),
         )
-
         g_incident_log.save()
 
-        g_patient.iin = iin
-        g_patient.num_crossdoc = num_doc
-        g_patient.pmsp_name = pmsp
-        g_patient.phone = phone
+        # g_patient.iin = iin
+        # g_patient.num_crossdoc = num_doc
+        # g_patient.pmsp_name = pmsp
+        # g_patient.phone = phone
         g_patient.status_end = result_of_end
         g_patient.status_end_date = date_of_end
-        g_patient.pcr_reason = pcr_reason
-        g_patient.pcr_result = pcr_result
-        g_patient.result_kt = kt_result
-        g_patient.pcr_date_test = pcr_test_date
-        g_patient.pcr_date_receipt = pcr_result_date
-        g_patient.kt_date = kt_date 
-        g_patient.diagnosis_kt = kt_result_diagnosis
-        g_patient.xray = rentgen_result
-        g_patient.xray_date = rentgen_date 
-        g_patient.xray_result = rentgen_result_diagnosis 
+        # g_patient.pcr_reason = pcr_reason
+        # g_patient.pcr_result = pcr_result
+        # g_patient.result_kt = kt_result
+        # g_patient.pcr_date_test = pcr_test_date
+        # g_patient.pcr_date_receipt = pcr_result_date
+        # g_patient.kt_date = kt_date 
+        # g_patient.diagnosis_kt = kt_result_diagnosis
+        # g_patient.xray = rentgen_result
+        # g_patient.xray_date = rentgen_date 
+        # g_patient.xray_result = rentgen_result_diagnosis 
         g_patient.date_mobile_brigade = mb_date 
-        g_patient.late_reg_reason =late_reason 
-        g_patient.date_start = pmsp_info_datetime 
-        g_patient.pmsp_start_date = pmsp_info_datetime 
-        g_patient.info_function = tmc_function_info 
-        g_patient.info_cond =tmc_condition_info
-        g_patient.hospitalize_tmc = refusal_hospitalize
-        g_patient.status_end_date = status_end_date    
+        # g_patient.late_reg_reason =late_reason 
+        # g_patient.date_start = pmsp_info_datetime 
+        # g_patient.pmsp_start_date = pmsp_info_datetime 
+        g_patient.info_function = True if tmc_function_info == 'on' else False
+        g_patient.info_cond = True if tmc_condition_info == 'on' else False
+        g_patient.hospitalize_tmc = True if refusal_hospitalize == 'on' else False
+        g_patient.status_end_date = status_end_date    #????????????
         g_patient.watch_diagnosis = diagnosis_monitoring
-        g_patient.patient_condition_start = patient_condition
-        g_patient.sign_observation_hospital = g_patient.sign_observation
-        g_patient.diagnosis_date = diagnosis_date
+        g_patient.presc_therapy = presc_therapy
+        g_patient.complaint_ses = complaint_ses
+        g_patient.d_feedback = complaint_days
+        # g_patient.patient_condition_start = patient_condition
+        # g_patient.sign_observation_hospital =sign_observation
+        # g_patient.diagnosis_date = diagnosis_date
         g_patient.save()
         
-        g_incident.rezident = is_rezident
-        g_incident.iin= iin
-        g_incident.birthday = birthday
-        g_incident.sex =sex
-        g_incident.citizenship_id = s_country
-        g_incident.num_crossdoc = num_doc
-        g_incident.loc_region = s_region
-        g_incident.village = s_village
-        g_incident.loc_street = s_street
-        g_incident.loc_home = home
-        g_incident.loc_block = block
-        g_incident.loc_flat = kv
-        g_incident.date_time = date_time
-        g_incident.pmsp_name = pmsp
+        # g_incident.rezident = is_rezident
+        # g_incident.iin= iin
+        # g_incident.birthday = birthday
+        # g_incident.sex =sex
+        # g_incident.citizenship_id = s_country
+        # g_incident.num_crossdoc = num_doc
+        # g_incident.loc_region = s_region
+        # g_incident.village = s_village
+        # g_incident.loc_street = s_street
+        # g_incident.loc_home = home
+        # g_incident.loc_block = block
+        # g_incident.loc_flat = kv
+        # g_incident.date_time = date_time
+        # g_incident.pmsp_name = pmsp
         g_incident.phone = phone
         g_incident.phone_contact_m = phone
         g_incident.phone_contact = phone_home
         g_incident.phone_other = additional_contacts
         g_incident.coment = info_for_tmc_agent
-        g_incident.risk_group = s_risk_group
-        g_incident.ojirenie = pmsp_ojirenie
-        g_incident.serdce = pmsp_serdce
-        g_incident.hypertension = pmsp_ag
-        g_incident.astma = pmsp_bronh
-        g_incident.pechen = pmsp_pechen
-        g_incident.gema_rast = pmsp_gemat
-        g_incident.pochki = pmsp_pochek
-        g_incident.cancer = pmsp_onko
-        g_incident.h_oth_zabolev = pmsp_other_chronic
-        g_incident.h_pnevmonia = pmsp_pneumonia
-        g_incident.h_sahar_diabet = pmsp_diabetes
-        g_incident.h_other_endocrin = pmsp_other_endo
-        g_incident.h_hobl = pmsp_hobl
-        g_incident.pregnancy = pregnancy
+        g_incident.other_simp = other_simp
+        # g_incident.risk_group = s_risk_group
+
+        # g_incident.ojirenie = True if pmsp_ojirenie == 'on' else False
+        # g_incident.serdce = True if pmsp_serdce == 'on' else False
+        # g_incident.hypertension = True if pmsp_ag == 'on' else False
+        # g_incident.astma = True if pmsp_bronh == 'on' else False
+        # g_incident.pechen = True if pmsp_pechen == 'on' else False
+        # g_incident.gema_rast = True if pmsp_gemat == 'on' else False
+        # g_incident.pochki = True if pmsp_pochek == 'on' else False
+        # g_incident.cancer = True if pmsp_onko == 'on' else False
+        # g_incident.h_oth_zabolev = True if pmsp_other_chronic == 'on' else False
+        # g_incident.h_pnevmonia = True if pmsp_pneumonia == 'on' else False
+        # g_incident.h_sahar_diabet = True if pmsp_diabetes == 'on' else False
+        # g_incident.h_other_endocrin = True if pmsp_other_endo == 'on' else False
+        # g_incident.h_hobl = True if pmsp_hobl == 'on' else False
+
+        # g_incident.pregnancy = pregnancy
         g_incident.type_call = 2
         g_incident.type_sess = 1
         g_incident.category_id = 4
         g_incident.vaccine_type = vaccine
         g_incident.vaccine_date1 = vaccine_first_date
         g_incident.vaccine_dose = vaccine_doses 
-        g_incident.vaccine_date2 =vaccine_second_date 
+        g_incident.vaccine_date2 = vaccine_second_date 
         g_incident.other_diagnos = detailed_diagnosis_info
         # g_incident.date_time = start_date
         g_incident.save()
