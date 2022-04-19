@@ -1000,7 +1000,7 @@ class DCallingList(models.Model):
     patient_id = models.DecimalField(max_digits=65535, decimal_places=65535)
     operator_id = models.DecimalField(max_digits=65535, decimal_places=65535)
     status = models.DecimalField(max_digits=65535, decimal_places=65535)
-    id = models.DecimalField(max_digits=65535, decimal_places=65535, primary_key=True)
+    # id = models.DecimalField(max_digits=65535, decimal_places=65535, primary_key=True)
 
     class Meta:
         managed = False
