@@ -424,18 +424,20 @@ class CheckListSaveView(APIView):
                 f_conf_dc=f_conf_dc,
                 f_other_comp_pmsp=f_other_comp_pmsp,
                 f_social_help=f_social_help,
+		f_primechanie=f_primechanie,
                 snijenie_sluha=snijenie_sluha,
                 boli_v_jivote=boli_v_jivote,
                 onemenie=onemenie,
                 blagodarnost=blagodarnost,
-                f_primechanie=f_primechanie,
                 p_dk_end=p_dk_end,
                 p_gospt_ranee=p_gospt_ranee,
                 p_net_svyazi=p_net_svyazi,
                 p_error_data=p_error_data,
         )
         new_g_observation.save()
-
+        g_patient = GPatient.objects.get(id=id)
+        g_patient.dozvon = 0
+        g_patient.save()
         try:
             return HttpResponse({'result': 'success'})
         except:
@@ -608,6 +610,9 @@ class Card_id(APIView):
         complaint_ses = request.POST.get('complaint') if request.POST.get('complaint') != '' else None # ЖАЛОБЫ СЭС
         complaint_days = request.POST.get('complaint_days') if request.POST.get('complaint_days') != '' else None #ЖАЛОБЫ КОЛИЧЕСТВО ДНЕЙ
         other_simp = request.POST.get('nosologiya') if request.POST.get('nosologiya') != '' else None #Нозология
+        violation_descr = request.POST.get('violation_descr') if request.POST.get('violation_descr') != '' else None #Жалобы на ПМСП
+        dozvon = request.POST.get('dozvon')
+
         print('vaccine: ', vaccine)
         print('vaccine_doses: ', vaccine_doses)
         print('vaccine_first_date: ', vaccine_first_date)
@@ -630,13 +635,16 @@ class Card_id(APIView):
             id = g_patient.id,
             iin = g_patient.iin,
             fio = g_patient.fio,
+            dozvon = g_patient.dozvon,
+            status = g_patient.status,
             date_edit_log = date_edit,
             user_id_edit = request.user.id,
             num_crossdoc = g_patient.num_crossdoc,
             pmsp_name = g_patient.pmsp_name,
             phone = phone,
-            status_end = result_of_end,
-            status_end_date = date_of_end,
+            status_end = g_patient.status_end, #result_of_end,
+            status_end_date = g_patient.status_end_date, #date_of_end,
+            incident_id = g_patient.incident_id,
             pcr_reason = g_patient.pcr_reason,
             pcr_result = g_patient.pcr_result,
             presc_therapy = presc_therapy,
@@ -648,16 +656,17 @@ class Card_id(APIView):
             xray = g_patient.xray,
             xray_date = g_patient.xray_date ,
             xray_result = g_patient.xray_result,
-            date_mobile_brigade = mb_date ,
+            date_mobile_brigade = mb_date,
+	    d_comment = g_patient.d_comment,
             # late_reg_reason =late_reason , v logah netu takogo columna
-            date_start = g_patient.date_start ,
+            date_start = g_patient.date_start,
             date_end = g_patient.date_end,
             pmsp_start_date = g_patient.pmsp_start_date ,
             info_function = True if tmc_function_info == 'on' else False,
             info_cond = True if tmc_condition_info == 'on' else False,
             hospitalize_tmc = True if refusal_hospitalize == 'on' else False,
             p_close_end_date = status_end_date,    # p_close_end_date <-- na samom dele eto
-            watch_diagnosis = g_patient.diagnosis_monitoring,
+            watch_diagnosis = g_patient.watch_diagnosis,
             patient_condition_start = g_patient.patient_condition_start,
             sign_observation_hospital = g_patient.sign_observation_hospital,
             diagnosis_date = g_patient.diagnosis_date, 
@@ -671,6 +680,7 @@ class Card_id(APIView):
             id = g_incident.id,
             resident = is_rezident,
             iin= g_incident.iin,
+            fio = g_incident.fio,
             birthday = g_incident.birthday,
             sex = g_incident.sex,
             citizenship_id = g_incident.citizenship_id,
@@ -723,7 +733,7 @@ class Card_id(APIView):
         # g_patient.pmsp_name = pmsp
         # g_patient.phone = phone
         g_patient.status_end = result_of_end
-        g_patient.status_end_date = date_of_end
+        g_patient.status_end_date = status_end_date    #????????????
         # g_patient.pcr_reason = pcr_reason
         # g_patient.pcr_result = pcr_result
         # g_patient.result_kt = kt_result
@@ -741,11 +751,14 @@ class Card_id(APIView):
         g_patient.info_function = True if tmc_function_info == 'on' else False
         g_patient.info_cond = True if tmc_condition_info == 'on' else False
         g_patient.hospitalize_tmc = True if refusal_hospitalize == 'on' else False
-        g_patient.status_end_date = status_end_date    #????????????
-        g_patient.watch_diagnosis = g_patient.diagnosis_monitoring
+        g_patient.status_end_date = date_of_end
+        # g_patient.watch_diagnosis = g_patient.watch_diagnosis
         g_patient.presc_therapy = presc_therapy
         g_patient.complaint_ses = complaint_ses
         g_patient.d_feedback = complaint_days
+        g_patient.d_comment = violation_descr
+
+        g_patient.dozvon = dozvon
         # g_patient.patient_condition_start = patient_condition
         # g_patient.sign_observation_hospital =sign_observation
         # g_patient.diagnosis_date = diagnosis_date
@@ -820,6 +833,19 @@ class Card_id(APIView):
 
 
 
+def CountCalls(request, patient_id):
+    try:
+        g_patient = GPatient.objects.get(id=patient_id)
+        g_patient.dozvon_type += 1
+        g_patient.save()
+        return JsonResponse({'result': 'success'})
+    except TypeError:
+        g_patient.dozvon_type = 1
+        g_patient.save()
+        return JsonResponse({'result': 'fail'})
+
+
+
 @api_view(["GET"])
 @permission_classes((permissions.AllowAny,))
 def additional_form(request, patient_id, checklist_id):
@@ -844,3 +870,53 @@ def parse_users(request):
     s_operators = SOperators.objects.all()
     response = serializers.serialize('json', s_operators)
     return JsonResponse(response, safe=False)
+
+def get_count(request):
+    date_now = date.today()
+    now = datetime.now()
+    current_day = datetime(year=now.year, month=now.month, day=now.day, hour=0, minute=0)
+    gotten_g_patients = GPatient.objects.filter(status_end__isnull=True)
+    gotten_list = []
+    snyatten_list = []
+    current_list = []
+    for gotten_g_patient in gotten_g_patients:
+        gotten_list.append(gotten_g_patient.incident_id)
+    n_gotten_g_incidents = GIncident.objects.filter(id__in=gotten_list, date_time__gte=current_day + timedelta(hours=1), date_time__lte=current_day + timedelta(days=1, hours=1)).count()
+    # gotten_g_patients = GPatient.objects.filter(
+    #                                              status_end__isnull=True, 
+    #                                              pmsp_start_date__gte=current_day + timedelta(hours=1), pmsp_start_date__lte=current_day + timedelta(days=1, hours=1)).count()
+                                                 
+    current_g_patients = GPatient.objects.filter(status_end__isnull=True).count()
+    #for current_g_patient in current_g_patients:
+    #    current_list.append(current_g_patient.incident_id)
+    #n_current_g_incidents = GIncident.objects.filter(id__in=current_list, date_time__lt=current_day + timedelta(hours=1)).count()    
+    # current_g_patients = GPatient.objects.filter(status_end__isnull=True, pmsp_start_date__lt=date_now).count()
+    snyatten_g_patients = GPatient.objects.exclude(status_end__isnull=True).filter(close_date_post__gte=current_day + timedelta(hours=1), close_date_post__lte=current_day + timedelta(days=1, hours=1)).count()
+    # snyatten_g_patients = GPatient.objects.exclude(status_end__isnull=True)
+    # for snyatten_g_patient in snyatten_g_patients:
+    #     snyatten_list.append(snyatten_g_patient.incident_id)
+    # n_snyatten_g_incidents = GIncident.objects.filter(id__in=snyatten_list).filter()    
+    return JsonResponse({'current_g_patients': current_g_patients,
+                         'gotten_g_patients': n_gotten_g_incidents,
+                         'snyatten_g_patients': snyatten_g_patients, }, safe=False)
+
+
+def get_s_pmsp(request):
+    all_pmsp = list(SPmsp.objects.all().values())
+    return JsonResponse(all_pmsp, safe=False)
+
+
+def get_s_region(request):
+    all_region = list(SRegion.objects.all().values())
+    return JsonResponse(all_region, safe=False)
+
+
+class get_patient(APIView):
+    def post(self, request):
+        patient = list(GPatient.objects.filter(phone=request.data.get('phone')).order_by('-id').values())
+        return JsonResponse(patient, safe=False)
+
+class get_incident(APIView):
+    def post(self, request):
+        incident = list(GIncident.objects.filter(id=request.data.get('incident_id')).values())
+        return JsonResponse(incident, safe=False)
