@@ -50,7 +50,15 @@ urlpatterns = [
     path('api/spmsps/', get_s_pmsp),
     path('api/sregions/', get_s_region),
     path('api/get-patient/', get_patient.as_view()),
+    path('api/get-patient-id/', get_patient_id.as_view()),
     path('api/get-incident/', get_incident.as_view()),
+    path('api/get-subtypecall/', get_s_subtypecall),
+    path('api/get-typecall/', get_s_typecall),
+    path('api/save-appeal/', save_appeal.as_view()),
+    path('api/get-history/', get_history.as_view()),
+    path('api/get-history-for-user/',get_history_all_for_current_user.as_view()),
+    path('api/get-history-all/', get_history_all),
+    path('api/auth/', api_auth.as_view()),
 
     url(r'static/(?P<path>.*)$', serve, {"document_root": STATIC_ROOT})
 ]

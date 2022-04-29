@@ -273,6 +273,8 @@ class GIncident(models.Model):
             return str(self.date_time.hour) + ':' + str(self.date_time.minute)
 
 
+
+
 class GIncidentLog(models.Model):
     id = models.BigAutoField(primary_key=True)
     date_time = models.DateTimeField()
@@ -410,6 +412,11 @@ class GMobileBrigades(models.Model):
         db_table = 'g_mobile_brigades'
 
 
+
+def now_date():
+    return datetime.now().date()
+
+
 class GPatient(models.Model):
     id = models.BigAutoField(primary_key=True)
     fio = models.CharField(max_length=65535, blank=True, null=True)
@@ -418,6 +425,13 @@ class GPatient(models.Model):
     date_start = models.DateTimeField(blank=True, null=True)
     date_end = models.DateTimeField(blank=True, null=True)
     dozvon = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    DOZVON_MODEL_TYPE_CHOICES = [
+        (0, ''),
+        (1, 'Занят'),
+        (2, 'Не отвечает'),
+        (3, 'Неверный номер'),
+        (4, 'Номер другого человека'),
+        ]
     status = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     pmsp_name = models.CharField(max_length=65535, blank=True, null=True)
     watch_diagnosis = models.CharField(max_length=65535, blank=True, null=True)
@@ -489,7 +503,13 @@ class GPatient(models.Model):
             return self.pmsp_start_date
 
     def pmsp_start_date_date_format(self):
-        return str(self.pmsp_start_date)[:10]
+        if self.pmsp_start_date is not None:
+            day = str(self.pmsp_start_date.day) if self.pmsp_start_date.day > 9 else '0' + str(self.pmsp_start_date.day)
+            month = str(self.pmsp_start_date.month) if self.pmsp_start_date.month > 9 else '0' + str(self.pmsp_start_date.month)
+            year = self.pmsp_start_date.year
+            return str(year) + '-' + str(month) + '-' + str(day)
+        else:
+            return self.pmsp_start_date
 
 
     def days_count(self):
@@ -545,6 +565,15 @@ class GPatient(models.Model):
         else:
             return self.pcr_date_receipt
 
+    def pcr_date_receipt_main_format(self):
+        if self.pcr_date_receipt is not None:
+            day = str(self.pcr_date_receipt.day) if self.pcr_date_receipt.day > 9 else '0' + str(self.pcr_date_receipt.day)
+            month = str(self.pcr_date_receipt.month) if self.pcr_date_receipt.month > 9 else '0' + str(self.pcr_date_receipt.month)
+            year = str(self.pcr_date_receipt.year)
+            return day + '.' + month + '.' + year
+        else:
+            return self.pcr_date_receipt
+
     def kt_date_format(self):
         if self.kt_date is not None:
             day = str(self.kt_date.day) if self.kt_date.day > 9 else '0' + str(self.kt_date.day)
@@ -584,10 +613,76 @@ class GPatient(models.Model):
         else:
             return self.p_close_end_date
     
-    # def datetime_format(datetime):
-    #     day = str(date.day) if date.day > 9 else '0' + str(date.day)
-    #     month = str(date.month) if date.month > 9 else '0' + str(date.month)
-    #     year = date.year   
+    def is_observated(self):
+        try:
+            g_observations = GObservation.objects.filter(patient_id=self.id).latest('date')
+            if g_observations.date.date() == now_date():
+                return True
+            else:
+                return False
+        except:
+            return False            
+
+    def is_today(self):
+        try:
+            self.pmsp_start_date.date()
+            if GIncident.objects.get(id=self.incident_id).date_time.date() == now_date():
+                return True
+            else:
+                return False
+        except:
+            return False        
+
+    def is_yesterday(self):
+        try:
+            self.pmsp_start_date.date()
+            if GIncident.objects.get(id=self.incident_id).date_time.date() == now_date() - timedelta(days=1):
+                return True
+            else:
+                return False
+        except:
+            return False
+
+    def pmsp_name_format(self):
+        try:
+            name = SPmsp.objects.get(bin=str(self.pmsp_name))
+            return name.abrev_rus
+        except:
+            return self.pmsp_name    
+
+    def last_record_datetime_format(self):
+        try:
+            observ = GObservation.objects.filter(patient_id=self.id).latest('date')
+            date = observ.date
+            year = str(date.year)
+            month = str(date.month) if date.month > 9 else '0' + str(date.month)
+            day = str(date.day) if date.day > 9 else '0' + str(date.day)
+            hour = str(date.hour) if date.hour > 9 else '0' + str(date.hour)
+            minute = str(date.minute) if date.minute > 9 else '0' + str(date.minute)
+            return day + '.' + month + '.' + year + ' ' + hour + ':' + minute
+        except:
+            return 'Не найдено'
+
+    def dozvon_type_format(self):
+        for key, value in self.DOZVON_MODEL_TYPE_CHOICES:
+            if key == self.dozvon:
+                return value
+
+    def patient_condition_start_format(self):
+        condition = SCondition.objects.get(id=self.patient_condition_start).name_ru
+        return condition
+
+    def registration_date_time(self):
+        date_time = GIncident.objects.get(id=self.incident_id).date_time
+        try:
+            year = str(date_time.year)
+            month = str(date_time.month) if date_time.month > 9 else '0' + str(date_time.month)
+            day = str(date_time.day) if date_time.day > 9 else '0' + str(date_time.day)
+            hour = str(date_time.hour) if date_time.hour > 9 else '0' + str(date_time.hour)
+            minute = str(date_time.minute) if date_time.minute > 9 else '0' + str(date_time.minute)
+            return day + '.' + month + '.' + year + ' ' + hour + ':' + minute
+        except:
+            return date_time   
 
 
 class GPatientLog(models.Model):
@@ -1100,3 +1195,72 @@ class GObservation(models.Model):
         db_table = 'g_observation'
 
 
+class Appeal(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    date = models.DateTimeField(blank=True, null=True)
+    komu_peredano = models.CharField(max_length=65535, blank=True, null=True)
+    fio_actives = models.CharField(max_length=65535, blank=True, null=True)
+    user_fio = models.CharField(max_length=65535, blank=True, null=True)
+    status = models.BooleanField(blank=True, null=True)
+    reason = models.TextField(blank=True, null=True)
+    complaint_result = models.TextField(blank=True, null=True)
+    shift = models.BooleanField(blank=True, null=True)
+    phone = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    fio = models.CharField(max_length=65535, blank=True, null=True)
+    iin = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    birthday = models.DateTimeField(blank=True, null=True)
+    sex = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    subtype_call = models.ForeignKey('SSubtypeCall', models.DO_NOTHING, blank=True, null=True)
+    type_call = models.ForeignKey('STypeCall', models.DO_NOTHING, blank=True, null=True)
+    workplace = models.ForeignKey('SWorkplace', models.DO_NOTHING, blank=True, null=True)
+    pmsp_name = models.ForeignKey('SPmsp', models.DO_NOTHING, blank=True, null=True)
+    region = models.ForeignKey('SRegion', models.DO_NOTHING, blank=True, null=True)
+    complaint_status = models.BigIntegerField(blank=True, null=True)
+    giid = models.CharField(max_length=65535, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'appeal'
+
+
+class SSubtypeCall(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=999, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 's_subtype_call'
+
+
+class STypeCall(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=999, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 's_type_call'
+
+
+class SWorkplace(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=65535, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 's_workplace'
+
+
+class Patients(models.Model):
+    patient_id = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    iin = models.CharField(max_length=65535, blank=True, null=True)
+    fio = models.CharField(max_length=65535, blank=True, null=True)
+    birthday = models.DateTimeField(blank=True, null=True)
+    sex = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    pmsp_name = models.CharField(max_length=65535, blank=True, null=True)
+    loc_city = models.CharField(max_length=65535, blank=True, null=True)
+    loc_region = models.CharField(max_length=65535, blank=True, null=True)
+    type = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = u'"router"."patients"'

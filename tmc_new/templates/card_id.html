@@ -83,7 +83,7 @@
 		<div class="mt-1">
 			<h3 style="font-size: 14px;">Нарушения карантина пациентом</h3>
 			<textarea name="violation_quar_pre" id="violation_quar_pre" cols="55" rows="2">
-                {{ g_observation.jaloba_na_pmsp }}
+                {{ g_observation.violation_quar }}
             </textarea>
 			<input type="text" id="violation_quar" name="violation_quar" hidden>
 		</div>
@@ -309,7 +309,7 @@
 			</tbody>
 		</table>
 		<h3 class="mt-1" style="font-size: 14px;">Описание нарушений ПМСП</h3>
-		<textarea name="violation_descr_pre" id="violation_descr_pre" cols="55" rows="2"></textarea>
+		<textarea name="violation_descr_pre" id="violation_descr_pre" cols="55" rows="2">{{ g_observation.violation_descr }}</textarea>
 		<input type="text" id="violation_descr" name="violation_descr" hidden>
         <h3 class="p-1 mt-2" style="border: 1px solid gray; border-radius: 5px 5px 0 0; font-size: 14px;">Обратная связь</h3>
 			<table class="p-1" style="width: 100%; min-height: 50px;">
@@ -444,7 +444,7 @@
 				</tbody>
 			</table>
 			<h3 style="font-size: 14px; margin-top: 2px;">Примечание</h3>
-			<textarea name="f_primechanie_pre" id="f_primechanie_pre" cols="55" rows="2"></textarea>
+			<textarea name="f_primechanie_pre" id="f_primechanie_pre" cols="55" rows="2">{{ g_observation.f_primechanie }}</textarea>
 			<input type="text" id="f_primechanie" hidden name="f_primechanie">
 	</div>
 	<!-- БЛОК 2 -->
@@ -462,7 +462,87 @@
 			<div class="col">
 				<label for="">Температура</label>
 				<br>
-				<input id="temperature" value="{{ g_observation.temperature }}" name="temperature" type="text">
+				<select id="temperature" name="temperature" type="text">
+					{% if g_observation.temperature == '0' or g_observation.temperature == 0 or g_observation.temperature == None or g_observation.temperature == '' %}
+						<option value=''></option>
+					{% endif %}
+					<option {% if g_observation.temperature == '35.5' or g_observation.temperature == '35,5' %} selected {% endif %} value="35.5">35.5</option>
+					<option {% if g_observation.temperature == '35.6' or g_observation.temperature == '35,6' %} selected {% endif %} value="35.6">35.6</option>
+					<option {% if g_observation.temperature == '35.7' or g_observation.temperature == '35,7' %} selected {% endif %} value="35.7">35.7</option>
+					<option {% if g_observation.temperature == '35.8' or g_observation.temperature == '35,8' %} selected {% endif %} value="35.8">35.8</option>
+					<option {% if g_observation.temperature == '35.9' or g_observation.temperature == '35,9' %} selected {% endif %} value="35.9">35.9</option>
+					<option {% if g_observation.temperature == '36.0' or g_observation.temperature == '36,0' %} selected {% endif %} value="36.0">36.0</option>
+					<option {% if g_observation.temperature == '36.1' or g_observation.temperature == '36,1' %} selected {% endif %} value="36.1">36.1</option>
+					<option {% if g_observation.temperature == '36.2' or g_observation.temperature == '36,2' %} selected {% endif %} value="36.2">36.2</option>
+					<option {% if g_observation.temperature == '36.3' or g_observation.temperature == '36,3' %} selected {% endif %} value="36.3">36.3</option>
+					<option {% if g_observation.temperature == '36.4' or g_observation.temperature == '36,4' %} selected {% endif %} value="36.4">36.4</option>
+					<option {% if g_observation.temperature == '36.5' or g_observation.temperature == '36,5' %} selected {% endif %} value="36.5">36.5</option>
+					<option {% if g_observation.temperature == '36.6' or g_observation.temperature == '36,6' %} selected {% endif %} value="36.6">36.6</option>
+					<option {% if g_observation.temperature == '36.7' or g_observation.temperature == '36,7' %} selected {% endif %} value="36.7">36.7</option>
+					<option {% if g_observation.temperature == '36.8' or g_observation.temperature == '36,8' %} selected {% endif %} value="36.8">36.8</option>
+					<option {% if g_observation.temperature == '36.9' or g_observation.temperature == '36,9' %} selected {% endif %} value="36.9">36.9</option>
+					<option {% if g_observation.temperature == '37.0' or g_observation.temperature == '37,0' %} selected {% endif %} value="37.0">37.0</option>
+					<option {% if g_observation.temperature == '37.1' or g_observation.temperature == '37,1' %} selected {% endif %} value="37.1">37.1</option>
+					<option {% if g_observation.temperature == '37.2' or g_observation.temperature == '37,2' %} selected {% endif %} value="37.2">37.2</option>
+					<option {% if g_observation.temperature == '37.3' or g_observation.temperature == '37,3' %} selected {% endif %} value="37.3">37.3</option>
+					<option {% if g_observation.temperature == '37.4' or g_observation.temperature == '37,4' %} selected {% endif %} value="37.4">37.4</option>
+					<option {% if g_observation.temperature == '37.5' or g_observation.temperature == '37,5' %} selected {% endif %} value="37.5">37.5</option>
+					<option {% if g_observation.temperature == '37.6' or g_observation.temperature == '37,6' %} selected {% endif %} value="37.6">37.6</option>
+					<option {% if g_observation.temperature == '37.7' or g_observation.temperature == '37,7' %} selected {% endif %} value="37.7">37.7</option>
+					<option {% if g_observation.temperature == '37.8' or g_observation.temperature == '37,8' %} selected {% endif %} value="37.8">37.8</option>
+					<option {% if g_observation.temperature == '37.9' or g_observation.temperature == '37,9' %} selected {% endif %} value="37.9">37.9</option>
+					<option {% if g_observation.temperature == '38.0' or g_observation.temperature == '38,0' %} selected {% endif %} value="38.0">38.0</option>
+					<option {% if g_observation.temperature == '38.1' or g_observation.temperature == '38,1' %} selected {% endif %} value="38.1">38.1</option>
+					<option {% if g_observation.temperature == '38.2' or g_observation.temperature == '38,2' %} selected {% endif %} value="38.2">38.2</option>
+					<option {% if g_observation.temperature == '38.3' or g_observation.temperature == '38,3' %} selected {% endif %} value="38.3">38.3</option>
+					<option {% if g_observation.temperature == '38.4' or g_observation.temperature == '38,4' %} selected {% endif %} value="38.4">38.4</option>
+					<option {% if g_observation.temperature == '38.5' or g_observation.temperature == '38,5' %} selected {% endif %} value="38.5">38.5</option>
+					<option {% if g_observation.temperature == '38.6' or g_observation.temperature == '38,6' %} selected {% endif %} value="38.6">38.6</option>
+					<option {% if g_observation.temperature == '38.7' or g_observation.temperature == '38,7' %} selected {% endif %} value="38.7">38.7</option>
+					<option {% if g_observation.temperature == '38.8' or g_observation.temperature == '38,8' %} selected {% endif %} value="38.8">38.8</option>
+					<option {% if g_observation.temperature == '38.9' or g_observation.temperature == '38,9' %} selected {% endif %} value="38.9">38.9</option>
+					<option {% if g_observation.temperature == '39.0' or g_observation.temperature == '39,0' %} selected {% endif %} value="39.0">39.0</option>
+					<option {% if g_observation.temperature == '39.1' or g_observation.temperature == '39,1' %} selected {% endif %} value="39.1">39.1</option>
+					<option {% if g_observation.temperature == '39.2' or g_observation.temperature == '39,2' %} selected {% endif %} value="39.2">39.2</option>
+					<option {% if g_observation.temperature == '39.3' or g_observation.temperature == '39,3' %} selected {% endif %} value="39.3">39.3</option>
+					<option {% if g_observation.temperature == '39.4' or g_observation.temperature == '39,4' %} selected {% endif %} value="39.4">39.4</option>
+					<option {% if g_observation.temperature == '39.5' or g_observation.temperature == '39,5' %} selected {% endif %} value="39.5">39.5</option>
+					<option {% if g_observation.temperature == '39.6' or g_observation.temperature == '39,6' %} selected {% endif %} value="39.6">39.6</option>
+					<option {% if g_observation.temperature == '39.7' or g_observation.temperature == '39,7' %} selected {% endif %} value="39.7">39.7</option>
+					<option {% if g_observation.temperature == '39.8' or g_observation.temperature == '39,8' %} selected {% endif %} value="39.8">39.8</option>
+					<option {% if g_observation.temperature == '39.9' or g_observation.temperature == '39,9' %} selected {% endif %} value="39.9">39.9</option>
+					<option {% if g_observation.temperature == '40.0' or g_observation.temperature == '40,0' %} selected {% endif %} value="40.0">40.0</option>
+					<option {% if g_observation.temperature == '40.1' or g_observation.temperature == '40,1' %} selected {% endif %} value="40.1">40.1</option>
+					<option {% if g_observation.temperature == '40.2' or g_observation.temperature == '40,2' %} selected {% endif %} value="40.2">40.2</option>
+					<option {% if g_observation.temperature == '40.3' or g_observation.temperature == '40,3' %} selected {% endif %} value="40.3">40.3</option>
+					<option {% if g_observation.temperature == '40.4' or g_observation.temperature == '40,4' %} selected {% endif %} value="40.4">40.4</option>
+					<option {% if g_observation.temperature == '40.5' or g_observation.temperature == '40,5' %} selected {% endif %} value="40.5">40.5</option>
+					<option {% if g_observation.temperature == '40.6' or g_observation.temperature == '40,6' %} selected {% endif %} value="40.6">40.6</option>
+					<option {% if g_observation.temperature == '40.7' or g_observation.temperature == '40,7' %} selected {% endif %} value="40.7">40.7</option>
+					<option {% if g_observation.temperature == '40.8' or g_observation.temperature == '40,8' %} selected {% endif %} value="40.8">40.8</option>
+					<option {% if g_observation.temperature == '40.9' or g_observation.temperature == '40,9' %} selected {% endif %} value="40.9">40.9</option>
+					<option {% if g_observation.temperature == '41.0' or g_observation.temperature == '41,0' %} selected {% endif %} value="41.0">41.0</option>
+					<option {% if g_observation.temperature == '41.1' or g_observation.temperature == '41,1' %} selected {% endif %} value="41.1">41.1</option>
+					<option {% if g_observation.temperature == '41.2' or g_observation.temperature == '41,2' %} selected {% endif %} value="41.2">41.2</option>
+					<option {% if g_observation.temperature == '41.3' or g_observation.temperature == '41,3' %} selected {% endif %} value="41.3">41.3</option>
+					<option {% if g_observation.temperature == '41.4' or g_observation.temperature == '41,4' %} selected {% endif %} value="41.4">41.4</option>
+					<option {% if g_observation.temperature == '41.5' or g_observation.temperature == '41,5' %} selected {% endif %} value="41.5">41.5</option>
+					<option {% if g_observation.temperature == '41.6' or g_observation.temperature == '41,6' %} selected {% endif %} value="41.6">41.6</option>
+					<option {% if g_observation.temperature == '41.7' or g_observation.temperature == '41,7' %} selected {% endif %} value="41.7">41.7</option>
+					<option {% if g_observation.temperature == '41.8' or g_observation.temperature == '41,8' %} selected {% endif %} value="41.8">41.8</option>
+					<option {% if g_observation.temperature == '41.9' or g_observation.temperature == '41,9' %} selected {% endif %} value="41.9">41.9</option>
+					<option {% if g_observation.temperature == '42.0' or g_observation.temperature == '42,0' %} selected {% endif %} value="42.0">42.0</option>
+					<option {% if g_observation.temperature == '42.1' or g_observation.temperature == '42,1' %} selected {% endif %} value="42.1">42.1</option>
+					<option {% if g_observation.temperature == '42.2' or g_observation.temperature == '42,2' %} selected {% endif %} value="42.2">42.2</option>
+					<option {% if g_observation.temperature == '42.3' or g_observation.temperature == '42,3' %} selected {% endif %} value="42.3">42.3</option>
+					<option {% if g_observation.temperature == '42.4' or g_observation.temperature == '42,4' %} selected {% endif %} value="42.4">42.4</option>
+					<option {% if g_observation.temperature == '42.5' or g_observation.temperature == '42,5' %} selected {% endif %} value="42.5">42.5</option>
+					<option {% if g_observation.temperature == '42.6' or g_observation.temperature == '42,6' %} selected {% endif %} value="42.6">42.6</option>
+					<option {% if g_observation.temperature == '42.7' or g_observation.temperature == '42,7' %} selected {% endif %} value="42.7">42.7</option>
+					<option {% if g_observation.temperature == '42.8' or g_observation.temperature == '42,8' %} selected {% endif %} value="42.8">42.8</option>
+					<option {% if g_observation.temperature == '42.9' or g_observation.temperature == '42,9' %} selected {% endif %} value="42.9">42.9</option>
+					<option {% if g_observation.temperature == '43.0' or g_observation.temperature == '43,0' %} selected {% endif %} value="43.0">43.0</option>
+				</select>
 			</div>
 			<div class="col">
 				<label for="">Сатурация</label>
@@ -921,9 +1001,17 @@
         <div class="row" style="height: 530px;">
             <iframe style="width: 100%;" src="https://tmc1312.kz/agentdesktop/UniversalRepeater.jsp" frameborder="0"></iframe>
         </div>
-        <button type="button" onclick="Call()">Позвонить</button>
-        <!-- <button type="button" onclick="showDialog()">Добавить</button> -->
-        <button type="button" onclick="addCheckList()">Добавить</button>
+	<div class="d-flex justify-content-between">
+		<button type="button" onclick="CountCalls(); Call()">Позвонить</button>
+		<!-- <button type="button" onclick="showDialog()">Добавить</button> -->
+		<button type="button" onclick="addCheckList()">Добавить</button>
+		<label for="dozvon" style="width: 30%; font-size: 16px; font-weight: bold;" class="text-end">Недозвон</label>
+		<select id="dozvon" style="width: 30%;" name="dozvon">
+			{% for value, key in g_patient.DOZVON_MODEL_TYPE_CHOICES %}
+				<option value="{{ value }}">{{ key }}</option>
+			{% endfor %}
+		</select>
+		</div>
             <div class="mt-2">
                 <ul class="nav justify-content-start" style="padding: 0px; margin-left:5px;">
                     <li class="nav-item" style="padding: 0px;">
@@ -1742,9 +1830,12 @@
             </select>
 		<button onmouseover="ElementsValuesMigrate('additional_contacts_pre', 'additional_contacts');
 			ElementsValuesMigrate('info_for_tmc_agent_pre', 'info_for_tmc_agent');
+			ElementsValuesMigrate('jaloba_na_pmsp_pre', 'jaloba_na_pmsp');
+			ElementsValuesMigrate('violation_descr_pre', 'violation_descr');
 			ElementsValuesMigrate('detailed_diagnosis_info_pre', 'detailed_diagnosis_info');
 			ElementsValuesMigrate('nosologiya_pre', 'nosologiya');
-			ElementsValuesMigrate('presc_therapy_pre', 'presc_therapy');" 
+			ElementsValuesMigrate('presc_therapy_pre', 'presc_therapy');
+			ElementsValuesMigrate('f_primechanie_pre', 'f_primechanie');" 
 			type="submit" style="height: 25px;" class="button btn-light">Сохранить</button>
         </div>
         <div class="col-2">
@@ -1759,7 +1850,8 @@
 <input type="text" id="operator_name" name="operator_name" hidden>
 <style>
 html{
- zoom: 86%;
+ zoom: 89%;
+ overflow-x: hidden;
 }
 h2{
   font-size: 16px;
@@ -1870,7 +1962,7 @@ var JournalStatus = false
             for (var i = 0; i < Object.keys(JSON.parse(data)).length; i++) {
 				// console.log(JSON.parse(data)[i].pk)
 				journal_date = JSON.parse(data)[i].fields.date ? JSON.parse(data)[i].fields.date.split('.')[0].replace('T', ' ') : ''
-                    tbody.innerHTML += `<tr class="row text-center p-1" style="background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);" onclick="callCheckList('form_${JSON.parse(data)[i].pk}')"><td class='col-4'><b>` + journal_date  + '</b></td><td class="col-2"><b>' + JSON.parse(data)[i].fields.sostoyznie + '</b></td>' +
+                    tbody.innerHTML += `<tr class="row text-center p-1" style="border-bottom: 1px solid gray;" onclick="callCheckList('form_${JSON.parse(data)[i].pk}')"><td class='col-4'><b>` + journal_date  + '</b></td><td class="col-2"><b>' + JSON.parse(data)[i].fields.sostoyznie + '</b></td>' +
                                       '<td class="col-3"><b>' + JSON.parse(data)[i].fields.temperature + '</b></td><td class="col-3"><b>' + JSON.parse(data)[i].fields.saturation + '</b></td></tr>'
 					tbody.children[i].classList.add("row")					  
             }
@@ -2433,7 +2525,85 @@ const CheckList =
 			'<div class="col">' +
 				'<label for="">Температура</label>' +
 				'<br>' +
-				'<input id="temperature" name="temperature" type="text">' +
+				'<select id="temperature" name="temperature" type="text">' +
+                                        '<option value=""></option>' +
+					'<option value="35.5">35.5</option>' +
+					'<option value="35.6">35.6</option>' +
+					'<option value="35.7">35.7</option>' +
+					'<option value="35.8">35.8</option>' +
+					'<option value="35.9">35.9</option>' +
+					'<option value="36.0">36.0</option>' +
+					'<option value="36.1">36.1</option>' +
+					'<option value="36.2">36.2</option>' +
+					'<option value="36.3">36.3</option>' +
+					'<option value="36.4">36.4</option>' +
+					'<option value="36.5">36.5</option>' +
+					'<option value="36.6">36.6</option>' +
+					'<option value="36.7">36.7</option>' +
+					'<option value="36.8">36.8</option>' +
+					'<option value="36.9">36.9</option>' +
+					'<option value="37.0">37.0</option>' +
+					'<option value="37.1">37.1</option>' +
+					'<option value="37.2">37.2</option>' +
+					'<option value="37.3">37.3</option>' +
+					'<option value="37.4">37.4</option>' +
+					'<option value="37.5">37.5</option>' +
+					'<option value="37.6">37.6</option>' +
+					'<option value="37.7">37.7</option>' +
+					'<option value="37.8">37.8</option>' +
+					'<option value="37.9">37.9</option>' +
+					'<option value="38.0">38.0</option>' +
+					'<option value="38.1">38.1</option>' +
+					'<option value="38.2">38.2</option>' +
+					'<option value="38.3">38.3</option>' +
+					'<option value="38.4">38.4</option>' +
+					'<option value="38.5">38.5</option>' +
+					'<option value="38.6">38.6</option>' +
+					'<option value="38.7">38.7</option>' +
+					'<option value="38.8">38.8</option>' +
+					'<option value="38.9">38.9</option>' +
+					'<option value="39.0">39.0</option>' +
+					'<option value="39.1">39.1</option>' +
+					'<option value="39.2">39.2</option>' +
+					'<option value="39.3">39.3</option>' +
+					'<option value="39.4">39.4</option>' +
+					'<option value="39.5">39.5</option>' +
+					'<option value="39.6">39.6</option>' +
+					'<option value="39.7">39.7</option>' +
+					'<option value="39.8">39.8</option>' +
+					'<option value="39.9">39.9</option>' +
+					'<option value="40.0">40.0</option>' +
+					'<option value="40.1">40.1</option>' +
+					'<option value="40.2">40.2</option>' +
+					'<option value="40.3">40.3</option>' +
+					'<option value="40.4">40.4</option>' +
+					'<option value="40.5">40.5</option>' +
+					'<option value="40.6">40.6</option>' +
+					'<option value="40.7">40.7</option>' +
+					'<option value="40.8">40.8</option>' +
+					'<option value="40.9">40.9</option>' +
+					'<option value="41.0">41.0</option>' +
+					'<option value="41.1">41.1</option>' +
+					'<option value="41.2">41.2</option>' +
+					'<option value="41.3">41.3</option>' +
+					'<option value="41.4">41.4</option>' +
+					'<option value="41.5">41.5</option>' +
+					'<option value="41.6">41.6</option>' +
+					'<option value="41.7">41.7</option>' +
+					'<option value="41.8">41.8</option>' +
+					'<option value="41.9">41.9</option>' +
+					'<option value="42.0">42.0</option>' +
+					'<option value="42.1">42.1</option>' +
+					'<option value="42.2">42.2</option>' +
+					'<option value="42.3">42.3</option>' +
+					'<option value="42.4">42.4</option>' +
+					'<option value="42.5">42.5</option>' +
+					'<option value="42.6">42.6</option>' +
+					'<option value="42.7">42.7</option>' +
+					'<option value="42.8">42.8</option>' +
+					'<option value="42.9">42.9</option>' +
+					'<option value="43.0">43.0</option>' +
+				'</select>'	+
 			'</div>' +
 			'<div class="col">' +
 				'<label for="">Сатурация</label>' +
@@ -3218,5 +3388,14 @@ function addCheckList(){
             }
         })
     }
+
+	function CountCalls(){
+        const full_url = window.location.href
+        const lastSegment = full_url.split("/").pop();
+        axios({
+            method: 'GET',
+            url: lastSegment + `/setcount`,
+		})
+	}
 </script> 
 {% endblock %}

@@ -98,6 +98,9 @@ DATABASES = {
        'PASSWORD': '9bvhxjWk8VzRAbDQ',
        'HOST': '87.255.194.204',
        'PORT': '5432',
+    #    'OPTIONS': {
+    #        'options': '-c search_path=router'
+    #    }
    }
 }
 
