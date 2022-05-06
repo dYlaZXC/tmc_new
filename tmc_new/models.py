@@ -1215,12 +1215,22 @@ class Appeal(models.Model):
     workplace = models.ForeignKey('SWorkplace', models.DO_NOTHING, blank=True, null=True)
     pmsp_name = models.ForeignKey('SPmsp', models.DO_NOTHING, blank=True, null=True)
     region = models.ForeignKey('SRegion', models.DO_NOTHING, blank=True, null=True)
-    complaint_status = models.BigIntegerField(blank=True, null=True)
+    complaint_status = models.ForeignKey('SAppealStatus', models.DO_NOTHING, blank=True, null=True)
     giid = models.CharField(max_length=65535, blank=True, null=True)
+    is_first = models.BooleanField(default=True)
+    agent_id = models.CharField(max_length=123, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'appeal'
+
+
+class SAppealStatus(models.Model):
+    name = models.CharField(max_length=123, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 's_appeal_status'
 
 
 class SSubtypeCall(models.Model):
@@ -1248,6 +1258,18 @@ class SWorkplace(models.Model):
     class Meta:
         managed = False
         db_table = 's_workplace'
+
+
+class IncomingLogs(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=123, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    date_time = models.DateTimeField(blank=True, null=True)
+    username = models.CharField(max_length=123, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'incoming_logs'
 
 
 class Patients(models.Model):

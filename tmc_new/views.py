@@ -921,39 +921,77 @@ def custom_serializer(a):
             } for k in a]
 
 
-def get_s_pmsp(request):
-    all_pmsp = list(SPmsp.objects.all().values())
-    return JsonResponse(all_pmsp, safe=False)
+def save_log(request, name, bonus=''):
+
+    get_meta = lambda x, xx, y=exec("def f(meta,s):\n try:\n  return meta[s]\n except:  return None"): (x, xx)
+
+    request_data = {
+        'QUERY_STRING': get_meta(request.META, "QUERY_STRING"),
+        'RAW_URI': get_meta(request.META, "RAW_URI"),
+        'HTTP_HOST': get_meta(request.META, "HTTP_HOST"),
+        'HTTP_X_FORWARDED_FOR': get_meta(request.META, "HTTP_X_FORWARDED_FOR"),
+        'HTTP_USER_AGENT': get_meta(request.META, "HTTP_USER_AGENT"),
+        'HTTP_REFERER': get_meta(request.META, 'HTTP_REFERER') 
+    }
+
+    IncomingLogs.objects.create(
+        name=name,
+        description=str(bonus) + ' | ' + str(request_data),
+        date_time=datetime.now() + timedelta(hours=6),
+        username=request.data.get('user_fio')  #request.user.username if request.user else None
+    )
 
 
-def get_s_region(request):
-    all_region = list(SRegion.objects.all().values())
-    return JsonResponse(all_region, safe=False)
+class get_s_pmsp(APIView):
+    def post(self, request):
+        all_pmsp = list(SPmsp.objects.all().values())
+        save_log(request, 'get pmsp')
+        return JsonResponse(all_pmsp, safe=False)
 
-def get_s_subtypecall(request):
-    return JsonResponse(list(SSubtypeCall.objects.exclude(name__icontains='/').values()), safe=False)
 
-def get_s_typecall(request):
-    return JsonResponse(list(STypeCall.objects.all().values()), safe=False)
+class get_s_region(APIView):
+    def post(self, request):
+        all_region = list(SRegion.objects.all().values())
+        save_log(request, 'get region')
+        return JsonResponse(all_region, safe=False)
+
+class get_s_subtypecall(APIView):
+    def post(self, request):
+        save_log(request, 'get subtypecall')
+        return JsonResponse(list(SSubtypeCall.objects.exclude(name__icontains='/').values()), safe=False)
+
+class get_s_typecall(APIView):
+    def post(self, request):
+        save_log(request, 'get typecall')
+        return JsonResponse(list(STypeCall.objects.all().values()), safe=False)
+
+class get_s_appeal_status(APIView):
+    def post(self, request):
+        save_log(request, 'get appeal')
+        return JsonResponse(list(SAppealStatus.objects.all().values()), safe=False)
 
 
 class get_patient(APIView):
     def post(self, request):
         appeal = Appeal.objects.filter(phone=request.data.get('phone'))
         if appeal.count() > 0:
+            save_log(request, 'get patient appeal ')
             return JsonResponse(list(appeal.values()), safe=False)
         else:
+            save_log(request, 'get patient g_patient')
             patient = list(GPatient.objects.filter(phone=request.data.get('phone')).order_by('-id').values())
             return JsonResponse(patient, safe=False)
 
 
 class get_patient_id(APIView):
     def post(self, request):
+        save_log(request, 'get patient id')
         return JsonResponse(list(Appeal.objects.filter(id=request.data.get('id')).values()), safe=False)
 
 
 class get_incident(APIView):
     def post(self, request):
+        save_log(request, 'get incident')
         incident = list(GIncident.objects.filter(id=request.data.get('incident_id')).values())
         return JsonResponse(incident, safe=False)
 
@@ -967,19 +1005,22 @@ class save_appeal(APIView):
         #new_appeal.date = datetime.now() + timedelta(hours=6)
 
         # subtype
-        if len(subtype_call) > 1:
-            for st in subtype_call:
-                st_string += SSubtypeCall.objects.get(id=st).name + ' / '
+        try:
+            if len(subtype_call) > 1:
+                for st in subtype_call:
+                    st_string += SSubtypeCall.objects.get(id=st).name + ' / '
 
-            subtype_new = SSubtypeCall.objects.filter(name__icontains=st_string)
-            if subtype_new.count() == 0:
-                new_subtype = SSubtypeCall(name=st_string)
-                new_subtype.save()
-                new_appeal.subtype_call = new_subtype
-            else:
-                new_appeal.subtype_call = subtype_new[0]
-        elif len(subtype_call) == 1:
-            new_appeal.subtype_call = SSubtypeCall.objects.get(id=subtype_call[0])
+                subtype_new = SSubtypeCall.objects.filter(name__icontains=st_string)
+                if subtype_new.count() == 0:
+                    new_subtype = SSubtypeCall(name=st_string)
+                    new_subtype.save()
+                    new_appeal.subtype_call = new_subtype
+                else:
+                    new_appeal.subtype_call = subtype_new[0]
+            elif len(subtype_call) == 1:
+                new_appeal.subtype_call = SSubtypeCall.objects.get(id=subtype_call[0])
+        except:
+            new_appeal.subtype_call = None
 
 
         # shift = request.data.get('shift')
@@ -989,9 +1030,10 @@ class save_appeal(APIView):
             shift = False
         else:
             shift = None
+        
         date = request.data.get('date') if request.data.get('date') != None else datetime.now() + timedelta(hours=6)
         user_fio = request.data.get('user_fio')
-        phone = request.data.get('phone')
+        phone = '7' + request.data.get('phone')[1:]
         fio = request.data.get('fio')
         iin = request.data.get('iin')
         city = request.data.get('city')
@@ -1004,10 +1046,18 @@ class save_appeal(APIView):
         type_call = request.data.get('type_call')
         komu_peredano = request.data.get('komu')
         fio_actives = request.data.get('fio_actives')
-        complaint_status = request.data.get('complaint_status')
+
+        try:
+            complaint_status = SAppealStatus.objects.get(id=request.data.get('complaint_status'))
+        except:
+            complaint_status = None
+
         reason = request.data.get('reason')
         complaint_result = request.data.get('complaint_result')
         status = None
+        giid = request.data.get('giid')
+        agent_id = request.data.get('agent_id')
+        is_first = request.data.get('is_first')
 
         try:
             workplace_id = SWorkplace.objects.get(id=workplace)
@@ -1047,13 +1097,22 @@ class save_appeal(APIView):
         new_appeal.complaint_status = complaint_status
         new_appeal.complaint_result = complaint_result
         new_appeal.birthday = birthday
+        new_appeal.giid = giid
+        new_appeal.agent_id = agent_id
+        new_appeal.is_first = is_first
 
-        new_appeal.save()
+        try:
+            new_appeal.save()
+        except:
+            date = datetime.strptime(request.data.get('date'), '%d.%m.%Y, %H:%M:%S')
+            new_appeal.date = date
+            new_appeal.save()
 
-        return JsonResponse(
-            {
+
+        res = {
+            'id': new_appeal.id,
             'shift': shift,
-            'date': date,
+            'date': str(date),
             'user_fio': user_fio,
             'phone': phone,
             'fio': fio,
@@ -1068,12 +1127,14 @@ class save_appeal(APIView):
             'type_call': type_call,
             'komu_peredano': komu_peredano,
             'fio_actives': fio_actives,
-            'complaint_status': complaint_status,
+            'complaint_status': request.data.get('complaint_status'),
             'reason': reason,
             'complaint_result': complaint_result,
             'status': status
             }
-        )
+
+        save_log(request, 'post save appeal', str(res))
+        return JsonResponse(res)
 
 
 
@@ -1083,41 +1144,60 @@ class get_history(APIView):
         res = Appeal.objects.filter(phone=request.data.get('phone')).select_related('type_call').annotate(type_call_name=F('type_call__name')
                                                                    ).select_related('subtype_call').annotate(subtype_call_name=F('subtype_call')
                                                                    ).select_related('workplace').annotate(workplace_name=F('workplace__name')
-                                                                   ).select_related('pmsp_name').annotate(pmsp_name_name=F('pmsp_name__abrev_rus'))
+                                                                   ).select_related('pmsp_name').annotate(pmsp_name_name=F('pmsp_name__abrev_rus')
+                                                                   ).select_related('complaint_status').annotate(complaint_status_name=F('complaint_status__name'))
         
         res_sz = custom_serializer(res)
+        
+        save_log(request, 'get history')
 
         return JsonResponse(res_sz, safe=False)
 
+def check_group(name, user):
+    if user is not None:
+        for i in user.groups.all(): 
+            if i.name == name:
+                return True
 
 class get_history_all_for_current_user(APIView):
     def post(self, request):
-        if request.data.get('user_fio') == 'admin':
-            return get_history_all(request)
+        try:
+            user = User.objects.get(username=request.data.get('user_fio'))
+        except:
+            user = None
+
+        if check_group('card_admin', user): #request.data.get('user_fio') == 'admin':
+            return get_history_all().post(request)
         elif request.data.get('user_fio') == None:
+            save_log(request, 'get history all', 'error user is None')
             return JsonResponse({'result': 'error auth'})
         elif request.data.get('user_fio') == '':
+            save_log(request, 'get history all', 'error auth')
             return JsonResponse({'result': 'error auth'})
 
-        res = Appeal.objects.filter(user_fio=request.data.get('user_fio')
+        res = Appeal.objects.filter(user_fio=request.data.get('user_fio'), is_first=True
                 ).select_related('type_call').annotate(type_call_name=F('type_call__name')
                 ).select_related('subtype_call').annotate(subtype_call_name=F('subtype_call')
                 ).select_related('workplace').annotate(workplace_name=F('workplace__name')
-                ).select_related('pmsp_name').annotate(pmsp_name_name=F('pmsp_name__abrev_rus'))
+                ).select_related('pmsp_name').annotate(pmsp_name_name=F('pmsp_name__abrev_rus')
+                ).select_related('complaint_status').annotate(complaint_status_name=F('complaint_status__name'))
             
         res_sz = custom_serializer(res)
         return JsonResponse(res_sz, safe=False)
 
 
-def get_history_all(request):
-    res = Appeal.objects.all(
-            ).select_related('type_call').annotate(type_call_name=F('type_call__name')
-            ).select_related('subtype_call').annotate(subtype_call_name=F('subtype_call')
-            ).select_related('workplace').annotate(workplace_name=F('workplace__name')
-            ).select_related('pmsp_name').annotate(pmsp_name_name=F('pmsp_name__abrev_rus'))
-        
-    res_sz = custom_serializer(res)
-    return JsonResponse(res_sz, safe=False)
+class get_history_all(APIView):
+    def post(self, request):
+        res = Appeal.objects.filter(is_first=True
+                ).select_related('type_call').annotate(type_call_name=F('type_call__name')
+                ).select_related('subtype_call').annotate(subtype_call_name=F('subtype_call')
+                ).select_related('workplace').annotate(workplace_name=F('workplace__name')
+                ).select_related('pmsp_name').annotate(pmsp_name_name=F('pmsp_name__abrev_rus')
+                ).select_related('complaint_status').annotate(complaint_status_name=F('complaint_status__name'))
+            
+        res_sz = custom_serializer(res)
+        save_log(request, 'get history all')
+        return JsonResponse(res_sz, safe=False)
 
 
 class api_auth(APIView):
@@ -1128,8 +1208,11 @@ class api_auth(APIView):
         try:
             user = User.objects.get(username=login)
             if check_password(password, user.password):
+                save_log(request, 'post api auth', 'user ok: ' + str(login))
                 return JsonResponse({'result': 'ok'})
             else:
+                save_log(request, 'post api auth', 'error wrong password: ' + str(login))
                 return JsonResponse({'result': 'error', 'comment': 'wrong password'})
         except Exception as e:
+            save_log(request, 'post api auth', 'error user not exist: ' + str(login))
             return JsonResponse({'result': 'error', 'comment': str(e)})

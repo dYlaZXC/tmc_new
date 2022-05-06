@@ -57,6 +57,9 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8080",
+    "http://mdc.1312.kz:1002",
+    "https://mdc.1312.kz:1002",
+    "https://eu.cloudcall.kz"
 ]
 
 ROOT_URLCONF = 'tmc_new.urls'
@@ -98,9 +101,6 @@ DATABASES = {
        'PASSWORD': '9bvhxjWk8VzRAbDQ',
        'HOST': '87.255.194.204',
        'PORT': '5432',
-    #    'OPTIONS': {
-    #        'options': '-c search_path=router'
-    #    }
    }
 }
 
