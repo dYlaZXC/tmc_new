@@ -1,0 +1,61 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block html_title %}{{ site.name }}{% endblock html_title %}</title>
+  {% block css %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  {% endblock css %}
+</head>
+
+<body>
+{% block body %}
+  {% block alerts %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} text-center">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endblock alerts %}
+  {% block header %}
+    <div class="container">
+      <div class="text-right">
+        {% if user.is_authenticated %}
+          <span class="text-success mr-3"><i class="fas fa-user mr-1"></i>{{ user.username }}({{ user.get_full_name }})</span>
+          <a href="#">Личный кабинет</a>
+          <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt ml-3 mr-1"></i>Выйти</a>
+        {% endif %}
+      </div>
+      <div>
+        <h1 class="text-center font-weight-bold mt-4"><a href="/" class="text-success">{{ site.name }}</a></h1>
+      </div>
+    </div>
+  {% endblock header %}
+
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        {% block breadcrumb %}
+        {% endblock breadcrumb %}
+      </ol>
+    </nav>
+  </div>
+
+  {% block content %}
+  {% endblock content %}
+{% endblock body %}
+{% block footer %}
+  <div class="container text-center text-secondary mt-2">
+    &copy; Copyright {% now 'Y' %}
+  </div>
+{% endblock footer %}
+{% block js %}
+  <script src="{% static 'js/main.js' %}"></script>
+{% endblock js %}
+</body>
+</html>

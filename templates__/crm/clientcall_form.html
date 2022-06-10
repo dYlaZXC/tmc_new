@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block html_title %}Форма для обработки звонка в КЦ | {{ block.super }}{% endblock html_title %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="/">Главная</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Форма для обработки звонка</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="container">
+    <h2>Обращение <b>{{ view.kwargs.phone }}</b></h2>
+    <form method="post">
+      {% crispy client_form %}
+      {% crispy form %}
+      <div class="js-complaint-form-wrapper">
+        {% crispy complaint_form %}
+      </div>
+      <div class="js-consultation-form-wrapper">
+        {% crispy consultation_form %}
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">Сохранить</button>
+    </form>
+  </div>
+{% endblock content %}
+
+{% block js %}
+  {{ block.super }}
+  {{ handbook_data|json_script:'handbook_data' }}
+  <script>
+    $(document).ready(function () {
+      // hide complain form inputs if not complaint checked
+      const complaintFormWrapper = $('.js-complaint-form-wrapper');
+      const consultationFormWrapper = $('.js-consultation-form-wrapper');
+      const answerInputFormGroup = $('.form-control[name="answer"]').parents('.form-group');
+
+      function setFields() {
+        let value = $('input[name=kind]:checked').val();
+        if (value === 'complaint') {
+          answerInputFormGroup.hide();
+          consultationFormWrapper.hide();
+          complaintFormWrapper.show();
+        } else if (value === 'consultation') {
+          answerInputFormGroup.hide();
+          consultationFormWrapper.show();
+          complaintFormWrapper.hide();
+        } else {
+          complaintFormWrapper.hide();
+          consultationFormWrapper.hide();
+          answerInputFormGroup.show();
+        }
+      }
+
+      $('input[name=kind]').on('change', setFields);
+      setFields();
+
+
+      const categorySelect = consultationFormWrapper.find('select[name="category"]');
+      const articleSelect = consultationFormWrapper.find('select[name="article"]');
+      const handbookData = JSON.parse(document.getElementById('handbook_data').textContent);
+
+      articleSelect.select2();
+
+      function updateArticles() {
+        let current_article = articleSelect.val();
+        let new_options = '<option value="">----------</option>';
+        if (categorySelect.val() !== '') {
+          handbookData[categorySelect.val()].forEach(function (value) {
+            new_options += '<option value="' + value.id + '">' + value.name + '</option>';
+          });
+          articleSelect.select2('destroy').html(new_options).prop('disabled', false).select2();
+          articleSelect.val(current_article);
+          articleSelect.trigger('change');
+        }
+        else {
+          articleSelect.html(new_options).val('');
+        }
+      };
+      categorySelect.select2().on('change', updateArticles);
+      updateArticles();
+    })
+  </script>
+{% endblock js %}

@@ -41,6 +41,14 @@ INSTALLED_APPS = [
     'tmc_new',
     'rest_framework',
     "corsheaders",
+
+    'django_extensions',
+    'crispy_forms',
+    'apps.geo',
+    'apps.crm',
+    'apps.organizations',
+    'apps.handbook',
+    'apps.surveys',
 ]
 
 MIDDLEWARE = [
@@ -101,7 +109,15 @@ DATABASES = {
        'PASSWORD': '9bvhxjWk8VzRAbDQ',
        'HOST': '87.255.194.204',
        'PORT': '5432',
-   }
+   },
+    'tmc': {
+        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'bpm_cc_hostedcc_ru',                      # Or path to database file if using sqlite3.
+        'USER': 'bpm_cc_hostedcc_',                      # Not used with sqlite3.
+        'PASSWORD': 'd7rHJDFK378',                  # Not used with sqlite3.
+        'HOST': '185.102.73.206',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '33307',
+    },
 }
 
 

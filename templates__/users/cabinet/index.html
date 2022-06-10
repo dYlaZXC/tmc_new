@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block html_title %}Личный кабинет{% endblock %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="/">Главная</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Личный кабинет</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="container">
+    <h2>Личный кабинет</h2>
+    <table class="table">
+      <tr>
+        <td>username</td>
+        <td>{{ user.username }}</td>
+      </tr>
+      <tr>
+        <td>Имя</td>
+        <td>{{ user.first_name }}</td>
+      </tr>
+      <tr>
+        <td>Фамилия</td>
+        <td>{{ user.last_name }}</td>
+      </tr>
+      <tr>
+        <td>Отчество</td>
+        <td>{{ user.patronymic }}</td>
+      </tr>
+      <tr>
+        <td>email</td>
+        <td>{{ user.email }}</td>
+      </tr>
+    </table>
+    <div class="text-right">
+      <a href="{% url 'users:cabinet:update_user_info' %}">изменить данные</a>
+    </div>
+  </div>
+{% endblock content %}

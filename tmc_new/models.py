@@ -7,6 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from datetime import date, datetime
+from django.contrib.auth.models import User
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
@@ -946,6 +947,7 @@ class SVillage(models.Model):
     name_ru = models.CharField(max_length=255, blank=True, null=True)
     name_kz = models.CharField(max_length=255, blank=True, null=True)
     township_id = models.CharField(max_length=255, blank=True, null=True)
+    region = models.ForeignKey('SRegion', on_delete=models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -1219,6 +1221,7 @@ class Appeal(models.Model):
     giid = models.CharField(max_length=65535, blank=True, null=True)
     is_first = models.BooleanField(default=True)
     agent_id = models.CharField(max_length=123, blank=True, null=True)
+    user_fio_alter = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -1272,6 +1275,16 @@ class IncomingLogs(models.Model):
         db_table = 'incoming_logs'
 
 
+class BorcovskyBridge(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
+    agent_name = models.CharField(max_length=123, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'borcovsky_bridge'
+
+
 class Patients(models.Model):
     patient_id = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
     iin = models.CharField(max_length=65535, blank=True, null=True)
@@ -1286,3 +1299,126 @@ class Patients(models.Model):
     class Meta:
         managed = False
         db_table = u'"router"."patients"'
+
+
+class CallDetail(models.Model):
+    id = models.CharField(unique=True, max_length=16, blank=True, null=True)
+    pkid = models.AutoField(primary_key=True)
+    agg_run_id = models.CharField(max_length=16)
+    media_type = models.CharField(max_length=8, blank=True, null=True)
+    start_time = models.DateTimeField()
+    ivr_time = models.BigIntegerField()
+    queue_time = models.BigIntegerField()
+    pending_time = models.BigIntegerField()
+    talk_time = models.BigIntegerField()
+    hold_time = models.BigIntegerField()
+    held = models.BigIntegerField()
+    max_hold = models.BigIntegerField()
+    acw_time = models.BigIntegerField()
+    duration = models.BigIntegerField()
+    service_name = models.CharField(max_length=255, blank=True, null=True)
+    scenario_name = models.CharField(max_length=255, blank=True, null=True)
+    trunk_description = models.CharField(max_length=255, blank=True, null=True)
+    caller_login_id = models.CharField(max_length=255, blank=True, null=True)
+    callee_login_id = models.CharField(max_length=255, blank=True, null=True)
+    caller_phone_type = models.CharField(max_length=8, blank=True, null=True)
+    callee_phone_type = models.CharField(max_length=8, blank=True, null=True)
+    caller_rank = models.CharField(max_length=255, blank=True, null=True)
+    callee_rank = models.CharField(max_length=255, blank=True, null=True)
+    from_phone = models.CharField(max_length=255, blank=True, null=True)
+    original_destination_phone = models.CharField(max_length=255, blank=True, null=True)
+    connected_to_phone = models.CharField(max_length=255, blank=True, null=True)
+    transferred_from_phone = models.CharField(max_length=255, blank=True, null=True)
+    disposition = models.CharField(max_length=27, blank=True, null=True)
+    agent_disposition_name = models.CharField(max_length=255, blank=True, null=True)
+    agent_disposition_code = models.IntegerField(blank=True, null=True)
+    agent_disposition_notes = models.TextField(blank=True, null=True)
+    reported_problem = models.CharField(max_length=18, blank=True, null=True)
+    global_interaction_id = models.CharField(max_length=16, blank=True, null=True)
+    initial_call_id = models.CharField(max_length=16, blank=True, null=True)
+    initial_start_time = models.DateTimeField(blank=True, null=True)
+    initial_service_name = models.CharField(max_length=255, blank=True, null=True)
+    initial_caller_phone_type = models.CharField(max_length=8, blank=True, null=True)
+    initial_callee_phone_type = models.CharField(max_length=8, blank=True, null=True)
+    initial_from_phone = models.CharField(max_length=255, blank=True, null=True)
+    initial_original_destination_phone = models.CharField(max_length=255, blank=True, null=True)
+    initial_connected_to_phone = models.CharField(max_length=255, blank=True, null=True)
+    flagged = models.TextField(blank=True, null=True)  # This field type is a guess.
+    voice_signature = models.TextField(blank=True, null=True)  # This field type is a guess.
+    account_number = models.CharField(max_length=255, blank=True, null=True)
+    caller_first_name = models.CharField(max_length=255, blank=True, null=True)
+    callee_first_name = models.CharField(max_length=255, blank=True, null=True)
+    caller_last_name = models.CharField(max_length=255, blank=True, null=True)
+    callee_last_name = models.CharField(max_length=255, blank=True, null=True)
+    caller_city = models.CharField(max_length=255, blank=True, null=True)
+    callee_city = models.CharField(max_length=255, blank=True, null=True)
+    caller_country = models.CharField(max_length=255, blank=True, null=True)
+    callee_country = models.CharField(max_length=255, blank=True, null=True)
+    email_id = models.CharField(max_length=48, blank=True, null=True)
+    email_subject = models.CharField(max_length=1024, blank=True, null=True)
+    email_language = models.CharField(max_length=255, blank=True, null=True)
+    case_id = models.CharField(max_length=48, blank=True, null=True)
+    thread_id = models.CharField(max_length=48, blank=True, null=True)
+    case_number = models.CharField(max_length=48, blank=True, null=True)
+    case_search_result = models.CharField(max_length=48, blank=True, null=True)
+    response_email_id = models.CharField(max_length=48, blank=True, null=True)
+    caller_monitored = models.TextField(blank=True, null=True)  # This field type is a guess.
+    callee_monitored = models.TextField(blank=True, null=True)  # This field type is a guess.
+    caller_interaction_step_id = models.CharField(max_length=16, blank=True, null=True)
+    callee_interaction_step_id = models.CharField(max_length=16, blank=True, null=True)
+    caller_cpa_rtp_server_id = models.CharField(max_length=16, blank=True, null=True)
+    caller_cpa_recording_url = models.CharField(max_length=255, blank=True, null=True)
+    caller_encryption_key_id = models.CharField(max_length=16, blank=True, null=True)
+    callee_cpa_rtp_server_id = models.CharField(max_length=16, blank=True, null=True)
+    callee_cpa_recording_url = models.CharField(max_length=255, blank=True, null=True)
+    callee_encryption_key_id = models.CharField(max_length=16, blank=True, null=True)
+    caller_has_screen_recording = models.TextField(blank=True, null=True)  # This field type is a guess.
+    callee_has_screen_recording = models.TextField(blank=True, null=True)  # This field type is a guess.
+    caller_interaction_id = models.CharField(max_length=16, blank=True, null=True)
+    callee_interaction_id = models.CharField(max_length=16, blank=True, null=True)
+    caller_has_voice_recording = models.TextField(blank=True, null=True)  # This field type is a guess.
+    callee_has_voice_recording = models.TextField(blank=True, null=True)  # This field type is a guess.
+    voice_recording_banned = models.TextField(blank=True, null=True)  # This field type is a guess.
+    monitoring_banned = models.TextField(blank=True, null=True)  # This field type is a guess.
+    email_detail_id = models.CharField(unique=True, max_length=48, blank=True, null=True)
+    email_completion_time = models.BigIntegerField()
+    email_kb_article_id = models.CharField(max_length=48, blank=True, null=True)
+    caller_team_name = models.CharField(max_length=255, blank=True, null=True)
+    callee_team_name = models.CharField(max_length=255, blank=True, null=True)
+    detail_record_count = models.IntegerField(blank=True, null=True)
+    in_service_level = models.CharField(max_length=10, blank=True, null=True)
+    custom1 = models.CharField(max_length=255, blank=True, null=True)
+    custom2 = models.CharField(max_length=255, blank=True, null=True)
+    custom3 = models.CharField(max_length=255, blank=True, null=True)
+    custom4 = models.CharField(max_length=255, blank=True, null=True)
+    custom5 = models.CharField(max_length=255, blank=True, null=True)
+    sentiment = models.DecimalField(max_digits=5, decimal_places=3, blank=True, null=True)
+    erased_voice_recording = models.TextField(blank=True, null=True)  # This field type is a guess.
+    erased_voice_signature = models.TextField(blank=True, null=True)  # This field type is a guess.
+    erased_chat_transcript = models.TextField(blank=True, null=True)  # This field type is a guess.
+    erased_email = models.TextField(blank=True, null=True)  # This field type is a guess.
+    erased_screen_recording = models.TextField(blank=True, null=True)  # This field type is a guess.
+    ewt = models.BigIntegerField(blank=True, null=True)
+    cobrowsing = models.TextField(blank=True, null=True)  # This field type is a guess.
+
+    class Meta:
+        managed = False
+        db_table = 'call_detail'
+
+
+
+class PzdcUser(models.Model):
+    password = models.CharField(max_length=128)
+    last_login = models.DateTimeField(blank=True, null=True)
+    is_superuser = models.BooleanField()
+    username = models.CharField(unique=True, max_length=150)
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
+    email = models.CharField(max_length=254)
+    is_staff = models.BooleanField()
+    is_active = models.BooleanField()
+    date_joined = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'pzdc_user'

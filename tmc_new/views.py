@@ -920,10 +920,17 @@ def custom_serializer(a):
              }
             } for k in a]
 
+null = [None, '']
 
 def save_log(request, name, bonus=''):
 
-    get_meta = lambda x, xx, y=exec("def f(meta,s):\n try:\n  return meta[s]\n except:  return None"): (x, xx)
+    # get_meta = lambda x, xx, y=exec("def f(meta,s):\n try:\n  return meta[s]\n except:  return None"): (x, xx)
+
+    def get_meta(arr, key):
+        try:
+            return arr[key]
+        except:
+            return None
 
     request_data = {
         'QUERY_STRING': get_meta(request.META, "QUERY_STRING"),
@@ -934,11 +941,16 @@ def save_log(request, name, bonus=''):
         'HTTP_REFERER': get_meta(request.META, 'HTTP_REFERER') 
     }
 
+    user = request.data.get('user_fio')
+    if request.user.is_authenticated:
+        user = str(request.user)
+
+
     IncomingLogs.objects.create(
         name=name,
         description=str(bonus) + ' | ' + str(request_data),
         date_time=datetime.now() + timedelta(hours=6),
-        username=request.data.get('user_fio')  #request.user.username if request.user else None
+        username=user
     )
 
 
@@ -955,10 +967,27 @@ class get_s_region(APIView):
         save_log(request, 'get region')
         return JsonResponse(all_region, safe=False)
 
+class get_s_selo(APIView):
+    def post(self, request):
+        try:
+            region_id = request.data.get('region_id')
+            region = SRegion.objects.get(id=int(region_id))
+            selos = list(SVillage.objects.filter(region=region).values())
+            save_log(request, 'get region')
+            return JsonResponse(selos, safe=False)
+        except Exception as e:
+            save_log(request, 'get region', 'error ' + str(e))
+            return JsonResponse({'result': 'error', 'comment': str(e)})
+
+class get_s_country(APIView):
+    def post(self, request):
+        save_log(request, 'get country')
+        return JsonResponse(list(SCountry.objects.all().values()), safe=False)
+
 class get_s_subtypecall(APIView):
     def post(self, request):
         save_log(request, 'get subtypecall')
-        return JsonResponse(list(SSubtypeCall.objects.exclude(name__icontains='/').values()), safe=False)
+        return JsonResponse(list(SSubtypeCall.objects.all().values()), safe=False)
 
 class get_s_typecall(APIView):
     def post(self, request):
@@ -986,7 +1015,7 @@ class get_patient(APIView):
 class get_patient_id(APIView):
     def post(self, request):
         save_log(request, 'get patient id')
-        return JsonResponse(list(Appeal.objects.filter(id=request.data.get('id')).values()), safe=False)
+        return JsonResponse(list(Appeal.objects.filter(id=request.data.get('id')).select_related('subtype_call').annotate(subtype_call_name=F('subtype_call__name')).values()), safe=False)
 
 
 class get_incident(APIView):
@@ -1035,7 +1064,7 @@ class save_appeal(APIView):
         user_fio = request.data.get('user_fio')
         phone = '7' + request.data.get('phone')[1:]
         fio = request.data.get('fio')
-        iin = request.data.get('iin')
+        iin = request.data.get('iin') if request.data.get('iin') not in null else None
         city = request.data.get('city')
         country = request.data.get('country')
         birthday = request.data.get('birthday')
@@ -1046,6 +1075,7 @@ class save_appeal(APIView):
         type_call = request.data.get('type_call')
         komu_peredano = request.data.get('komu')
         fio_actives = request.data.get('fio_actives')
+        user_fio_alter = request.data.get('user_fio_alter')
 
         try:
             complaint_status = SAppealStatus.objects.get(id=request.data.get('complaint_status'))
@@ -1100,6 +1130,7 @@ class save_appeal(APIView):
         new_appeal.giid = giid
         new_appeal.agent_id = agent_id
         new_appeal.is_first = is_first
+        new_appeal.user_fio_alter = user_fio_alter
 
         try:
             new_appeal.save()
@@ -1114,6 +1145,7 @@ class save_appeal(APIView):
             'shift': shift,
             'date': str(date),
             'user_fio': user_fio,
+            'user_fio_alter': user_fio_alter,
             'phone': phone,
             'fio': fio,
             'iin': iin,
@@ -1142,7 +1174,7 @@ class get_history(APIView):
     def post(self, request):
         
         res = Appeal.objects.filter(phone=request.data.get('phone')).select_related('type_call').annotate(type_call_name=F('type_call__name')
-                                                                   ).select_related('subtype_call').annotate(subtype_call_name=F('subtype_call')
+                                                                   ).select_related('subtype_call').annotate(subtype_call_name=F('subtype_call__name')
                                                                    ).select_related('workplace').annotate(workplace_name=F('workplace__name')
                                                                    ).select_related('pmsp_name').annotate(pmsp_name_name=F('pmsp_name__abrev_rus')
                                                                    ).select_related('complaint_status').annotate(complaint_status_name=F('complaint_status__name'))
@@ -1216,3 +1248,63 @@ class api_auth(APIView):
         except Exception as e:
             save_log(request, 'post api auth', 'error user not exist: ' + str(login))
             return JsonResponse({'result': 'error', 'comment': str(e)})
+
+
+
+class ReportsView(APIView):
+    def post(self, request, *args, **kwargs):
+
+        if request.data.get('date_after') in null and request.data.get('date_before') in null:
+            save_log(request, 'get reports view')
+
+            try:
+                user = User.objects.get(username=request.data.get('user_fio'))
+                bb = BorcovskyBridge.objects.get(user=user)
+
+                now = (datetime.now() - timedelta(hours=6)).date()
+                calls = CallDetail.objects.using('tmc').filter(start_time__year=now.year, start_time__month=now.month, start_time__day=now.day
+                ).filter(caller_phone_type='EXTERNAL', 
+                         callee_phone_type='INTERNAL', 
+                         callee_login_id__isnull=False,
+                         callee_login_id=bb.agent_name)
+            
+                obshee = calls.count()
+                prinyatie = calls.filter(talk_time__gt=0).count()
+                ne_prinyatie = calls.filter(talk_time=0, ivr_time__gt=0).count()
+                return JsonResponse({
+                    'obshee': obshee,
+                    'prinyatie': prinyatie,
+                    'ne_prinyatie': ne_prinyatie,
+                    })
+            except Exception as e:
+                save_log(request, 'get reports view', 'error: ' + str(e))
+                return JsonResponse({
+                    'obshee': 'Ошибка',
+                    'prinyatie': 0,
+                    'ne_prinyatie': 0,
+                    })
+
+        else:
+            try:
+                user = User.objects.get(username=request.data.get('user_fio'))
+            except:
+                user = None
+            if check_group('card_admin', user):
+            # if request.user.groups.filter(name='card_admin').exists():
+                save_log(request, 'post reports view')
+                date_after = request.data.get('date_after')
+                date_before = request.data.get('date_before')
+                date_after_converted = datetime.strptime(date_after, "%Y-%m-%d") - timedelta(hours=6)
+                date_before_converted = datetime.strptime(date_before, "%Y-%m-%d") - timedelta(hours=6)
+                calls = CallDetail.objects.using('tmc').filter(start_time__gte=date_after_converted, start_time__lte=date_before_converted).filter(caller_phone_type='EXTERNAL', callee_phone_type='INTERNAL', callee_login_id__isnull=False)
+                obshee = calls.count()
+                prinyatie = calls.filter(talk_time__gt=0).count()
+                ne_prinyatie = calls.filter(talk_time=0, ivr_time__gt=0).count()
+                return JsonResponse({
+                    'obshee': obshee,
+                    'prinyatie': prinyatie,
+                    'ne_prinyatie': ne_prinyatie,
+                    })
+            else:
+                save_log(request, 'post reports view', 'error not user')
+                return JsonResponse({'error': 'user is None'})

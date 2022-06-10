@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block html_title %}Все обращения | {{ block.super }}{% endblock html_title %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="/">Главная</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Обращения</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="container-fluid">
+    <h2>Все обращения</h2>
+    <div class="table-responsive">
+      <table class="table table-sm js-datatable" data-order='[[1, "desc"]]'>
+        <thead>
+        <tr>
+          <th></th>
+          <th>дата</th>
+          <th>вид</th>
+          <th>ФИО оператора</th>
+          <th>Телефон гражданина</th>
+          <th>ФИО гражданина</th>
+          <th>Тема обращения</th>
+          <th>Регион</th>
+          <th>МО</th>
+          <th>текст</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for clientcall in clientcall_list %}
+          <a href="{{ clientcall.get_absolute_url }}">
+            <tr>
+              <td><a href="{{ clientcall.get_absolute_url }}">{{ clientcall }}</a></td>
+              <td data-order="{{ clientcall.created|date:'U' }}">{{ clientcall.created|date:'d.m.Y' }}</td>
+              <!-- <td data-order="{{ clientcall.created|date:'U' }}">{{ clientcall.created|date:'H:i' }}</td> -->
+              <td>{{ clientcall.kind }}</td>
+              <td>{{ clientcall.fio_agent }}</td>
+              <td>{{ clientcall.phone|default_if_none:'' }}</td>
+              <td>{{ clientcall.fio|default_if_none:'' }}</td>
+              <td>{{ clientcall.reason|default_if_none:'' }}</td>
+              <td>{{ clientcall.city|default_if_none:'' }}</td>
+              <td>{{ clientcall.psmp|default_if_none:'' }}</td>
+              <td>{{ clientcall.result|truncatewords:5 }}</td>
+            </tr>
+          </a>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="/crm/calls/?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+                {% endif %}
+                <span class="page-current">
+                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="/crm/calls/?page={{ page_obj.next_page_number }}">Следующая</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+    </div>
+  </div>
+{% endblock content %}
+
+<!-- 
+<a href="{{ clientcall.get_absolute_url }}">
+  <tr>
+    <td><a href="{{ clientcall.get_absolute_url }}">{{ clientcall }}</a></td>
+    <td data-order="{{ clientcall.created|date:'U' }}">{{ clientcall.created|date:'d.m.Y' }}</td>
+    <td data-order="{{ clientcall.created|date:'U' }}">{{ clientcall.created|date:'H:i' }}</td>
+    <td>{{ clientcall.get_kind_display }}</td>
+    <td>{{ clientcall.user.get_full_name }}</td>
+    <td>{{ clientcall.client.phone|default_if_none:'' }}</td>
+    <td>{{ clientcall.client.get_full_name|default_if_none:'' }}</td>
+    <td>
+      {% if clientcall.complaint %}
+        {{ clientcall.complaint.topics.all|join:', ' }}
+      {% endif %}
+    </td>
+    <td>{{ clientcall.region|default_if_none:'' }}</td>
+    <td>{{ clientcall.organization|default_if_none:'' }}</td>
+    <td>{{ clientcall.text|truncatewords:5 }}</td>
+  </tr>
+</a>
+-->

@@ -14,13 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from .views import *
 from django.views.static import serve
 from django.contrib.staticfiles.urls import static
 from .settings import MEDIA_URL, MEDIA_ROOT, STATIC_ROOT
 from django.conf.urls import url
 
+from apps.common.views import IndexView
+from apps.crm.views import ClientCallFormView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -49,6 +51,8 @@ urlpatterns = [
     #api
     path('api/spmsps/', get_s_pmsp.as_view()),
     path('api/sregions/', get_s_region.as_view()),
+    path('api/sselos/', get_s_selo.as_view()),
+    path('api/scountrys/', get_s_country.as_view()),
     path('api/get-patient/', get_patient.as_view()),
     path('api/get-patient-id/', get_patient_id.as_view()),
     path('api/get-incident/', get_incident.as_view()),
@@ -59,9 +63,17 @@ urlpatterns = [
     path('api/get-history/', get_history.as_view()),
     path('api/get-history-for-user/',get_history_all_for_current_user.as_view()),
     path('api/get-history-all/', get_history_all.as_view()),
+    path('api/get-call-detail/', ReportsView.as_view()),
     path('api/auth/', api_auth.as_view()),
 
-    url(r'static/(?P<path>.*)$', serve, {"document_root": STATIC_ROOT})
+    url(r'static/(?P<path>.*)$', serve, {"document_root": STATIC_ROOT}),
+
+    # 
+    path('index/', IndexView.as_view(), name='index_page'),
+    path('crm/', include('apps.crm.urls')),
+    path('surveys/', include('apps.surveys.urls')),
+    # path('users/', include('apps.users.urls')),
+    path('phone/<slug:phone>/', ClientCallFormView.as_view(), name='clientcall_form'),
 ]
 
 urlpatterns += static(MEDIA_URL, document_root = MEDIA_ROOT)

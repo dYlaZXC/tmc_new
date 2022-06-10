@@ -3256,10 +3256,12 @@ function addCheckList(){
                 let sostoyznie = document.getElementById('sostoyznie').value !='' ? document.getElementById('sostoyznie').value : 0
                 let date = document.getElementById('date').value !='' ? document.getElementById('date').value : 0
                 const full_url = window.location.href
-				const lastSegment = full_url.split("/").pop();
+		const host = window. location. host;
+		const base_url = window.location.origin;
+		const lastSegment = full_url.split("/").pop();
 				axios({
 					method: 'get',
-					url: 'checklist/save/' + lastSegment + '?' + 
+			url: base_url + '/card/checklist/save/' + lastSegment + '?' + 
                         'date='+ date + '&' + 
                         'sore_throat='+ sore_throat + '&' + 
                         'nasal_congestion='+ nasal_congestion + '&' + 

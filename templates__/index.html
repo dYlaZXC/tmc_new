@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block html_title %}{{ site.name }} | Главная{% endblock %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item active" aria-current="page">Главная</li>
+{% endblock breadcrumb %}
+
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mt-3">
+        <ul class="list-group">
+          <a href="{% url 'crm:new_clientcall_form' %}" class="list-group-item list-group-item-action">
+            <i class="fas fa-phone mr-2"></i>Новое обращение</a>
+          <a href="{% url 'crm:clientcall_list' %}" class="list-group-item list-group-item-action">
+            <i class="fas fa-list mr-2"></i>Все обращения</a>
+          <a href="{% url 'crm:complaint_list' %}" class="list-group-item list-group-item-action">
+            <i class="fas fa-exclamation-triangle mr-2"></i>Жалобы</a>
+          <a href="{% url 'crm:report_form' %}" class="list-group-item list-group-item-action">
+            <i class="fas fa-table mr-2"></i>Отчёты</a>
+          <a href="{% url 'surveys:survey' pk=1 %}" class="list-group-item list-group-item-action">
+            <i class="fas fa-tasks mr-2"></i>Записать опрос</a>
+        </ul>
+      </div>
+      <div class="col-md-8 mt-3">
+        <h3>Статистика</h3>
+        <table class="table table-lg">
+          <tr>
+            <td>Всего обращений</td>
+            <td class="text-success">{{ clientcall_count_all }}</td>
+          </tr>
+          <tr>
+            <td>Обращений за текущий месяц</td>
+            <td class="text-success">{{ clientcall_count_month }}</td>
+          </tr>
+          <tr>
+            <td>Всего жалоб</td>
+            <td class="text-danger">{{ complaint_count_all }}</td>
+          </tr>
+          <tr>
+            <td>Жалоб за текущий месяц</td>
+            <td class="text-danger">{{ complaint_count_month }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

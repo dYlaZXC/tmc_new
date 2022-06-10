@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block html_title %}Обращение #{{ clientcall.id }} | {{ block.super }}{% endblock html_title %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="/">Главная</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'crm:clientcall_list' %}">Обращения</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Обращение #{{ clientcall.id }}</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="container">
+    <h2>{{ clientcall }}</h2>
+    <table class="table">
+      <tr>
+        <td>дата и время обращения</td>
+        <td>{{ clientcall.created|date:'d.m.Y H:i' }}</td>
+      </tr>
+      <tr>
+        <td>ФИО оператора</td>
+        <td>{{ clientcall.fio_agent }}</td>
+      </tr>
+      <tr>
+        <td>ФИО гражданина</td>
+        <td>{{ clientcall.fio }}</td>
+      </tr>
+      <tr>
+        <td>Телефон гражданина</td>
+        <td>{{ clientcall.phone|default_if_none:'' }}</td>
+      </tr>
+      <tr>
+        <td>Регион</td>
+        <td>{{ clientcall.city|default_if_none:'' }}</td>
+      </tr>
+      <tr>
+        <td>МО</td>
+        <td>{{ clientcall.pmsp|default_if_none:'' }}</td>
+      </tr>
+      <tr>
+        <td>Вид обращения</td>
+        <td>{{ clientcall.kind }}</td>
+      </tr>
+      <tr>
+        <td>Содержание обращения</td>
+        <td>{{ clientcall.reason }}</td>
+      </tr>
+    </table>
+  </div>
+{% endblock content %}
+
+
+<!--
+  <div class="container">
+    <h2>{{ clientcall }}</h2>
+    <table class="table">
+      <tr>
+        <td>дата и время обращения</td>
+        <td>{{ clientcall.created|date:'d.m.Y H:i' }}</td>
+      </tr>
+      <tr>
+        <td>ФИО оператора</td>
+        <td>{{ clientcall.user.get_full_name }}</td>
+      </tr>
+      <tr>
+        <td>ФИО гражданина</td>
+        <td>{{ clientcall.client.full_name }}</td>
+      </tr>
+      <tr>
+        <td>Телефон гражданина</td>
+        <td>{{ clientcall.client.phone|default_if_none:'' }}</td>
+      </tr>
+      <tr>
+        <td>Регион</td>
+        <td>{{ clientcall.region|default_if_none:'' }}</td>
+      </tr>
+      <tr>
+        <td>МО</td>
+        <td>{{ clientcall.organization|default_if_none:'' }}</td>
+      </tr>
+      <tr>
+        <td>Вид обращения</td>
+        <td>
+          {% if clientcall.kind == 'complaint' %}
+          <a href="{% url 'crm:complaint_update' pk=clientcall.complaint.pk %}" class="text-danger">
+            {{ clientcall.get_kind_display }}
+          </a>
+          {% else %}
+          {{ clientcall.get_kind_display }}
+          {% endif %}
+        </td>
+      </tr>
+      {% if clientcall.kind == 'complaint' %}
+      <tr>
+        <td>Тематика обращения</td>
+        <td>{{ clientcall.complaint.topics.all|join:', ' }}</td>
+      </tr>
+      {% elif clientcall.kind == 'consultation' and clientcall.consultation %}
+      <tr>
+        <td>категория вопроса</td>
+        <td>{{ clientcall.consultation.category }}</td>
+      </tr>
+      <tr>
+        <td>ответ из базы знаний</td>
+        <td>{{ clientcall.consultation.article }}</td>
+      </tr>
+      {% endif %}
+      <tr>
+        <td>Содержание обращения</td>
+        <td>{{ clientcall.text }}</td>
+      </tr>
+    </table>
+  </div>
+-->
