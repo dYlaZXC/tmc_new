@@ -1811,12 +1811,12 @@
                     <div class="col">
                         <label for="">Дата доза 1</label> 
                         <br>
-                        <input id="vaccine_first_date"  value="{{ g_incident.vaccine_date1|date:'Y-m-d'}}" name="vaccine_first_date" type="date">
+                        <input id="vaccine_first_date"  value="{{ g_incident.vaccine_date1_format }}" name="vaccine_first_date" type="date">
                     </div>
                     <div class="col">
                         <label for="">Дата доза 2</label> 
                         <br>
-                        <input id="vaccine_second_date" value="{{ g_incident.vaccine_date2|date:'Y-m-d'}}" name="vaccine_second_date" type="date">
+                        <input id="vaccine_second_date" value="{{ g_incident.vaccine_date2_format }}" name="vaccine_second_date" type="date">
                     </div>
                 </div>
             </div>
@@ -1848,6 +1848,31 @@
 </form>
 <input type="text" id="user_id" name="user_id" hidden value="{{ request.user.username }}">
 <input type="text" id="operator_name" name="operator_name" hidden>
+
+
+  
+  <!-- VideoCallModal -->
+  <div class="modal fade" id="videoCallModal" tabindex="-1" role="dialog" aria-labelledby="videoCallModalTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+		  ...
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  <button type="button" class="btn btn-primary">Save changes</button>
+		</div>
+	  </div>
+	</div>
+  </div>
+
+
 <style>
 html{
  zoom: 89%;
@@ -2017,7 +2042,6 @@ var JournalStatus = false
         })
         JournalStatus = true
     }
-
 
 
     function showDialog() {    
@@ -3065,7 +3089,7 @@ const CheckList =
 	'</div>' +
 	'<div class="row">' +
 		'<div class="col">' +
-			'<button type="button" style="height: 25px !important; vertical-align: middle;" class="button btn-light">Видезвонок</button>' +
+			'<button type="button" style="height: 25px !important; vertical-align: middle;" class="button btn-light" data-toggle="modal" data-target="#videoCallModal">Видеозвонок</button>' +
 		'</div>' +
 		'<div class="col row p-1">' +
 			'<button onclick="postCheckList()" style="height: 25px !important; vertical-align: middle;" type="button" id="save_changes" class="button btn-light col p-0">Сохранить</button>' +

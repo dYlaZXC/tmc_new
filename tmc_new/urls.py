@@ -14,12 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from .views import *
 from django.views.static import serve
 from django.contrib.staticfiles.urls import static
 from .settings import MEDIA_URL, MEDIA_ROOT, STATIC_ROOT
-from django.conf.urls import url
 
 from apps.common.views import IndexView
 from apps.crm.views import ClientCallFormView
@@ -66,7 +65,7 @@ urlpatterns = [
     path('api/get-call-detail/', ReportsView.as_view()),
     path('api/auth/', api_auth.as_view()),
 
-    url(r'static/(?P<path>.*)$', serve, {"document_root": STATIC_ROOT}),
+    re_path(r'static/(?P<path>.*)$', serve, {"document_root": STATIC_ROOT}),
 
     # 
     path('index/', IndexView.as_view(), name='index_page'),

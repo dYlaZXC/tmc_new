@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block html_title %}Жалобы | {{ block.super }}{% endblock html_title %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="/">Главная</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Жалобы</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="container-fluid">
+    <h2>Жалобы</h2>
+    <div class="table-responsive">
+      <table class="table table-sm js-datatable" data-order='[[1, "desc"]]'>
+        <thead>
+        <tr>
+          <th></th>
+          <th>дата и время</th>
+          <th>ФИО гражданина</th>
+          <th>Тема обращения</th>
+          <th>Регион</th>
+          <th>МО</th>
+          <th>Оператор</th>
+          <th>Поручитель</th>
+          <th>Исполнитель</th>
+          <th>результат</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for complaint in complaint_list %}
+          <tr>
+            <td><a href="{% url 'crm:complaint_update' pk=complaint.pk %}">{{ complaint }}</a></td>
+            <td data-order="{{ complaint.created|date:'U' }}">{{ complaint.created|date:'d.m.Y H:i' }}</td>
+            <td>{{ complaint.clientcall.client.get_full_name }}</td>
+            <td>{{ complaint.topics.all|join:', ' }}</td>
+            <td>{{ complaint.clientcall.region }}</td>
+            <td>{{ complaint.clientcall.organization|default_if_none:'' }}</td>
+            <td>{{ complaint.operator }}</td>
+            <td>{{ complaint.assignor|default_if_none:'' }}</td>
+            <td>{{ complaint.executor|default_if_none:'' }}</td>
+            <td>{{ complaint.get_result_display }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock content %}

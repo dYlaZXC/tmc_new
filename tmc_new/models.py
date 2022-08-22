@@ -273,7 +273,23 @@ class GIncident(models.Model):
                 return str(self.date_time.hour) + '0:' + str(self.date_time.minute)
             return str(self.date_time.hour) + ':' + str(self.date_time.minute)
 
+    def vaccine_date1_format(self):
+        if self.vaccine_date1 is not None:
+            year = str(self.vaccine_date1.year)
+            month = str(self.vaccine_date1.month) if self.vaccine_date1.month > 9 else '0' + str(self.vaccine_date1.month)
+            day = str(self.vaccine_date1.day) if self.vaccine_date1.day > 9 else '0' + str(self.vaccine_date1.day)
+            return year + '-' + month + '-' + day
+        else:
+            return self.vaccine_date1  
 
+    def vaccine_date2_format(self):
+        if self.vaccine_date2 is not None:
+            year = str(self.vaccine_date2.year)
+            month = str(self.vaccine_date2.month) if self.vaccine_date2.month > 9 else '0' + str(self.vaccine_date2.month)
+            day = str(self.vaccine_date2.day) if self.vaccine_date2.day > 9 else '0' + str(self.vaccine_date2.day)
+            return year + '-' + month + '-' + day
+        else:
+            return self.vaccine_date2  
 
 
 class GIncidentLog(models.Model):

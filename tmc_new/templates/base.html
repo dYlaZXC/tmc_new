@@ -8,29 +8,30 @@
     <script type="text/javascript" src="https://demov5_kz.hostedcc.ru/agentdesktop/app/lib/servicepattern-sdk-v1.js"></script>
     <script type="text/javascript" src="https://demov5_kz.hostedcc.ru/libs/servicepatternapi-dev.js"></script>
     <!-- <script type="text/javascript" src="https://demov5_kz.hostedcc.ru/agentdesktop/AgentDesktopSdkTest.jsp"></script> -->
-
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://tmc1312.kz/libs/servicepattern-sdk-v1.js"></script>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/css.css' %}">
+    {% block staticfiles %}
+    {% endblock staticfiles %}
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Form</title>
 </head>
 <body>
-    <div class="row main_container p-1" style="vertical-align: middle; background-color: rgb(36, 36, 36); color: white;">
+    <div id="header" class="row main_container p-1" >
         <div class="col-10">
-            <h2 style="font-weight: bold; width: 100%; height: 34px; font-size: 18px; display: table-cell; vertical-align: middle;">{% block title %}  {% endblock %}</h2>
+            {% block title %}  {% endblock %}
         </div>
         <div class="col-2 row">
         {% if not request.user.is_authenticated %}
                 <button style="color: white; width: 80%;" class="btn col p-1" type="button">Войти</button>
         {% else %}
                 <div class="col">
-                    <button class="btn p-1" type="button" style="color: white; border-bottom: 1px solid #fff; border-radius: 0; width: 60%;">{{ request.user.username }}</button>
+                    <button class="btn" id="requestUserLink" type="button">{{ request.user.username }}</button>
                 </div>
                 <div class="col">
-                    <button onclick="logout()" style="color: white; width: 80%;  border-bottom: 1px solid #fff; border-radius: 0; width: 60%;" class="btn p-1" type="button">Выйти</button>
+                    <button onclick="logout()"  id="logoutLink" class="btn" type="button">Выйти</button>
                 </div>
         {% endif %}
         </div>
@@ -38,17 +39,16 @@
     <div style="overflow-x: hidden;" class="main_container">
     {% block content %}
     {% endblock %}
+    
     </div>
 </body>
 <script>
-
-
-
      function logout() {    
         link = "{% url 'logout' %}"
         return window.location = link
     }   
 </script>
+
 <style>
     h3{
         font-size: 13px;
@@ -59,9 +59,10 @@
     }
     .main_container{
         box-sizing: border-box;
-        width: 98%;
+        width: 99%;
         margin: 0 auto;
         overflow: hidden;
     }
 </style>
+
 </html>

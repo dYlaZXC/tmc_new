@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %} Наблюдение {% endblock %}
+{% block content %}
+<div class="p-3">
+    <button type="button" class="btn">Журнал наблюдения</button>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="d-flex justify-content-center" style="height: 30px;">
+            <input style="width: 80%;" type="text" id="query" name="query">
+            <input style="width: 10%; margin-left: 5px;" value="Искать" type="submit" class="btn btn-secondary">
+        </div>
+    </form>
+    <table class="table bordered table-sm mt-2" style="border: 1px solid black; vertical-align: middle;"> 
+        <thead style="background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);">
+            <tr>
+                <th>№</th>
+                <th>ФИО</th>
+                <th>ИИН</th>
+                <th>№ Документа</th>
+                <th>Телефон</th>
+                <th>Дата начала</th>
+                <th>Дозвон</th>
+                <th>Организация ПМСП</th>
+                <th>Наблюдение после стационара</th>
+                <th>Состояние при регистрации</th>
+                <th>Дата ПЦР</th>
+                <th>ПЦР результат</th>
+                <th>Дата и Время регистрации</th>
+                <th>Дата последней записи в журнал</th>
+                <th>Неуспешный дозвон</th>
+                <th>На карантине (дней)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for g_patient in g_patients %}
+            <tr onclick="open_card('{% url 'card_id' g_patient.id %}')"
+        
+                         {% if g_patient.is_today %} class="bg-warning"
+                         {% elif g_patient.is_yesterday %} class="table-success"
+                         {% elif g_patient.is_observated %} class="table-secondary" {% endif %}>
+                <td>{{ g_patient.id }}</td>
+                <td>{{ g_patient.fio }}</td>
+                <td>{{ g_patient.iin }}</td>
+                <td>{% if g_patient.num_crossdoc == '' or g_patient.num_crossdoc == None %} {% else %} {{ g_patient.num_crossdoc }} {% endif %}</td>
+                <td>{{ g_patient.phone }}</td>
+                <td>{{ g_patient.date_start_format }}</td>
+                <td>{{ g_patient.dozvon }}</td>
+                <td>{{ g_patient.pmsp_name_format }}</td>
+                <td>{{ g_patient.sign_observation_hospital }}</td>
+                <td>{% if g_patient.patient_condition_start == 1 %} Бессимптомное {% elif g_patient.patient_condition_start == 2 %} Легкой степени тяжести {% elif g_patient.patient_condition_start == 3 %} Среднетяжелой степени тяжести {% else %} Тяжелой степени тяжести {% endif %} </td>
+                <td style="min-width: 55px;">{{ g_patient.pcr_date_receipt_format }}</td>
+                <td style="font-weight: extrabold; text-align: center; font-size: 16px;">{% if g_patient.pcr_result %} + {% else %} - {% endif %}</td>
+                <td>{{ g_patient.pmsp_start_date_date_format }}</td>
+                <td>{{ g_patient.last_record_datetime_format }}</td>
+                <td>{{ g_patient.dozvon }}</td>
+                <td>{{ g_patient.days_count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<style>
+    th{
+        vertical-align: middle;
+        font-weight: bold;
+    }
+    table{
+        font-size: 13px;
+    }
+    th {
+    border: solid 1px rgb(147, 147, 147); 
+    text-align: center
+    }
+    td{
+    border: solid 1px rgb(147, 147, 147);
+}
+</style> 
+<script>
+    function open_card(link) {    
+        return window.location = link
+    }   
+</script>  
+{% endblock %}

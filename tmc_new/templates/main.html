@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
-{% block title %} Наблюдение {% endblock %}
+{% block title %}
+<p id="page-title">Наблюдение</p>   
+{% endblock %}
 {% block content %}
 <div class="p-3">
     <button type="button" class="btn">Журнал наблюдения</button>
@@ -12,12 +14,13 @@
         </div>
     </form>
     <!-- КОНЕЦ ПОИСКА     -->
-    <table class="table bordered table-sm mt-3" style="border: 1px solid black; vertical-align: middle;"> 
+    <table class="table bordered table-sm mt-3" style="border: 1px solid black; vertical-align: middle;" id="table_shmable"> 
         <thead style="background: linear-gradient(180deg, rgb(228, 228, 228) 0%, rgb(179, 179, 179) 48%, rgb(172, 172, 172) 100%);">
             <tr>
                 <th>№</th>
                 <th>ФИО</th>
                 <th>ИИН</th>
+                <th style="cursor: pointer;" onclick="sortTable()">Резидент</th>
                 <th>№ Документа</th>
                 <th>Телефон</th>
                 <th>Дата начала</th>
@@ -27,15 +30,15 @@
                 <th>Дата ПЦР</th>
                 <th>ПЦР результат</th>
                 <th>Дата и Время регистрации</th>
-                <th>Дата последней записи в журнал</th>
-		<th>Количество звонков</th>
+                <!-- <th>Дата последней записи в журнал</th> -->
+		        <th>Количество звонков</th>
                 <th>Неуспешный дозвон</th>
                 <th>На карантине (дней)</th>
             </tr>
         </thead>
         <tbody>
             {% for g_patient in g_patients %}
-	        <tr ondblclick="open_card('{% url 'card_id' g_patient.id %}')" {% if g_patient.is_observated %} class="table-secondary"
+	        <tr ondblclick="open_card('{{g_patient.id }}')" {% if g_patient.is_observated %} class="table-secondary"
         	                                                {% elif g_patient.is_today %} class="bg-warning"
                 	                                        {% elif g_patient.is_yesterday %} class="table-success" 
                                                                 {% elif g_patient.is_observated and g_patient.is_today %} class="bg-secondary" 
@@ -44,6 +47,7 @@
                 <td>{{ g_patient.id }}</td>
                 <td>{{ g_patient.fio }}</td>
                 <td>{{ g_patient.iin }}</td>
+                <td> {% if g_patient.num_crossdoc %} <input type="checkbox" name="Резидент" disabled /> {% else %} <input type="checkbox" name="Резидент" checked disabled /> {% endif %} </td>
                 <td>{% if g_patient.num_crossdoc == '' or g_patient.num_crossdoc == None %} {% else %} {{ g_patient.num_crossdoc }} {% endif %}</td>
                 <td>{{ g_patient.phone }}</td>
                 <td>{{ g_patient.date_start_format }}</td>
@@ -53,7 +57,7 @@
                 <td>{{ g_patient.pcr_date_receipt_main_format }}</td>
                 <td class="text-center" style="font-weight: extrabold; font-size: 16px;">{% if g_patient.pcr_result %} + {% else %} - {% endif %}</td>
                 <td>{{ g_patient.registration_date_time }}</td>
-                <td>{{ g_patient.last_record_datetime_format }}</td>
+                <!-- <td>{{ g_patient.last_record_datetime_format }}</td> -->
 		<td>{% if g_patient.dozvon_type == None or g_patient.dozvon_type == 'None' %} 0 {% else %} {{ g_patient.dozvon_type }}{% endif %}</td>
                 <td>{% if g_patient.is_observated %} {% else %}{{ g_patient.dozvon_type_format }}{% endif %}</td>
                 <td>{{ g_patient.days_count }}</td>
@@ -62,10 +66,15 @@
         </tbody>
     </table>
 </div>
-<div class="footer bg-light d-flex justify-content-start pt-3">
+
+<div class="footer bg-light d-flex justify-content-start pt-2">
         <p class="px-2" id="current" style="height: 30px; vertical-align: middle;"></p>
         <p class="px-2" id="vzyatten" style="height: 30px; vertical-align: middle;"></p>
         <p class="px-2" id="snyatten" style="height: 30px; vertical-align: middle;"></p>
+
+        <p class="px-2" id="residents" style="height: 30px; vertical-align: middle;"> {{resident_count}} </p>
+        <p class="px-2" id="notresidents" style="height: 30px; vertical-align: middle;"> {{notresident_count}} </p>
+
 </div>
 <style>
     th{
@@ -88,7 +97,51 @@
         vertical-align: middle;
         border-top: 2px solid rgb(147, 147, 147);
     }
+    input[type="checkbox"]:disabled + label::before{
+        background: rgba(66, 132, 231, 0.932);
+    }
+    input[type="checkbox"]:disabled + label:hover::before{
+        background: rgba(66, 132, 231, 0.932);
+    }
 </style> 
+
+<script>
+function sortTable() {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("table_shmable");
+    switching = true;
+    /*Make a loop that will continue until
+    no switching has been done:*/
+    while (switching) {
+        //start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /*Loop through all table rows (except the
+        first, which contains table headers):*/
+        for (i = 1; i < (rows.length - 1); i++) {
+        //start by saying there should be no switching:
+        shouldSwitch = false;
+        /*Get the two elements you want to compare,
+        one from current row and one from the next:*/
+        x = rows[i].getElementsByTagName("TD")[4];
+        y = rows[i + 1].getElementsByTagName("TD")[4];
+        //check if the two rows should switch place:
+        if (x.innerHTML?.toLowerCase() < y.innerHTML?.toLowerCase()) {
+            //if so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+        }
+        }
+        if (shouldSwitch) {
+        /*If a switch has been marked, make the switch
+        and mark that a switch has been done:*/
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        }
+    }
+}
+</script>
+
 <script>
     setInterval(GetCount, 5000)
 
@@ -97,9 +150,10 @@
         GetCount()
     )
 
-    function open_card(link) {    
-        return window.location = link
-    }   
+    function open_card(g_patient_id) {
+        link = 'card/{}'.replace('{}', g_patient_id)
+        window.open(link, '_blank').focus();
+    } 
 
     function GetCount(){
         const full_url = window.location.href
@@ -121,5 +175,66 @@
     }
 
 
-</script>  
+</script>
+
+
+<style>
+    #requestUserLink,
+    #logoutLink {
+        color: #fff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        text-transform: capitalize;
+    }
+
+    .navbar-title {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin-top: 0.55em;
+    }
+    .navbar-title a {
+        color: #fff;
+        text-decoration: none;
+    }
+    .footer {
+        position: fixed;
+        display: flex;
+        justify-content: flex-start;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        -webkit-box-shadow: 0px -6px 8px 0px rgba(34, 60, 80, 0.2);
+        -moz-box-shadow: 0px -6px 8px 0px rgba(34, 60, 80, 0.2);
+        box-shadow: 0px -6px 8px 0px rgba(34, 60, 80, 0.2);
+    }
+
+    input[type="checkbox"]:disabled+label::before {
+        background: rgba(66, 132, 231, 0.932);
+    }
+
+    input[type="checkbox"]:disabled+label:hover::before {
+        background: rgba(66, 132, 231, 0.932);
+    }
+</style>
+
+<style>
+    #header {
+        padding: 0.5em;
+        background: rgb(128, 128, 128);
+        color: #fff;
+    }
+    #header button{
+        color: #fff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    #page-title {
+        margin-top: 0.5em;
+    }
+    h1, p, h2, a, tr {
+        text-decoration: none;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    td {
+        font-size: 15px;
+    }
+</style>
 {% endblock %}

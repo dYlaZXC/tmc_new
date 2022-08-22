@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block html_title %}{{ complaint|capfirst }} | {{ block.super }}{% endblock html_title %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="/">Главная</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'crm:complaint_list' %}">Жалобы</a></li>
+  <li class="breadcrumb-item active" aria-current="page">{{ complaint }}</li>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="container">
+    <h2>{{ complaint }}</h2>
+    <table class="table">
+      <tr>
+        <td>дата и время</td>
+        <td>{{ complaint.created|date:'d.m.Y H:i' }}</td>
+      </tr>
+      <tr>
+        <td>ФИО оператора</td>
+        <td>{{ complaint.clientcall.user.get_full_name }}</td>
+      </tr>
+      <tr>
+        <td>ФИО гражданина</td>
+        <td>{{ complaint.clientcall.client.get_full_name }}</td>
+      </tr>
+      <tr>
+        <td>Телефон гражданина</td>
+        <td>{{ complaint.clientcall.client.phone|default_if_none:'' }}</td>
+      </tr>
+      <tr>
+        <td>Регион</td>
+        <td>{{ complaint.clientcall.region|default_if_none:'' }}</td>
+      </tr>
+      <tr>
+        <td>МО</td>
+        <td>{{ complaint.clientcall.organization|default_if_none:'' }}</td>
+      </tr>
+      <tr>
+        <td>Темы обращения</td>
+        <td>{{ complaint.topics.all|join:' ,' }}</td>
+      </tr>
+      <tr>
+        <td>Содержание обращения</td>
+        <td>{{ complaint.clientcall.text }}</td>
+      </tr>
+    </table>
+    <form method="post">
+      {% crispy form %}
+      <button class="btn btn-primary btn-block" type="submit">Сохранить</button>
+    </form>
+  </div>
+{% endblock content %}
