@@ -28,7 +28,7 @@ from .models import *
 from django.urls import reverse
 from datetime import datetime, date, timedelta
 from django.core.exceptions import ObjectDoesNotExist
-from rest_framework import mixins, permissions
+from rest_framework import mixins, permissions, status
 from random import randint
 from django.template import loader
 from django.contrib.auth.models import User
@@ -48,8 +48,11 @@ from django.db.models import F
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 import math
+
+from .serializer import AppealSerializer
+
 """ PAGINATOR """
-from tmc_new import utils 
+from tmc_new import utils
 from django.core.paginator import Paginator
 
 statuses_end = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -268,7 +271,7 @@ class Main(APIView):
                 ['dozvon_type_format','dozvon'],
                 ['days_count','pcr_date_receipt']
     ]
-    
+
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
 
@@ -290,7 +293,7 @@ class Main(APIView):
 
     def post(self, request, *args, **kwargs):
         query = request.POST.get('query')
-        
+
         g_patients = GPatient.objects.filter(
             status_end__isnull=True, fio__icontains=query).values(*(field for field in self.values_qs))
         if not g_patients:
@@ -302,20 +305,20 @@ class Main(APIView):
                 if not g_patients:
                         g_patients = GPatient.objects.filter(
                         status_end__isnull=True, id__icontains=query).values(*(field for field in self.values_qs))
-        
-        
+
+
         for g_patient in g_patients:
             for qs_function, qs_value in self.qs_add_on:
                 function_ = getattr(utils, qs_function)
                 g_patient[qs_function] = function_(g_patient[qs_value])
-                
+
         context = {
             'g_patients': g_patients
         }
         return render(request, 'main.html', context)
         # return render(request, 'main_copy.html', context)
 
-# MAIN GET 
+# MAIN GET
 # QS_ADD_ON 
 
 # g_patient['pmsp_name_format'] =               pmsp_name_format(g_patient['pmsp_name'])
@@ -325,7 +328,7 @@ class Main(APIView):
 # g_patient['registration_date_time'] =         registration_date_time(g_patient['incident_id'])
 # g_patient['dozvon_type_format'] =             dozvon_type_format(g_patient['dozvon'])
 # g_patient['days_count'] =                     days_count(g_patient['pcr_date_receipt'])
-                
+
 # g_patient['last_record_datetime_format'] = last_record_datetime_format(g_patient['id'])
 
 
@@ -1072,8 +1075,7 @@ def save_log(request, name, bonus=''):
     IncomingLogs.objects.create(
         name=name,
         description=str(bonus) + ' | ' + str(request_data),
-        date_time=datetime.now() + timedelta(hours=6),
-        username=user
+        username=user,
     )
 
 
@@ -1355,6 +1357,14 @@ class get_history_all_for_current_user(APIView):
 
 
 class get_history_all(APIView):
+    def get(self, request, *args, **kwargs):
+        '''
+        List all the items for given requested user
+        '''
+        appeal = Appeal.objects.all()
+        serializer = AppealSerializer(appeal, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def post(self, request):
         res = Appeal.objects.filter(is_first=True
                                     ).select_related('type_call').annotate(type_call_name=F('type_call__name')
@@ -1366,6 +1376,7 @@ class get_history_all(APIView):
         res_sz = custom_serializer(res)
         save_log(request, 'get history all')
         return JsonResponse(res_sz, safe=False)
+
 
 
 class api_auth(APIView):

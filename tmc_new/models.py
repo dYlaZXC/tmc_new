@@ -1283,7 +1283,7 @@ class IncomingLogs(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=123, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    date_time = models.DateTimeField(blank=True, null=True)
+    date_time = models.DateTimeField(blank=True, null=True, auto_now_add=True)
     username = models.CharField(max_length=123, blank=True, null=True)
 
     class Meta:

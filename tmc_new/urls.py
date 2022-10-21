@@ -60,7 +60,7 @@ urlpatterns = [
     path('api/get-appeal-status/', get_s_appeal_status.as_view()),
     path('api/save-appeal/', save_appeal.as_view()),
     path('api/get-history/', get_history.as_view()),
-    path('api/get-history-for-user/',get_history_all_for_current_user.as_view()),
+    path('api/get-history-for-user/', get_history_all_for_current_user.as_view()),
     path('api/get-history-all/', get_history_all.as_view()),
     path('api/get-call-detail/', ReportsView.as_view()),
     path('api/auth/', api_auth.as_view()),
