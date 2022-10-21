@@ -240,36 +240,34 @@ class LogoutView(SuccessURLAllowedHostsMixin, TemplateView):
 """ БЛОКА АВТОРИЗАЦИИ """
 
 
-
 class Main(APIView):
-
     # DRY №1
     values_qs = ['id',
-                'fio',
-                'iin',
-                'phone',
-                'num_crossdoc',
-                'date_start',
-                'pmsp_name',
-                'status',
-                'dozvon',
-                'dozvon_type',
-                'pcr_result',
-                'pcr_date_receipt',
-                'patient_condition_start',
-                'sign_observation_hospital',
-                'incident_id'
-    ]
+                 'fio',
+                 'iin',
+                 'phone',
+                 'num_crossdoc',
+                 'date_start',
+                 'pmsp_name',
+                 'status',
+                 'dozvon',
+                 'dozvon_type',
+                 'pcr_result',
+                 'pcr_date_receipt',
+                 'patient_condition_start',
+                 'sign_observation_hospital',
+                 'incident_id'
+                 ]
 
     # DRY №2
     qs_add_on = [
-                ['pmsp_name_format', 'pmsp_name'], # [НАИМЕНОВАНИЕ ФУНКЦИИ | СВОЙСТВО ОБЪЕКТА, АРГУМЕНТ ДЛЯ ФУНКЦИИ]
-                ['date_start_format', 'date_start'],
-                ['patient_condition_start_format','patient_condition_start'],
-                ['pcr_date_receipt_main_format','pcr_date_receipt'],
-                ['registration_date_time','incident_id'],
-                ['dozvon_type_format','dozvon'],
-                ['days_count','pcr_date_receipt']
+        ['pmsp_name_format', 'pmsp_name'],  # [НАИМЕНОВАНИЕ ФУНКЦИИ | СВОЙСТВО ОБЪЕКТА, АРГУМЕНТ ДЛЯ ФУНКЦИИ]
+        ['date_start_format', 'date_start'],
+        ['patient_condition_start_format', 'patient_condition_start'],
+        ['pcr_date_receipt_main_format', 'pcr_date_receipt'],
+        ['registration_date_time', 'incident_id'],
+        ['dozvon_type_format', 'dozvon'],
+        ['days_count', 'pcr_date_receipt']
     ]
 
     def get(self, request, *args, **kwargs):
@@ -303,9 +301,8 @@ class Main(APIView):
                 g_patients = GPatient.objects.filter(
                     status_end__isnull=True, phone__icontains=query).values(*(field for field in self.values_qs))
                 if not g_patients:
-                        g_patients = GPatient.objects.filter(
+                    g_patients = GPatient.objects.filter(
                         status_end__isnull=True, id__icontains=query).values(*(field for field in self.values_qs))
-
 
         for g_patient in g_patients:
             for qs_function, qs_value in self.qs_add_on:
@@ -317,6 +314,7 @@ class Main(APIView):
         }
         return render(request, 'main.html', context)
         # return render(request, 'main_copy.html', context)
+
 
 # MAIN GET
 # QS_ADD_ON 
@@ -330,9 +328,6 @@ class Main(APIView):
 # g_patient['days_count'] =                     days_count(g_patient['pcr_date_receipt'])
 
 # g_patient['last_record_datetime_format'] = last_record_datetime_format(g_patient['id'])
-
-
-
 
 
 class Card(APIView):
@@ -387,7 +382,6 @@ class Card(APIView):
                               's_countries': s_countries,
                               's_pmsps': s_pmsps,
                               's_statuses_end': s_statuses_end,
-
 
                           })
         else:
@@ -609,7 +603,7 @@ class Card_id(APIView):
         s_pmsps = SPmsp.objects.all()
         # END CONTEXT
 
-# ВСЁ ЧТО СВЯЗАНО СО STATUS_END - БЕРЕТСЯ И ЗАПИСЫВАЕТСЯ В G_PATIENT
+        # ВСЁ ЧТО СВЯЗАНО СО STATUS_END - БЕРЕТСЯ И ЗАПИСЫВАЕТСЯ В G_PATIENT
 
         # FORM DATA
 
@@ -711,32 +705,51 @@ class Card_id(APIView):
             'pcr_result') != '' else None  # РЕЗУЛЬТАТ ПЦР
         pcr_test_date = request.POST.get('pcr_test_date') if request.POST.get(
             'pcr_test_date') != '' else None  # ДАТА СДАЧИ ПЦР ТЕСТА
-        pcr_result_date = request.POST.get('pcr_result_date') if request.POST.get('pcr_result_date') != '' else None  # ДАТА ПОЛУЧЕНИЯ РЕЗУЛЬТАТА ПЦР
+        pcr_result_date = request.POST.get('pcr_result_date') if request.POST.get(
+            'pcr_result_date') != '' else None  # ДАТА ПОЛУЧЕНИЯ РЕЗУЛЬТАТА ПЦР
         kt_result = request.POST.get('kt_result') if request.POST.get('kt_result') != '' else None  # РЕЗУЛЬТАТ КТ
         kt_date = request.POST.get('kt_date') if request.POST.get('kt_date') != '' else None  # ДАТА КТ
-        kt_result_diagnosis = request.POST.get('kt_result_diagnosis') if request.POST.get('kt_result_diagnosis') != '' else None  # РЕЗУЛЬТАТ ДИАГНОЗА КТ
-        rentgen_result = request.POST.get('rentgen_result') if request.POST.get('rentgen_result') != '' else None  # РЕЗУЛЬТАТ
-        rentgen_date = request.POST.get('rentgen_date') if request.POST.get('rentgen_date') != '' else None  # ДАТА РЕНТГЕНА
-        rentgen_result_diagnosis = request.POST.get('rentgen_result_diagnosis') if request.POST.get('rentgen_result_diagnosis') != '' else None  # ЗАКЛЮЧЕНИЕ РЕНТГЕНА
+        kt_result_diagnosis = request.POST.get('kt_result_diagnosis') if request.POST.get(
+            'kt_result_diagnosis') != '' else None  # РЕЗУЛЬТАТ ДИАГНОЗА КТ
+        rentgen_result = request.POST.get('rentgen_result') if request.POST.get(
+            'rentgen_result') != '' else None  # РЕЗУЛЬТАТ
+        rentgen_date = request.POST.get('rentgen_date') if request.POST.get(
+            'rentgen_date') != '' else None  # ДАТА РЕНТГЕНА
+        rentgen_result_diagnosis = request.POST.get('rentgen_result_diagnosis') if request.POST.get(
+            'rentgen_result_diagnosis') != '' else None  # ЗАКЛЮЧЕНИЕ РЕНТГЕНА
         mb_date = request.POST.get('mb_date') if request.POST.get('mb_date') != '' else None  # ДАТА ВЫЕЗДА МБ
-        late_reason = request.POST.get('late_reason') if request.POST.get('late_reason') != '' else None  # ПРИЧИНА ПОЗДНЕЙ ПОДАЧИ
-        pmsp_info_datetime = request.POST.get('pmsp_info_datetime') if request.POST.get('pmsp_info_datetime') != '' else None  # ДАТА ПОЛУЧЕНИЯ ДАННЫХ ОТ ПМСП
-        first_call_datetime = request.POST.get('first_call_datetitme') if request.POST.get('first_call_datetitme') != '' else None  # ДАТА ПЕРВОГО ЗВОНКА
-        tmc_function_info = request.POST.get('tmc_function_info') if request.POST.get('tmc_function_info') != '' else None  # ИНФОРМИРОВАНИЕ О ФУНКЦИЯХ ТМЦ
-        tmc_condition_info = request.POST.get('tmc_condition_info') if request.POST.get('tmc_condition_info') != '' else None  # ИНФОРМИРОВАНИЕ ОБ УСЛОВИЯХ ТМЦ
-        refusal_hospitalize = request.POST.get('refusal_hospitalize') if request.POST.get('refusal_hospitalize') != '' else None  # ОТКАЗ ОТ ГОСПИТАЛИЗАЦИИ
-        end_monitoring_patient = request.POST.get('end_monitoring_patient') if request.POST.get('end_monitoring_patient') != '' else None  # ЗАВЕРШЕНИЕ НАБЛЮДЕНИЯ СО СЛОВ ПАЦИЕНТА
+        late_reason = request.POST.get('late_reason') if request.POST.get(
+            'late_reason') != '' else None  # ПРИЧИНА ПОЗДНЕЙ ПОДАЧИ
+        pmsp_info_datetime = request.POST.get('pmsp_info_datetime') if request.POST.get(
+            'pmsp_info_datetime') != '' else None  # ДАТА ПОЛУЧЕНИЯ ДАННЫХ ОТ ПМСП
+        first_call_datetime = request.POST.get('first_call_datetitme') if request.POST.get(
+            'first_call_datetitme') != '' else None  # ДАТА ПЕРВОГО ЗВОНКА
+        tmc_function_info = request.POST.get('tmc_function_info') if request.POST.get(
+            'tmc_function_info') != '' else None  # ИНФОРМИРОВАНИЕ О ФУНКЦИЯХ ТМЦ
+        tmc_condition_info = request.POST.get('tmc_condition_info') if request.POST.get(
+            'tmc_condition_info') != '' else None  # ИНФОРМИРОВАНИЕ ОБ УСЛОВИЯХ ТМЦ
+        refusal_hospitalize = request.POST.get('refusal_hospitalize') if request.POST.get(
+            'refusal_hospitalize') != '' else None  # ОТКАЗ ОТ ГОСПИТАЛИЗАЦИИ
+        end_monitoring_patient = request.POST.get('end_monitoring_patient') if request.POST.get(
+            'end_monitoring_patient') != '' else None  # ЗАВЕРШЕНИЕ НАБЛЮДЕНИЯ СО СЛОВ ПАЦИЕНТА
         stationar = request.POST.get('stationar') if request.POST.get('stationar') != '' else None  # СТАЦИОНАР
-        status_end_date = request.POST.get('status_end_date') if request.POST.get('status_end_date') != '' else None  # ДАТА ЗАВЕРШЕНИЯ НАБЛЮДЕНИЯ
+        status_end_date = request.POST.get('status_end_date') if request.POST.get(
+            'status_end_date') != '' else None  # ДАТА ЗАВЕРШЕНИЯ НАБЛЮДЕНИЯ
         vaccine = request.POST.get('vaccine') if request.POST.get('vaccine') != '' else None  # ТИП ВАКЦИНЫ
-        vaccine_doses = request.POST.get('vaccine_doses') if request.POST.get('vaccine_doses') != '' else None  # КОЛИЧЕСТВО ПОЛУЧЕННЫХ ДОЗ ВАКЦИНЫ
-        vaccine_first_date = request.POST.get('vaccine_first_date') if request.POST.get('vaccine_first_date') != '' else None  # ДАТА ПОЛУЧЕНИЯ ПЕРВОЙ ДОЗЫ
-        vaccine_second_date = request.POST.get('vaccine_second_date') if request.POST.get('vaccine_second_date') != '' else None  # ДАТА ПОЛУЧЕНИЯ ВТОРОЙ ДОЗЫ
-        presc_therapy = request.POST.get('presc_therapy') if request.POST.get('presc_therapy') != '' else None  # Назначения
+        vaccine_doses = request.POST.get('vaccine_doses') if request.POST.get(
+            'vaccine_doses') != '' else None  # КОЛИЧЕСТВО ПОЛУЧЕННЫХ ДОЗ ВАКЦИНЫ
+        vaccine_first_date = request.POST.get('vaccine_first_date') if request.POST.get(
+            'vaccine_first_date') != '' else None  # ДАТА ПОЛУЧЕНИЯ ПЕРВОЙ ДОЗЫ
+        vaccine_second_date = request.POST.get('vaccine_second_date') if request.POST.get(
+            'vaccine_second_date') != '' else None  # ДАТА ПОЛУЧЕНИЯ ВТОРОЙ ДОЗЫ
+        presc_therapy = request.POST.get('presc_therapy') if request.POST.get(
+            'presc_therapy') != '' else None  # Назначения
         complaint_ses = request.POST.get('complaint') if request.POST.get('complaint') != '' else None  # ЖАЛОБЫ СЭС
-        complaint_days = request.POST.get('complaint_days') if request.POST.get('complaint_days') != '' else None  # ЖАЛОБЫ КОЛИЧЕСТВО ДНЕЙ
+        complaint_days = request.POST.get('complaint_days') if request.POST.get(
+            'complaint_days') != '' else None  # ЖАЛОБЫ КОЛИЧЕСТВО ДНЕЙ
         other_simp = request.POST.get('nosologiya') if request.POST.get('nosologiya') != '' else None  # Нозология
-        violation_descr = request.POST.get('violation_descr') if request.POST.get('violation_descr') != '' else None  # Жалобы на ПМСП
+        violation_descr = request.POST.get('violation_descr') if request.POST.get(
+            'violation_descr') != '' else None  # Жалобы на ПМСП
         dozvon = request.POST.get('dozvon')
 
         print('vaccine: ', vaccine)
@@ -791,7 +804,7 @@ class Card_id(APIView):
             info_function=True if tmc_function_info == 'on' else False,
             info_cond=True if tmc_condition_info == 'on' else False,
             hospitalize_tmc=True if refusal_hospitalize == 'on' else False,
-            p_close_end_date=status_end_date,    # p_close_end_date <-- na samom dele eto
+            p_close_end_date=status_end_date,  # p_close_end_date <-- na samom dele eto
             watch_diagnosis=g_patient.watch_diagnosis,
             patient_condition_start=g_patient.patient_condition_start,
             sign_observation_hospital=g_patient.sign_observation_hospital,
@@ -1015,10 +1028,11 @@ def get_count(request):
         status_end__isnull=True).count()
     # for current_g_patient in current_g_patients:
     #    current_list.append(current_g_patient.incident_id)
-    #n_current_g_incidents = GIncident.objects.filter(id__in=current_list, date_time__lt=current_day + timedelta(hours=1)).count()
+    # n_current_g_incidents = GIncident.objects.filter(id__in=current_list, date_time__lt=current_day + timedelta(hours=1)).count()
     # current_g_patients = GPatient.objects.filter(status_end__isnull=True, pmsp_start_date__lt=date_now).count()
     snyatten_g_patients = GPatient.objects.exclude(status_end__isnull=True).filter(
-        close_date_post__gte=current_day + timedelta(hours=1), close_date_post__lte=current_day + timedelta(days=1, hours=1)).count()
+        close_date_post__gte=current_day + timedelta(hours=1),
+        close_date_post__lte=current_day + timedelta(days=1, hours=1)).count()
     # snyatten_g_patients = GPatient.objects.exclude(status_end__isnull=True)
     # for snyatten_g_patient in snyatten_g_patients:
     #     snyatten_list.append(snyatten_g_patient.incident_id)
@@ -1050,7 +1064,6 @@ null = [None, '']
 
 
 def save_log(request, name, bonus=''):
-
     # get_meta = lambda x, xx, y=exec("def f(meta,s):\n try:\n  return meta[s]\n except:  return None"): (x, xx)
 
     def get_meta(arr, key):
@@ -1146,7 +1159,9 @@ class get_patient(APIView):
 class get_patient_id(APIView):
     def post(self, request):
         save_log(request, 'get patient id')
-        return JsonResponse(list(Appeal.objects.filter(id=request.data.get('id')).select_related('subtype_call').annotate(subtype_call_name=F('subtype_call__name')).values()), safe=False)
+        return JsonResponse(list(
+            Appeal.objects.filter(id=request.data.get('id')).select_related('subtype_call').annotate(
+                subtype_call_name=F('subtype_call__name')).values()), safe=False)
 
 
 class get_incident(APIView):
@@ -1163,7 +1178,7 @@ class save_appeal(APIView):
         subtype_call = request.data.get('subtype_call')
         st_string = ''
         new_appeal = Appeal()
-        #new_appeal.date = datetime.now() + timedelta(hours=6)
+        # new_appeal.date = datetime.now() + timedelta(hours=6)
 
         # subtype
         try:
@@ -1307,12 +1322,14 @@ class save_appeal(APIView):
 
 class get_history(APIView):
     def post(self, request):
-
-        res = Appeal.objects.filter(phone=request.data.get('phone')).select_related('type_call').annotate(type_call_name=F('type_call__name')
-                                                                                                          ).select_related('subtype_call').annotate(subtype_call_name=F('subtype_call__name')
-                                                                                                                                                    ).select_related('workplace').annotate(workplace_name=F('workplace__name')
-                                                                                                                                                                                           ).select_related('pmsp_name').annotate(pmsp_name_name=F('pmsp_name__abrev_rus')
-                                                                                                                                                                                                                                  ).select_related('complaint_status').annotate(complaint_status_name=F('complaint_status__name'))
+        res = Appeal.objects.filter(phone=request.data.get('phone')).select_related('type_call').annotate(
+            type_call_name=F('type_call__name')
+            ).select_related('subtype_call').annotate(subtype_call_name=F('subtype_call__name')
+                                                      ).select_related('workplace').annotate(
+            workplace_name=F('workplace__name')
+            ).select_related('pmsp_name').annotate(pmsp_name_name=F('pmsp_name__abrev_rus')
+                                                   ).select_related('complaint_status').annotate(
+            complaint_status_name=F('complaint_status__name'))
 
         res_sz = custom_serializer(res)
 
@@ -1347,10 +1364,12 @@ class get_history_all_for_current_user(APIView):
 
         res = Appeal.objects.filter(user_fio=request.data.get('user_fio'), is_first=True
                                     ).select_related('type_call').annotate(type_call_name=F('type_call__name')
-                                                                           ).select_related('subtype_call').annotate(subtype_call_name=F('subtype_call')
-                                                                                                                     ).select_related('workplace').annotate(workplace_name=F('workplace__name')
-                                                                                                                                                            ).select_related('pmsp_name').annotate(pmsp_name_name=F('pmsp_name__abrev_rus')
-                                                                                                                                                                                                   ).select_related('complaint_status').annotate(complaint_status_name=F('complaint_status__name'))
+                                                                           ).select_related('subtype_call').annotate(
+            subtype_call_name=F('subtype_call')
+            ).select_related('workplace').annotate(workplace_name=F('workplace__name')
+                                                   ).select_related('pmsp_name').annotate(
+            pmsp_name_name=F('pmsp_name__abrev_rus')
+            ).select_related('complaint_status').annotate(complaint_status_name=F('complaint_status__name'))
 
         res_sz = custom_serializer(res)
         return JsonResponse(res_sz, safe=False)
@@ -1366,17 +1385,18 @@ class get_history_all(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        res = Appeal.objects.filter(is_first=True
-                                    ).select_related('type_call').annotate(type_call_name=F('type_call__name')
-                                                                           ).select_related('subtype_call').annotate(subtype_call_name=F('subtype_call')
-                                                                                                                     ).select_related('workplace').annotate(workplace_name=F('workplace__name')
-                                                                                                                                                            ).select_related('pmsp_name').annotate(pmsp_name_name=F('pmsp_name__abrev_rus')
-                                                                                                                                                                                                   ).select_related('complaint_status').annotate(complaint_status_name=F('complaint_status__name'))
+        res = Appeal.objects.filter(is_first=True).select_related('type_call'
+                                                                  ).annotate(type_call_name=F('type_call__name')
+                                                                             ).select_related('subtype_call').annotate(
+            subtype_call_name=F('subtype_call')
+            ).select_related('workplace').annotate(workplace_name=F('workplace__name')
+                                                   ).select_related('pmsp_name').annotate(
+            pmsp_name_name=F('pmsp_name__abrev_rus')
+            ).select_related('complaint_status').annotate(complaint_status_name=F('complaint_status__name'))
 
         res_sz = custom_serializer(res)
         save_log(request, 'get history all')
         return JsonResponse(res_sz, safe=False)
-
 
 
 class api_auth(APIView):
@@ -1410,7 +1430,8 @@ class ReportsView(APIView):
                 bb = BorcovskyBridge.objects.get(user=user)
 
                 now = (datetime.now() - timedelta(hours=6)).date()
-                calls = CallDetail.objects.using('tmc').filter(start_time__year=now.year, start_time__month=now.month, start_time__day=now.day
+                calls = CallDetail.objects.using('tmc').filter(start_time__year=now.year, start_time__month=now.month,
+                                                               start_time__day=now.day
                                                                ).filter(caller_phone_type='EXTERNAL',
                                                                         callee_phone_type='INTERNAL',
                                                                         callee_login_id__isnull=False,
@@ -1447,7 +1468,8 @@ class ReportsView(APIView):
                     date_after, "%Y-%m-%d") - timedelta(hours=6)
                 date_before_converted = datetime.strptime(
                     date_before, "%Y-%m-%d") - timedelta(hours=6)
-                calls = CallDetail.objects.using('tmc').filter(start_time__gte=date_after_converted, start_time__lte=date_before_converted).filter(
+                calls = CallDetail.objects.using('tmc').filter(start_time__gte=date_after_converted,
+                                                               start_time__lte=date_before_converted).filter(
                     caller_phone_type='EXTERNAL', callee_phone_type='INTERNAL', callee_login_id__isnull=False)
                 obshee = calls.count()
                 prinyatie = calls.filter(talk_time__gt=0).count()
