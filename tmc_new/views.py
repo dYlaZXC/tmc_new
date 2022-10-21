@@ -9,51 +9,29 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic.edit import FormView
-from contextlib import nullcontext
-from distutils.ccompiler import new_compiler
-from math import nan
-from multiprocessing.sharedctypes import Value
-from posixpath import split
-import re
-from tabnanny import check
-from tkinter import N
-from tkinter.tix import S_REGION
-from django import test
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
-from django.template.response import TemplateResponse
 from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 from django.views.generic import TemplateView
 from .models import *
-from django.urls import reverse
 from datetime import datetime, date, timedelta
-from django.core.exceptions import ObjectDoesNotExist
-from rest_framework import mixins, permissions, status
-from random import randint
-from django.template import loader
-from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate
+from rest_framework import permissions, status
 from rest_framework.decorators import (
-    action,
     api_view,
-    parser_classes,
     permission_classes,
 )
 from rest_framework.response import Response
 from django.template.loader import render_to_string
-import json
 from django.core import serializers
 from django.db.models import F
-# from django.contrib.auth import logout as auth_logout, login as auth_login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
-import math
+
 
 from .serializer import AppealSerializer
 
 """ PAGINATOR """
 from tmc_new import utils
-from django.core.paginator import Paginator
 
 statuses_end = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
