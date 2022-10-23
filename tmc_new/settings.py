@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-inm1-d)u&zie_*1rk@*+zuucf*)-gg@75ku2^ezs7%^5gds*=e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['87.255.194.204', 'mdc.1312.kz', '127.0.0.1']
+ALLOWED_HOSTS = ['87.255.194.204', 'mdc.1312.kz', '127.0.0.1', '192.168.2.12']
 
 
 # Application definition
@@ -72,6 +72,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://mdc.1312.kz:1002",
     "https://eu.cloudcall.kz",
     "http://localhost:8080",
+    "http://192.168.2.5:8081",
 ]
 
 ROOT_URLCONF = 'tmc_new.urls'
@@ -108,10 +109,10 @@ WSGI_APPLICATION = 'tmc_new.wsgi.application'
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'mdc',
-       'USER': 'mdc',
-       'PASSWORD': '9bvhxjWk8VzRAbDQ',
-       'HOST': '87.255.194.204',
+       'NAME': 'bp_dev',
+       'USER': 'postgres',
+       'PASSWORD': 'lx3zui@U~ab|mT@{6d',
+       'HOST': '194.110.55.62',
        'PORT': '5432',
    },
     'tmc': {
